@@ -3,6 +3,7 @@ import Footer from "./components/Footer"
 import Header from "./components/Header"
 import Hero from "./components/Hero"
 // import Schedule from "./components/Schedule"
+// import Schedule from "./components/Schedule"
 import Teams from "./components/Teams"
 import Tournament from "./components/Tournament"
 

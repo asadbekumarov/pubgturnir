@@ -1,6 +1,23 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Calendar, Clock, Users, DollarSign, MapPin, Play, Trophy, Star } from 'lucide-react';
+
+interface Tournament {
+    id: number
+    title: string
+    date: string
+    time: string
+    location: string
+    prizePool: string
+    teams: number
+    participants: number
+    status: string
+    image: string
+    type: string
+    featured: boolean
+    viewers?: string
+    winner?: string
+}
 
 const Tournament = () => {
     const [activeTab, setActiveTab] = useState('upcoming');
@@ -22,7 +39,7 @@ const Tournament = () => {
         return () => observer.disconnect();
     }, []);
 
-    const upcomingTournaments = [
+    const upcomingTournaments: Tournament[] = [
         {
             id: 1,
             title: 'PUBG WORLD CHAMPIONSHIP 2024',
@@ -67,7 +84,7 @@ const Tournament = () => {
         }
     ];
 
-    const liveTournaments = [
+    const liveTournaments: Tournament[] = [
         {
             id: 4,
             title: 'WINTER SHOWDOWN',
@@ -85,7 +102,7 @@ const Tournament = () => {
         }
     ];
 
-    const completedTournaments = [
+    const completedTournaments: Tournament[] = [
         {
             id: 5,
             title: 'AUTUMN CHAMPIONSHIP',
@@ -127,8 +144,8 @@ const Tournament = () => {
         }
     };
 
-    const getStatusBadge = (status) => {
-        const badges = {
+    const getStatusBadge = (status: string) => {
+        const badges: Record<string, { text: string; color: string }> = {
             'REGISTRATION_OPEN': { text: 'RO\'YXAT OCHIQ', color: '#10b981' },
             'COMING_SOON': { text: 'TEZDA', color: '#f59e0b' },
             'LIVE': { text: 'JONLI', color: '#ef4444' },
@@ -137,7 +154,7 @@ const Tournament = () => {
         return badges[status] || badges['COMING_SOON'];
     };
 
-    const getTypeIcon = (type) => {
+    const getTypeIcon = (type: string) => {
         switch (type) {
             case 'MAJOR': return <Trophy className="h-4 w-4" />;
             case 'LIVE': return <Play className="h-4 w-4" />;
@@ -148,7 +165,7 @@ const Tournament = () => {
     return (
         <section
             ref={sectionRef}
-            className="py-28 relative overflow-hidden bg-gradient-to-b from-black via-gray-950 to-black"
+            className="py-16 sm:py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-black via-gray-950 to-black"
         >
             {/* Animated Stars Background */}
             <div className="absolute inset-0 z-0 overflow-hidden">
@@ -169,13 +186,13 @@ const Tournament = () => {
                 <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/3 animate-pulse delay-700"></div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
                 {/* Section Header */}
                 <div
                     className={`text-center mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                         }`}
                 >
-                    <h2 className="text-5xl md:text-7xl font-black text-white leading-tight">
+                    <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
                         BARCHA
                         <span
                             className="block bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(243,170,1,0.6)]"
@@ -186,13 +203,13 @@ const Tournament = () => {
                             TURNIRLAR
                         </span>
                     </h2>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto mt-6 leading-relaxed">
+                    <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mt-6 leading-relaxed px-4">
                         Eng zo'r turnirlar va professional musobaqalarda ishtirok eting.
                     </p>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-center mb-16">
+                <div className="flex justify-center mb-16 px-4">
                     <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-2 px-3 flex space-x-2 shadow-xl border border-gray-700">
                         {[
                             { key: 'upcoming', label: 'KELAYOTGAN', icon: Calendar },
@@ -202,9 +219,9 @@ const Tournament = () => {
                             <button
                                 key={key}
                                 onClick={() => setActiveTab(key)}
-                                className={`px-8 py-3 rounded-full font-bold transition-all duration-500 flex items-center space-x-2 ${activeTab === key
-                                        ? "bg-[#f3aa01] text-black shadow-[0_0_30px_#f3aa01] scale-105"
-                                        : "text-white hover:text-[#f3aa01] hover:scale-105"
+                                className={`px-6 sm:px-8 py-3 rounded-full font-bold transition-all duration-500 flex items-center space-x-2 text-sm sm:text-base ${activeTab === key
+                                    ? "bg-[#f3aa01] text-black shadow-[0_0_30px_#f3aa01] scale-105"
+                                    : "text-white hover:text-[#f3aa01] hover:scale-105"
                                     }`}
                             >
                                 <Icon className="h-4 w-4" />
@@ -215,7 +232,7 @@ const Tournament = () => {
                 </div>
 
                 {/* Tournaments Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10 ">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10">
                     {getTournamentsByTab().map((tournament, index) => {
                         const delay = (index + 1) * 300;
                         const statusBadge = getStatusBadge(tournament.status);
@@ -313,32 +330,18 @@ const Tournament = () => {
                                         <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/10 to-transparent rounded-xl border border-yellow-500/30">
                                             <div className="flex items-center space-x-2">
                                                 <Trophy className="h-5 w-5" style={{ color: '#f3aa01' }} />
-                                                <span className="text-sm text-white">G'olib: </span>
-                                                <span className="text-sm font-bold" style={{ color: '#f3aa01' }}>
-                                                    {tournament.winner}
-                                                </span>
+                                                <span className="text-base font-bold text-yellow-300">G'olib: {tournament.winner}</span>
                                             </div>
                                         </div>
                                     )}
 
                                     {/* Action Button */}
-                                    <button
-                                        className={`w-full py-4 rounded-full font-extrabold transition-all duration-300 ${tournament.status === 'REGISTRATION_OPEN'
-                                                ? 'text-black bg-[#f3aa01] hover:shadow-[0_0_30px_#f3aa01] hover:scale-105'
-                                                : tournament.status === 'LIVE'
-                                                    ? 'text-white bg-red-600 hover:bg-red-700 hover:scale-105'
-                                                    : 'text-gray-400 bg-gray-800 cursor-not-allowed'
-                                            }`}
-                                        disabled={tournament.status === 'COMPLETED' || tournament.status === 'COMING_SOON'}
-                                    >
-                                        {tournament.status === 'REGISTRATION_OPEN' && 'RO\'YXATDAN O\'TISH'}
-                                        {tournament.status === 'LIVE' && 'JONLI TOMOSHA'}
-                                        {tournament.status === 'COMPLETED' && 'NATIJALARNI KO\'RISH'}
-                                        {tournament.status === 'COMING_SOON' && 'TEZDA'}
+                                    <button className="w-full bg-gradient-to-r from-[#f3aa01] to-[#ff6b35] hover:from-[#ff6b35] hover:to-[#f3aa01] text-black font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                                        {tournament.status === 'LIVE' ? 'Jonli Ko\'rish' : tournament.status === 'UPCOMING' ? 'Qo\'shilish' : 'Natijalar'}
                                     </button>
                                 </div>
 
-                    
+
                             </div>
                         );
                     })}
@@ -346,10 +349,10 @@ const Tournament = () => {
 
                 {/* CTA Button */}
                 <div
-                    className={`text-center mt-24 transition-all duration-1000 delay-500 ${isVisible ? "opacity-100" : "opacity-0"
+                    className={`text-center mt-16 sm:mt-20 md:mt-24 transition-all duration-1000 delay-500 ${isVisible ? "opacity-100" : "opacity-0"
                         }`}
                 >
-                    <button className="group px-14 py-6 text-xl font-extrabold text-black rounded-full bg-gradient-to-r from-[#f3aa01] to-[#ffcf40] shadow-[0_0_30px_#f3aa01] hover:shadow-[0_0_50px_#f3aa01] hover:scale-110 transition-all duration-500 transform relative overflow-hidden">
+                    <button className="group w-full sm:w-auto px-6 sm:px-10 md:px-14 py-3 sm:py-4 md:py-6 text-sm sm:text-base md:text-lg lg:text-xl font-extrabold text-black rounded-full bg-gradient-to-r from-[#f3aa01] to-[#ffcf40] shadow-[0_0_30px_#f3aa01] hover:shadow-[0_0_50px_#f3aa01] hover:scale-110 transition-all duration-500 transform relative overflow-hidden">
                         <span className="relative z-10">BARCHA TURNIRLARNI KO'RISH</span>
                         <span className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 rounded-full transition-opacity duration-300"></span>
                     </button>

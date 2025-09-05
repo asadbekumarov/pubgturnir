@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Users, Star, Trophy, Zap, Shield, Target } from "lucide-react"
 
+
 const Teams = () => {
     const [activeCategory, setActiveCategory] = useState("top")
     const [isVisible, setIsVisible] = useState(false)
@@ -140,7 +141,7 @@ const Teams = () => {
         }
     }
 
-    const getStatusIcon = (status) => {
+    const getStatusIcon = (status: string) => {
         switch (status) {
             case "CHAMPION":
                 return <Trophy className="h-4 w-4" />
@@ -160,7 +161,7 @@ const Teams = () => {
     return (
         <section
             ref={sectionRef}
-            className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-black via-gray-950 to-black"
+            className="py-16 sm:py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-black via-gray-950 to-black"
         >
             {/* Animated Stars Background */}
             <div className="absolute inset-0 z-0 overflow-hidden">
@@ -180,12 +181,12 @@ const Teams = () => {
                 <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/3 animate-pulse delay-700"></div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
                 {/* Header */}
                 <div
-                    className={`text-center mb-10 md:mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+                    className={`text-center mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
                 >
-                    <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-tight">
+                    <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
                         ENG KUCHLI
                         <span
                             className="block bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(243,170,1,0.6)]"
@@ -196,13 +197,13 @@ const Teams = () => {
                             KOMANDALAR
                         </span>
                     </h2>
-                    <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-xl sm:max-w-2xl mx-auto mt-4 md:mt-6 leading-relaxed">
+                    <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mt-6 leading-relaxed px-4">
                         Dunyo bo'ylab eng professional komandalar bilan tanishing va ularga qarshi jang eting.
                     </p>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-center mb-10 md:mb-16">
+                <div className="flex justify-center mb-16 px-4">
                     <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-1 px-2 flex flex-wrap justify-center space-x-1 shadow-xl border border-gray-700">
                         {[
                             { key: "top", label: "TOP KOMANDALAR", icon: Trophy },
@@ -213,8 +214,8 @@ const Teams = () => {
                                 key={key}
                                 onClick={() => setActiveCategory(key)}
                                 className={`px-4 py-2 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base font-bold transition-all duration-300 flex items-center space-x-2 mb-1 sm:mb-0 ${activeCategory === key
-                                        ? "bg-[#f3aa01] text-black shadow-[0_0_20px_#f3aa01] scale-105"
-                                        : "text-white hover:text-[#f3aa01]"
+                                    ? "bg-[#f3aa01] text-black shadow-[0_0_20px_#f3aa01] scale-105"
+                                    : "text-white hover:text-[#f3aa01]"
                                     }`}
                             >
                                 <Icon className="h-4 w-4" />
@@ -231,7 +232,7 @@ const Teams = () => {
                         return (
                             <div
                                 key={team.id}
-                                className={`relative bg-gray-900/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 md:p-8 border border-gray-700/50 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl group ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                                className={`relative bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-700/50 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl group ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                                     }`}
                                 style={{
                                     animationDelay: `${delay}ms`,
@@ -249,17 +250,17 @@ const Teams = () => {
 
                                 {/* Team Header */}
                                 <div className="flex items-start justify-between mb-5">
-                                    <div className="flex items-center space-x-3 sm:space-x-4">
+                                    <div className="flex items-center space-x-4">
                                         <div
-                                            className="text-4xl sm:text-5xl p-3 sm:p-4 rounded-xl transition-transform duration-300 group-hover:scale-110"
+                                            className="text-4xl p-4 rounded-xl transition-transform duration-300 group-hover:scale-110"
                                             style={{ backgroundColor: `${team.bgColor}20` }}
                                         >
                                             {team.logo}
                                         </div>
                                         <div>
-                                            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">{team.name}</h3>
+                                            <h3 className="text-xl font-bold text-white mb-1">{team.name}</h3>
                                             <div className="flex items-center space-x-2">
-                                                <span className="text-gray-400 text-xs sm:text-sm">{team.country}</span>
+                                                <span className="text-gray-400 text-sm">{team.country}</span>
                                                 <span className="w-1 h-1 bg-gray-500 rounded-full"></span>
                                                 <div
                                                     className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-bold"
@@ -277,7 +278,7 @@ const Teams = () => {
 
                                     {/* Rank Badge */}
                                     <div
-                                        className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-base sm:text-lg font-extrabold text-black"
+                                        className="px-4 py-2 rounded-full text-lg font-extrabold text-black"
                                         style={{ backgroundColor: team.bgColor }}
                                     >
                                         #{team.rank}
@@ -285,29 +286,29 @@ const Teams = () => {
                                 </div>
 
                                 {/* Stats */}
-                                <div className="grid grid-cols-2 gap-3 sm:gap-6 mb-5">
-                                    <div className="bg-gray-800/70 rounded-lg sm:rounded-xl p-3 text-center">
-                                        <div className="text-2xl sm:text-3xl font-extrabold mb-1" style={{ color: team.bgColor }}>
+                                <div className="grid grid-cols-2 gap-6 mb-5">
+                                    <div className="bg-gray-800/70 rounded-xl p-3 text-center">
+                                        <div className="text-3xl font-extrabold mb-1" style={{ color: team.bgColor }}>
                                             {team.points}
                                         </div>
-                                        <div className="text-xs sm:text-sm text-gray-400">OCHKO</div>
+                                        <div className="text-sm text-gray-400">OCHKO</div>
                                     </div>
-                                    <div className="bg-gray-800/70 rounded-lg sm:rounded-xl p-3 text-center">
-                                        <div className="text-2xl sm:text-3xl font-extrabold mb-1" style={{ color: team.bgColor }}>
+                                    <div className="bg-gray-800/70 rounded-xl p-3 text-center">
+                                        <div className="text-3xl font-extrabold mb-1" style={{ color: team.bgColor }}>
                                             {team.wins}
                                         </div>
-                                        <div className="text-xs sm:text-sm text-gray-400">G'ALABALAR</div>
+                                        <div className="text-sm text-gray-400">G'ALABALAR</div>
                                     </div>
                                 </div>
 
                                 {/* Members */}
                                 <div>
-                                    <h4 className="text-xs sm:text-sm font-semibold text-gray-400 mb-2">JAMOA A'ZOLARI:</h4>
-                                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                                    <h4 className="text-sm font-semibold text-gray-400 mb-2">JAMOA A'ZOLARI:</h4>
+                                    <div className="grid grid-cols-2 gap-3">
                                         {team.members.map((member, idx) => (
                                             <div
                                                 key={idx}
-                                                className="bg-gray-800/60 rounded-md sm:rounded-lg px-2 py-1 text-xs sm:text-sm font-medium text-white hover:bg-gray-700 transition-colors duration-200"
+                                                className="bg-gray-800/60 rounded-lg px-2 py-1 text-sm font-medium text-white hover:bg-gray-700 transition-colors duration-200 truncate"
                                             >
                                                 {member}
                                             </div>
@@ -321,9 +322,9 @@ const Teams = () => {
 
                 {/* CTA Button */}
                 <div
-                    className={`text-center mt-16 sm:mt-20 md:mt-24 transition-all duration-1000 delay-500 ${isVisible ? "opacity-100" : "opacity-0"}`}
+                    className={`text-center mt-20 transition-all duration-1000 delay-500 ${isVisible ? "opacity-100" : "opacity-0"}`}
                 >
-                    <button className="group w-full sm:w-auto px-10 py-4 sm:px-14 sm:py-6 text-base sm:text-xl font-extrabold text-black rounded-full bg-gradient-to-r from-[#f3aa01] to-[#ffcf40] shadow-[0_0_20px_#f3aa01] hover:shadow-[0_0_40px_#f3aa01] hover:scale-105 transition-all duration-300 transform relative overflow-hidden">
+                    <button className="group w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-6 text-lg sm:text-xl font-extrabold text-black rounded-full bg-gradient-to-r from-[#f3aa01] to-[#ffcf40] shadow-[0_0_20px_#f3aa01] hover:shadow-[0_0_40px_#f3aa01] hover:scale-105 transition-all duration-300 transform relative overflow-hidden">
                         <span className="relative z-10">BARCHA KOMANDALARNI KO'RISH</span>
                         <span className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 rounded-full transition-opacity duration-300"></span>
                     </button>

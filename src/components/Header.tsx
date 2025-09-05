@@ -42,17 +42,17 @@ const Header = () => {
                 className={`fixed top-0 left-0 w-full z-50 border-b-2 border-yellow-500 transition-all duration-300 ${isScrolled ? "bg-black/80 backdrop-blur-md shadow-lg" : "bg-black/95"
                     }`}
             >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-3 md:py-4">
+                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+                    <div className="flex justify-between items-center py-2 sm:py-3 md:py-4">
                         {/* Logo - Responsive logo sizing */}
                         <div className="flex items-center">
                             <a href="#" className="flex items-center group">
-                                <div className="p-2 md:p-3 rounded-xl shadow-lg transform group-hover:scale-105 transition-transform duration-200 bg-[#f3aa01]">
-                                    <span className="text-lg md:text-2xl font-bold text-black">PUBG</span>
+                                <div className="p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl shadow-lg transform group-hover:scale-105 transition-transform duration-200 bg-[#f3aa01]">
+                                    <span className="text-lg sm:text-xl md:text-2xl font-bold text-black">PUBG</span>
                                 </div>
-                                <div className="ml-2 md:ml-3">
-                                    <h1 className="text-lg md:text-xl font-bold text-white">Tournament</h1>
-                                    <p className="text-xs text-[#f3aa01] hidden sm:block">Battle Royale</p>
+                                <div className="ml-2 sm:ml-3 md:ml-4">
+                                    <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">Tournament</h1>
+                                    <p className="text-xs sm:text-sm text-[#f3aa01] hidden sm:block">Battle Royale</p>
                                 </div>
                             </a>
                         </div>
@@ -115,7 +115,7 @@ const Header = () => {
                         ))}
                         <div className="pt-4 px-3">
                             <button
-                                className="w-full bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-3 px-4 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
+                                className="w-full bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-3 px-4 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2 text-base"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 <User className="h-4 w-4" />
@@ -129,7 +129,7 @@ const Header = () => {
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#f3aa01] via-orange-500 to-red-500"></div>
             </header>
 
-            <div className="h-[70px] md:h-[80px]"></div>
+            {/* <div className="h-[70px] md:h-[80px]"></div> */}
         </>
     )
 }

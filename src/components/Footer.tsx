@@ -40,14 +40,6 @@ const Footer = () => {
         "Scrimmages",
     ]
 
-    const supportLinks = [
-        "Yordam Markazi",
-        "Bog'lanish",
-        "Texnik Yordam",
-        "Hisobot Berish",
-        "Community Guidelines",
-        "Maxfiylik Siyosati",
-    ]
 
     // Scroll qilganda animatsiya
     useEffect(() => {
@@ -86,34 +78,34 @@ const Footer = () => {
             </div>
 
             {/* Main Footer Content */}
-            <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-12 sm:py-16 md:py-20">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
                     {/* Brand Section */}
                     <div
                         className={`transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
                     >
-                        <div className="flex items-center mb-6">
+                        <div className="flex items-center mb-4 sm:mb-6">
                             <div
-                                className="p-3 rounded-2xl shadow-lg transform transition-transform duration-300 hover:scale-110"
+                                className="p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-lg transform transition-transform duration-300 hover:scale-110"
                                 style={{ backgroundColor: "#f3aa01" }}
                             >
-                                <GamepadIcon className="h-8 w-8 text-black" />
+                                <GamepadIcon className="h-6 w-6 sm:h-8 sm:w-8 text-black" />
                             </div>
-                            <div className="ml-4">
-                                <h3 className="text-3xl font-black text-white">PUBG</h3>
-                                <p className="text-sm font-medium" style={{ color: "#f3aa01" }}>
+                            <div className="ml-3 sm:ml-4">
+                                <h3 className="text-2xl sm:text-3xl font-black text-white">PUBG</h3>
+                                <p className="text-xs sm:text-sm font-medium" style={{ color: "#f3aa01" }}>
                                     Tournament
                                 </p>
                             </div>
                         </div>
 
-                        <p className="text-gray-400 mb-8 leading-relaxed">
+                        <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 leading-relaxed">
                             Eng zo'r PUBG turnirlariga qatnashing va professional o'yinchilar bilan raqobatlashing. Bizning
                             platformada eng yaxshi gaming tajribasini oling.
                         </p>
 
                         {/* Social Media */}
-                        <div className="flex space-x-4">
+                        <div className="flex space-x-3 sm:space-x-4">
                             {socialLinks.map((social, index) => {
                                 const IconComponent = social.icon
                                 const delay = index * 100
@@ -125,7 +117,7 @@ const Footer = () => {
                                         style={{ animationDelay: `${delay}ms` }}
                                     >
                                         <div
-                                            className="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center transition-all duration-300 transform hover:scale-110 group-hover:shadow-lg"
+                                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-900 flex items-center justify-center transition-all duration-300 transform hover:scale-110 group-hover:shadow-lg"
                                             onMouseEnter={(e) => {
                                                 e.currentTarget.style.backgroundColor = social.color
                                             }}
@@ -133,7 +125,7 @@ const Footer = () => {
                                                 e.currentTarget.style.backgroundColor = "#111827"
                                             }}
                                         >
-                                            <IconComponent className="h-5 w-5 text-white" />
+                                            <IconComponent className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                                         </div>
                                     </a>
                                 )
@@ -145,18 +137,18 @@ const Footer = () => {
                     <div
                         className={`transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
                     >
-                        <h4 className="text-xl font-bold text-white mb-6 flex items-center">
-                            <Users className="h-5 w-5 mr-3" style={{ color: "#f3aa01" }} />
+                        <h4 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center">
+                            <Users className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3" style={{ color: "#f3aa01" }} />
                             Tezkor Havolalar
                         </h4>
-                        <ul className="space-y-3">
+                        <ul className="space-y-2 sm:space-y-3">
                             {quickLinks.map((link, index) => (
                                 <li key={index} className="group">
                                     <a
                                         href="#"
-                                        className="text-gray-400 hover:text-white transition-all duration-200 flex items-center group"
+                                        className="text-sm sm:text-base text-gray-400 hover:text-white transition-all duration-200 flex items-center group"
                                     >
-                                        <span className="w-2 h-2 rounded-full mr-3 bg-transparent group-hover:bg-[#f3aa01] transition-all duration-300"></span>
+                                        <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mr-2 sm:mr-3 bg-transparent group-hover:bg-[#f3aa01] transition-all duration-300"></span>
                                         {link}
                                     </a>
                                 </li>
@@ -168,15 +160,15 @@ const Footer = () => {
                     <div
                         className={`transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
                     >
-                        <h4 className="text-xl font-bold text-white mb-6 flex items-center">
-                            <Trophy className="h-5 w-5 mr-3" style={{ color: "#f3aa01" }} />
+                        <h4 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center">
+                            <Trophy className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3" style={{ color: "#f3aa01" }} />
                             Turnir Turlari
                         </h4>
-                        <ul className="space-y-3">
+                        <ul className="space-y-2 sm:space-y-3">
                             {tournamentTypes.map((tournament, index) => (
                                 <li key={index} className="group">
-                                    <a href="#" className="text-gray-400 hover:text-white transition-all duration-200 flex items-center">
-                                        <span className="w-2 h-2 rounded-full mr-3 bg-transparent group-hover:bg-[#f3aa01] transition-all duration-300"></span>
+                                    <a href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-all duration-200 flex items-center">
+                                        <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mr-2 sm:mr-3 bg-transparent group-hover:bg-[#f3aa01] transition-all duration-300"></span>
                                         {tournament}
                                     </a>
                                 </li>
@@ -188,60 +180,60 @@ const Footer = () => {
                     <div
                         className={`transition-all duration-1000 delay-400 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
                     >
-                        <h4 className="text-xl font-bold text-white mb-6 flex items-center">
-                            <Mail className="h-5 w-5 mr-3" style={{ color: "#f3aa01" }} />
+                        <h4 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center">
+                            <Mail className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3" style={{ color: "#f3aa01" }} />
                             Yordam va Aloqa
                         </h4>
 
                         {/* Contact Info */}
-                        <div className="space-y-5 mb-8">
-                            <div className="flex items-start space-x-3">
-                                <Mail className="h-5 w-5 mt-1" style={{ color: "#f3aa01" }} />
+                        <div className="space-y-4 sm:space-y-5 mb-6 sm:mb-8">
+                            <div className="flex items-start space-x-2 sm:space-x-3">
+                                <Mail className="h-4 w-4 sm:h-5 sm:w-5 mt-1" style={{ color: "#f3aa01" }} />
                                 <div>
-                                    <p className="text-gray-400 text-sm">Email</p>
+                                    <p className="text-gray-400 text-xs sm:text-sm">Email</p>
                                     <a
                                         href="mailto:info@pubgtournament.uz"
-                                        className="text-white hover:text-yellow-300 transition-colors duration-200"
+                                        className="text-sm sm:text-base text-white hover:text-yellow-300 transition-colors duration-200 break-all"
                                     >
                                         info@pubgtournament.uz
                                     </a>
                                 </div>
                             </div>
 
-                            <div className="flex items-start space-x-3">
-                                <Phone className="h-5 w-5 mt-1" style={{ color: "#f3aa01" }} />
+                            <div className="flex items-start space-x-2 sm:space-x-3">
+                                <Phone className="h-4 w-4 sm:h-5 sm:w-5 mt-1" style={{ color: "#f3aa01" }} />
                                 <div>
-                                    <p className="text-gray-400 text-sm">Telefon</p>
+                                    <p className="text-gray-400 text-xs sm:text-sm">Telefon</p>
                                     <a
                                         href="tel:+998901234567"
-                                        className="text-white hover:text-yellow-300 transition-colors duration-200"
+                                        className="text-sm sm:text-base text-white hover:text-yellow-300 transition-colors duration-200"
                                     >
                                         +998 90 123 45 67
                                     </a>
                                 </div>
                             </div>
 
-                            <div className="flex items-start space-x-3">
-                                <MapPin className="h-5 w-5 mt-1" style={{ color: "#f3aa01" }} />
+                            <div className="flex items-start space-x-2 sm:space-x-3">
+                                <MapPin className="h-4 w-4 sm:h-5 sm:w-5 mt-1" style={{ color: "#f3aa01" }} />
                                 <div>
-                                    <p className="text-gray-400 text-sm">Manzil</p>
-                                    <p className="text-white">Tashkent, O'zbekiston</p>
+                                    <p className="text-gray-400 text-xs sm:text-sm">Manzil</p>
+                                    <p className="text-sm sm:text-base text-white">Tashkent, O'zbekiston</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Newsletter */}
-                        <div className="bg-gray-900/70 backdrop-blur-sm rounded-xl p-5 border border-gray-700/50 w-full max-w-sm">
-                            <h5 className="text-white font-bold mb-2">Yangiliklar</h5>
-                            <p className="text-gray-400 text-sm mb-4">Eng so'nggi turnir yangiliklarini oling</p>
-                            <div className="flex flex-col sm:flex-row">
+                        <div className="bg-gray-900/70 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-5 border border-gray-700/50 w-full max-w-sm">
+                            <h5 className="text-white font-bold mb-2 text-sm sm:text-base">Yangiliklar</h5>
+                            <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4">Eng so'nggi turnir yangiliklarini oling</p>
+                            <div className="flex flex-col xs:flex-row">
                                 <input
                                     type="email"
                                     placeholder="Email manzilingiz"
-                                    className="flex-1 bg-black text-white px-4 py-3 rounded-lg sm:rounded-l-lg sm:rounded-r-none text-sm border border-gray-600 focus:outline-none focus:border-[#f3aa01] transition-colors mb-2 sm:mb-0"
+                                    className="flex-1 bg-black text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg xs:rounded-l-lg xs:rounded-r-none text-xs sm:text-sm border border-gray-600 focus:outline-none focus:border-[#f3aa01] transition-colors mb-2 xs:mb-0"
                                 />
                                 <button
-                                    className="px-5 py-3 rounded-lg sm:rounded-r-lg sm:rounded-l-none text-black font-bold text-sm hover:shadow-lg hover:scale-105 transition-all duration-300"
+                                    className="px-4 sm:px-5 py-2 sm:py-3 rounded-lg xs:rounded-r-lg xs:rounded-l-none text-black font-bold text-xs sm:text-sm hover:shadow-lg hover:scale-105 transition-all duration-300"
                                     style={{ backgroundColor: "#f3aa01" }}
                                 >
                                     Obuna
@@ -254,8 +246,8 @@ const Footer = () => {
 
             {/* Stats Bar */}
             <div className="bg-black/60 border-t border-gray-800/60">
-                <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
                         {[
                             {
                                 value: "128+",
@@ -278,8 +270,8 @@ const Footer = () => {
                                 key={index}
                                 className={`transition-all duration-1000 delay-${(index + 5) * 100} ${isVisible ? "opacity-100" : "opacity-0"}`}
                             >
-                                <div className="text-3xl font-extrabold text-white mb-1 drop-shadow-lg">{stat.value}</div>
-                                <div className="text-gray-400 text-sm">{stat.label}</div>
+                                <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white mb-1 drop-shadow-lg">{stat.value}</div>
+                                <div className="text-gray-400 text-xs sm:text-sm">{stat.label}</div>
                             </div>
                         ))}
                     </div>
@@ -288,14 +280,15 @@ const Footer = () => {
 
             {/* Bottom Bar */}
             <div className="bg-black border-t" style={{ borderColor: "#f3aa01" }}>
-                <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5">
-                    <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm">
-                        <div className="flex items-center space-x-4 text-gray-400">
+                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-5">
+                    <div className="flex flex-col sm:flex-col md:flex-row justify-between items-center space-y-3 sm:space-y-4 md:space-y-0 text-xs sm:text-sm">
+                        <div className="flex flex-col xs:flex-row items-center space-y-1 xs:space-y-0 xs:space-x-4 text-gray-400 text-center xs:text-left">
                             <span>© {currentYear} PUBG Tournament Platform.</span>
+                            <span className="hidden xs:inline">•</span>
                             <span>Barcha huquqlar himoyalangan.</span>
                         </div>
 
-                        <div className="flex items-center space-x-6 text-gray-400">
+                        <div className="flex items-center space-x-4 sm:space-x-6 text-gray-400">
                             <a href="#" className="hover:text-white transition-colors duration-200">
                                 Maxfiylik
                             </a>
@@ -307,9 +300,9 @@ const Footer = () => {
                             </a>
                         </div>
 
-                        <div className="flex items-center space-x-2 text-gray-400">
+                        <div className="flex items-center space-x-1 sm:space-x-2 text-gray-400">
                             <span>Ishlab chiqildi</span>
-                            <Heart className="h-4 w-4" style={{ color: "#f3aa01" }} />
+                            <Heart className="h-3 w-3 sm:h-4 sm:w-4" style={{ color: "#f3aa01" }} />
                             <span>bilan O'zbekistonda</span>
                         </div>
                     </div>
