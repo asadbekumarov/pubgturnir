@@ -17,3 +17,7 @@
 .animate-fade-in-up {
   animation: fade-in-up 1s ease-out forwards;
 }
+
+html {
+  scroll-behavior: smooth;
+}

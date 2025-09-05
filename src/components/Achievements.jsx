@@ -1,25 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Trophy, Medal, Star, Crown, Target, Zap } from "lucide-react";
+"use client"
+
+import { useState, useEffect, useRef } from "react"
+import { Trophy, Medal, Star, Crown, Target, Zap } from "lucide-react"
 
 const Achievements = () => {
-    const [activeTab, setActiveTab] = useState("prizes");
-    const [isVisible, setIsVisible] = useState(false);
-    const sectionRef = useRef(null);
+    const [activeTab, setActiveTab] = useState("prizes")
+    const [isVisible, setIsVisible] = useState(false)
+    const sectionRef = useRef(null)
 
     // Scroll qilganda animatsiya uchun
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
-                    setIsVisible(true);
+                    setIsVisible(true)
                 }
             },
-            { threshold: 0.1 }
-        );
+            { threshold: 0.1 },
+        )
 
-        if (sectionRef.current) observer.observe(sectionRef.current);
-        return () => observer.disconnect();
-    }, []);
+        if (sectionRef.current) observer.observe(sectionRef.current)
+        return () => observer.disconnect()
+    }, [])
 
     const prizes = [
         {
@@ -49,7 +51,7 @@ const Achievements = () => {
             bgColor: "#cd7f32",
             glow: "#cd7f32",
         },
-    ];
+    ]
 
     const achievements = [
         {
@@ -76,22 +78,18 @@ const Achievements = () => {
             label: "Foydalanuvchilar oldi",
             color: "#ff4081",
         },
-    ];
+    ]
 
     // Umumiy kartani qaytaruvchi funksiya
     const renderCard = (item, index, type) => {
-        const Icon = item.icon;
-        const delay = (index + 1) * 300;
+        const Icon = item.icon
+        const delay = (index + 1) * 300
 
         return (
             <div
                 key={index}
-                className={`relative bg-gray-900/80 backdrop-blur-sm rounded-3xl p-8 text-center border border-gray-700/50 transform transition-all duration-700 hover:scale-105 hover:shadow-2xl group ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
-                style={{
-                    animationDelay: `${delay}ms`,
-                }}
+                className={`relative bg-gray-900/80 backdrop-blur-sm rounded-3xl p-8 text-center border border-gray-700/50 transform transition-all duration-700 hover:scale-105 hover:shadow-2xl group flex flex-col h-full min-h-[420px] ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+                style={{ animationDelay: `${delay}ms` }}
             >
                 {/* 3D hover light */}
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-transparent via-transparent to-[#ffffff10] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
@@ -130,10 +128,7 @@ const Achievements = () => {
 
                 {/* Prize Amount */}
                 {type === "prize" && (
-                    <div
-                        className="text-4xl font-extrabold mb-4 tracking-wide"
-                        style={{ color: item.bgColor }}
-                    >
+                    <div className="text-4xl font-extrabold mb-4 tracking-wide" style={{ color: item.bgColor }}>
                         {item.prize}
                     </div>
                 )}
@@ -156,8 +151,8 @@ const Achievements = () => {
                     </div>
                 )}
             </div>
-        );
-    };
+        )
+    }
 
     return (
         <section
@@ -186,11 +181,10 @@ const Achievements = () => {
             <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
                 {/* Header */}
                 <div
-                    className={`text-center mb-16 transition-all duration-1000 ${
-                        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                    }`}
+                    className={`text-center mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                        }`}
                 >
-                    <h2 className="text-5xl md:text-7xl font-black text-white leading-tight">
+                    <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-tight">
                         YUTUQ{" "}
                         <span
                             className="block bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(243,170,1,0.6)]"
@@ -201,23 +195,22 @@ const Achievements = () => {
                             VA MUKOFOTLAR
                         </span>
                     </h2>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto mt-6 leading-relaxed">
+                    <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mt-6 leading-relaxed px-4">
                         Eng yaxshi o'yinchilar uchun maxsus mukofotlar, eternal glory va global tan olinish.
                     </p>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-center mb-16">
-                    <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-2 px-3 flex space-x-2 shadow-xl border border-gray-700">
+                <div className="flex justify-center mb-16 px-4">
+                    <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-2 px-3 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 shadow-xl border border-gray-700">
                         {["prizes", "achievements"].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`px-8 py-3 rounded-full font-bold transition-all duration-500 capitalize ${
-                                    activeTab === tab
+                                className={`px-6 sm:px-8 py-3 rounded-full font-bold transition-all duration-500 capitalize text-sm sm:text-base ${activeTab === tab
                                         ? "bg-[#f3aa01] text-black shadow-[0_0_30px_#f3aa01] scale-105"
                                         : "text-white hover:text-[#f3aa01] hover:scale-105"
-                                }`}
+                                    }`}
                             >
                                 {tab === "prizes" ? "MUKOFOTLAR" : "YUTUQLAR"}
                             </button>
@@ -226,27 +219,25 @@ const Achievements = () => {
                 </div>
 
                 {/* Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 px-4">
                     {activeTab === "prizes"
                         ? prizes.map((prize, index) => renderCard(prize, index, "prize"))
-                        : achievements.map((ach, index) => renderCard(ach, index, "achievement"))
-                    }
+                        : achievements.map((ach, index) => renderCard(ach, index, "achievement"))}
                 </div>
 
                 {/* CTA Button */}
                 <div
-                    className={`text-center mt-24 transition-all duration-1000 delay-500 ${
-                        isVisible ? "opacity-100" : "opacity-0"
-                    }`}
+                    className={`text-center mt-16 sm:mt-20 lg:mt-24 transition-all duration-1000 delay-500 px-4 ${isVisible ? "opacity-100" : "opacity-0"
+                        }`}
                 >
-                    <button className="group px-14 py-6 text-xl font-extrabold text-black rounded-full bg-gradient-to-r from-[#f3aa01] to-[#ffcf40] shadow-[0_0_30px_#f3aa01] hover:shadow-[0_0_50px_#f3aa01] hover:scale-110 transition-all duration-500 transform relative overflow-hidden">
+                    <button className="group w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-6 text-lg sm:text-xl font-extrabold text-black rounded-full bg-gradient-to-r from-[#f3aa01] to-[#ffcf40] shadow-[0_0_30px_#f3aa01] hover:shadow-[0_0_50px_#f3aa01] hover:scale-110 transition-all duration-500 transform relative overflow-hidden">
                         <span className="relative z-10">HOZIROQ RO'YXATDAN O'TING</span>
                         <span className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 rounded-full transition-opacity duration-300"></span>
                     </button>
                 </div>
             </div>
         </section>
-    );
-};
+    )
+}
 
-export default Achievements;
+export default Achievements
