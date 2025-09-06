@@ -4,7 +4,7 @@ import Header from "./components/Header"
 import Hero from "./components/Hero"
 // import Schedule from "./components/Schedule"
 // import Schedule from "./components/Schedule"
-import Teams from "./components/Teams"
+// import Teams from "./components/Teams"
 import Tournament from "./components/Tournament"
 
 function App() {
@@ -19,9 +19,9 @@ function App() {
       </section>
 
       {/* Komandalar section */}
-      <section id="teams">
+      {/* <section id="teams">
         <Teams />
-      </section>
+      </section> */}
 
       {/* Turnirlar section */}
       <section id="tournaments">

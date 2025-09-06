@@ -9,7 +9,7 @@ const Header = () => {
 
     const navigationLinks = [
         { name: "Natijalar", href: "#results" },
-        { name: "Komandalar", href: "#teams" },
+        // { name: "Komandalar", href: "#teams" },
         { name: "Turnirlar", href: "#tournaments" },
         { name: "Jadval", href: "#table" },
     ]
@@ -39,12 +39,11 @@ const Header = () => {
     return (
         <>
             <header
-                className={`fixed top-0 left-0 w-full z-50 border-b-2 border-yellow-500 transition-all duration-300 ${isScrolled ? "bg-black/80 backdrop-blur-md shadow-lg" : "bg-black/95"
+                className={`sticky top-0 left-0 w-full h-auto z-50 border-b-2 border-yellow-500 transition-all duration-300 ${isScrolled ? "bg-black/80 backdrop-blur-md shadow-lg" : "bg-black/95"
                     }`}
             >
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-                    <div className="flex justify-between items-center py-2 sm:py-3 md:py-4">
-                        {/* Logo - Responsive logo sizing */}
+                    <div className="flex justify-between items-center sm:py-4 md:py-4">
                         <div className="flex items-center">
                             <a href="#" className="flex items-center group">
                                 <div className="p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl shadow-lg transform group-hover:scale-105 transition-transform duration-200 bg-[#f3aa01]">
@@ -99,7 +98,7 @@ const Header = () => {
                     className={`lg:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0 overflow-hidden"
                         }`}
                 >
-                    <div className="px-4 pt-2 pb-4 space-y-1 bg-black/90 backdrop-blur-sm border-t border-[#f3aa01]/30">
+                    <div className="px-4 pt-2 pb-4 space-y-1 bg-black/90 backdrop-blur-sm">
                         {navigationLinks.map((link, index) => (
                             <a
                                 key={link.name}
@@ -126,10 +125,10 @@ const Header = () => {
                 </div>
 
                 {/* Decorative gradient line */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#f3aa01] via-orange-500 to-red-500"></div>
+                {/* <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#f3aa01] via-orange-500 to-red-500"></div> */}
             </header>
 
-            {/* <div className="h-[70px] md:h-[80px]"></div> */}
+            {/* <div className="h-[62px] md:h-[80px]"></div> */}
         </>
     )
 }

@@ -182,8 +182,8 @@ const Tournament = () => {
                     ></div>
                 ))}
                 {/* Glowing horizontal lines */}
-                <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent top-1/3 animate-pulse"></div>
-                <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/3 animate-pulse delay-700"></div>
+                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent top-1/3 animate-pulse"></div> */}
+                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/3 animate-pulse delay-700"></div> */}
             </div>
 
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
@@ -352,10 +352,6 @@ const Tournament = () => {
                     className={`text-center mt-16 sm:mt-20 md:mt-24 transition-all duration-1000 delay-500 ${isVisible ? "opacity-100" : "opacity-0"
                         }`}
                 >
-                    <button className="group w-full sm:w-auto px-6 sm:px-10 md:px-14 py-3 sm:py-4 md:py-6 text-sm sm:text-base md:text-lg lg:text-xl font-extrabold text-black rounded-full bg-gradient-to-r from-[#f3aa01] to-[#ffcf40] shadow-[0_0_30px_#f3aa01] hover:shadow-[0_0_50px_#f3aa01] hover:scale-110 transition-all duration-500 transform relative overflow-hidden">
-                        <span className="relative z-10">BARCHA TURNIRLARNI KO'RISH</span>
-                        <span className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 rounded-full transition-opacity duration-300"></span>
-                    </button>
                 </div>
             </div>
         </section>

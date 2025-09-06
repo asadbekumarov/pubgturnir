@@ -193,8 +193,8 @@ const Achievements = () => {
                     ></div>
                 ))}
                 {/* Glowing horizontal lines */}
-                <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent top-1/3 animate-pulse"></div>
-                <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/3 animate-pulse delay-700"></div>
+                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent top-1/3 animate-pulse"></div> */}
+                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/3 animate-pulse delay-700"></div> */}
             </div>
 
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">

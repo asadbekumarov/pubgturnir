@@ -11,7 +11,6 @@ import {
     Phone,
     MapPin,
     Users,
-    Trophy,
     GamepadIcon,
     Heart,
 } from "lucide-react"
@@ -29,7 +28,7 @@ const Footer = () => {
         { name: "Twitch", icon: Twitch, href: "#", color: "#9146ff" },
     ]
 
-    const quickLinks = ["Turnirlar", "Komandalar", "Natijalar", "Jadval", "Qoidalar", "FAQ"]
+    const quickLinks = ["Turnirlar", "Natijalar", "Jadval", "Qoidalar", "FAQ"]
 
     const tournamentTypes = [
         "World Championship",
@@ -73,8 +72,8 @@ const Footer = () => {
                     ></div>
                 ))}
                 {/* Glowing horizontal lines */}
-                <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent top-1/4 animate-pulse"></div>
-                <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/4 animate-pulse delay-700"></div>
+                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent top-1/4 animate-pulse"></div> */}
+                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/4 animate-pulse delay-700"></div> */}
             </div>
 
             {/* Main Footer Content */}
@@ -157,7 +156,7 @@ const Footer = () => {
                     </div>
 
                     {/* Tournament Categories */}
-                    <div
+                    {/* <div
                         className={`transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
                     >
                         <h4 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center">
@@ -174,7 +173,7 @@ const Footer = () => {
                                 </li>
                             ))}
                         </ul>
-                    </div>
+                    </div> */}
 
                     {/* Support & Contact */}
                     <div
@@ -223,7 +222,7 @@ const Footer = () => {
                         </div>
 
                         {/* Newsletter */}
-                        <div className="bg-gray-900/70 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-5 border border-gray-700/50 w-full max-w-sm">
+                        {/* <div className="bg-gray-900/70 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-5 border border-gray-700/50 w-full max-w-sm">
                             <h5 className="text-white font-bold mb-2 text-sm sm:text-base">Yangiliklar</h5>
                             <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4">Eng so'nggi turnir yangiliklarini oling</p>
                             <div className="flex flex-col xs:flex-row">
@@ -239,13 +238,13 @@ const Footer = () => {
                                     Obuna
                                 </button>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
 
             {/* Stats Bar */}
-            <div className="bg-black/60 border-t border-gray-800/60">
+            {/* <div className="bg-black/60 border-t border-gray-800/60">
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
                         {[
@@ -276,34 +275,16 @@ const Footer = () => {
                         ))}
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             {/* Bottom Bar */}
-            <div className="bg-black border-t" style={{ borderColor: "#f3aa01" }}>
+            <div>
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-5">
                     <div className="flex flex-col sm:flex-col md:flex-row justify-between items-center space-y-3 sm:space-y-4 md:space-y-0 text-xs sm:text-sm">
                         <div className="flex flex-col xs:flex-row items-center space-y-1 xs:space-y-0 xs:space-x-4 text-gray-400 text-center xs:text-left">
                             <span>© {currentYear} PUBG Tournament Platform.</span>
                             <span className="hidden xs:inline">•</span>
                             <span>Barcha huquqlar himoyalangan.</span>
-                        </div>
-
-                        <div className="flex items-center space-x-4 sm:space-x-6 text-gray-400">
-                            <a href="#" className="hover:text-white transition-colors duration-200">
-                                Maxfiylik
-                            </a>
-                            <a href="#" className="hover:text-white transition-colors duration-200">
-                                Shartlar
-                            </a>
-                            <a href="#" className="hover:text-white transition-colors duration-200">
-                                Cookies
-                            </a>
-                        </div>
-
-                        <div className="flex items-center space-x-1 sm:space-x-2 text-gray-400">
-                            <span>Ishlab chiqildi</span>
-                            <Heart className="h-3 w-3 sm:h-4 sm:w-4" style={{ color: "#f3aa01" }} />
-                            <span>bilan O'zbekistonda</span>
                         </div>
                     </div>
                 </div>
