@@ -21,23 +21,7 @@ interface Tournament {
 
 const Tournament = () => {
     const [activeTab, setActiveTab] = useState('upcoming');
-    const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef(null);
-
-    // Scroll qilganda animatsiya uchun
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
-            },
-            { threshold: 0.1 }
-        );
-
-        if (sectionRef.current) observer.observe(sectionRef.current);
-        return () => observer.disconnect();
-    }, []);
 
     const upcomingTournaments: Tournament[] = [
         {
@@ -165,10 +149,10 @@ const Tournament = () => {
     return (
         <section
             ref={sectionRef}
-            className="py-16 sm:py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-black via-gray-950 to-black"
+            className="py-16 sm:py-20 md:py-28 mx-auto px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-black via-gray-950 to-black"
         >
             {/* Animated Stars Background */}
-            <div className="absolute inset-0 z-0 overflow-hidden">
+            <div className="absolute inset-0 z-0 overflow-hidden mx-6">
                 {[...Array(20)].map((_, i) => (
                     <div
                         key={i}
@@ -183,16 +167,15 @@ const Tournament = () => {
                 ))}
             </div>
 
-            <div className="max-w-7xl mx-auto px-6 sm:px-4 lg:px-8 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Section Header */}
                 <div
-                    className={`text-center mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                        }`}
+                    className={`text-center mb-16 transition-all duration-1000 `}
                 >
-                    <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
+                    <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-black text-white leading-snug">
                         BARCHA
                         <span
-                            className="block bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(243,170,1,0.6)]"
+                            className="block bg-clip-text text-transparent"
                             style={{
                                 backgroundImage: "linear-gradient(90deg, #f3aa01, #ffcf40, #f3aa01)",
                             }}
@@ -200,14 +183,15 @@ const Tournament = () => {
                             TURNIRLAR
                         </span>
                     </h2>
-                    <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mt-6 leading-relaxed px-4">
+                    <p className="text-sm sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-xl sm:max-w-2xl mx-auto mt-3 sm:mt-4 leading-relaxed px-2 sm:px-4">
                         Eng zo'r turnirlar va professional musobaqalarda ishtirok eting.
                     </p>
+
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-center mb-12 sm:mb-16 px-2 sm:px-4">
-                    <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-1 sm:p-2 px-1 sm:px-3 flex flex-wrap sm:flex-nowrap gap-1 sm:gap-2 shadow-xl border border-gray-700 w-full max-w-4xl">
+                <div className="flex justify-center mb-6 sm:mb-10 md:mb-12">
+                    <div className="flex justify-center bg-gray-900/60 backdrop-blur-md rounded-full p-1 sm:p-2 flex-wrap gap-1 sm:gap-2 border border-gray-700 max-w-3xl">
                         {[
                             { key: 'upcoming', label: 'KELAYOTGAN', icon: Calendar, shortLabel: 'KELADI' },
                             { key: 'live', label: 'JONLI', icon: Play, shortLabel: 'JONLI' },
@@ -216,9 +200,9 @@ const Tournament = () => {
                             <button
                                 key={key}
                                 onClick={() => setActiveTab(key)}
-                                className={`flex-1 sm:flex-none px-3 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center space-x-1 sm:space-x-2 text-xs sm:text-sm md:text-base ${activeTab === key
-                                    ? "bg-[#f3aa01] text-black shadow-lg"
-                                    : "text-white hover:text-[#f3aa01] hover:bg-gray-800/50"
+                                className={`flex-1 sm:flex-none px-2 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 rounded-full font-semibold flex items-center justify-center space-x-1 sm:space-x-2 text-sm sm:text-sm md:text-base transition-all duration-300 transform ${activeTab === key
+                                    ? "bg-[#f3aa01] text-black scale-105"
+                                    : "text-white hover:text-[#f3aa01] hover:bg-gray-800/50 hover:scale-105"
                                     }`}
                             >
                                 <Icon className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -229,16 +213,16 @@ const Tournament = () => {
                     </div>
                 </div>
 
+
                 {/* Tournaments Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 xl:gap-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-4 md:gap-6 lg:gap-8 xl:gap-10 pt-5">
                     {getTournamentsByTab().map((tournament, index) => {
                         const delay = (index + 1) * 200;
                         const statusBadge = getStatusBadge(tournament.status);
                         return (
                             <div
                                 key={tournament.id}
-                                className={`relative bg-gray-900/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-700/50 shadow-lg ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                                    } ${tournament.featured ? 'sm:col-span-2 lg:col-span-1 xl:col-span-1 ring-1 ring-yellow-500/30' : ''}`}
+                                className={`relative bg-gray-900/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-700/50  ${tournament.featured ? 'sm:col-span-2 lg:col-span-1 xl:col-span-1 ring-1 ring-yellow-500/30' : ''}`}
                                 style={{
                                     animationDelay: `${delay}ms`,
                                 }}
@@ -255,7 +239,7 @@ const Tournament = () => {
 
                                     {/* Status Badge */}
                                     <div
-                                        className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-white font-bold text-sm flex items-center space-x-2 shadow-lg"
+                                        className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-white font-bold text-sm flex items-center space-x-2"
                                         style={{ backgroundColor: statusBadge.color }}
                                     >
                                         {tournament.status === 'LIVE' && (
@@ -266,7 +250,7 @@ const Tournament = () => {
 
                                     {/* Type Badge */}
                                     <div
-                                        className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-black font-bold text-sm flex items-center space-x-2 shadow-lg"
+                                        className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-black font-bold text-sm flex items-center space-x-2"
                                         style={{ backgroundColor: '#f3aa01' }}
                                     >
                                         {getTypeIcon(tournament.type)}
@@ -286,7 +270,7 @@ const Tournament = () => {
                                 <div className="p-6 space-y-6">
                                     {/* Title */}
                                     <div>
-                                        <h3 className="text-xl font-bold text-white leading-tight">
+                                        <h3 className="text-xl h-16 font-bold text-white leading-tight">
                                             {tournament.title}
                                         </h3>
                                     </div>
@@ -343,10 +327,16 @@ const Tournament = () => {
 
                                     {/* Action Button */}
                                     <div className="pt-2">
-                                        <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold py-3 px-6 rounded-xl text-base">
-                                            {tournament.status === 'LIVE' ? 'Jonli Ko\'rish' : tournament.status === 'UPCOMING' ? 'Qo\'shilish' : 'Natijalar'}
+                                        <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold py-1.5 px-4 rounded-xl text-sm
+        transform transition-transform duration-300 hover:scale-105">
+                                            {tournament.status === 'LIVE'
+                                                ? 'Jonli Ko\'rish'
+                                                : tournament.status === 'UPCOMING'
+                                                    ? 'Qo\'shilish'
+                                                    : 'Natijalar'}
                                         </button>
                                     </div>
+
                                 </div>
 
 
@@ -357,8 +347,7 @@ const Tournament = () => {
 
                 {/* CTA Button */}
                 <div
-                    className={`text-center mt-16 sm:mt-20 md:mt-24 transition-all duration-1000 delay-500 ${isVisible ? "opacity-100" : "opacity-0"
-                        }`}
+                    className={`text-center mt-16 sm:mt-20 md:mt-24 `}
                 >
                 </div>
             </div>

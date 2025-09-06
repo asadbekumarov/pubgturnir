@@ -6,22 +6,8 @@ import { Users, Star, Trophy, Zap, Shield, Target } from "lucide-react"
 
 const Teams = () => {
     const [activeCategory, setActiveCategory] = useState("top")
-    const [isVisible, setIsVisible] = useState(false)
     const sectionRef = useRef(null)
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true)
-                }
-            },
-            { threshold: 0.1 },
-        )
-
-        if (sectionRef.current) observer.observe(sectionRef.current)
-        return () => observer.disconnect()
-    }, [])
 
     const topTeams = [
         {
@@ -184,7 +170,7 @@ const Teams = () => {
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
                 {/* Header */}
                 <div
-                    className={`text-center mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+                    className={`text-center mb-16 transition-all duration-1000`}
                 >
                     <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
                         ENG KUCHLI
@@ -232,8 +218,7 @@ const Teams = () => {
                         return (
                             <div
                                 key={team.id}
-                                className={`relative bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-700/50 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl group ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                                    }`}
+                                className={`relative bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-700/50 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl group`}
                                 style={{
                                     animationDelay: `${delay}ms`,
                                     boxShadow: `0 0 20px ${team.bgColor}10`,
@@ -322,7 +307,7 @@ const Teams = () => {
 
                 {/* CTA Button */}
                 <div
-                    className={`text-center mt-20 transition-all duration-1000 delay-500 ${isVisible ? "opacity-100" : "opacity-0"}`}
+                    className={`text-center mt-20 transition-all duration-1000 delay-500`}
                 >
                     <button className="group w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-6 text-lg sm:text-xl font-extrabold text-black rounded-full bg-gradient-to-r from-[#f3aa01] to-[#ffcf40] shadow-[0_0_20px_#f3aa01] hover:shadow-[0_0_40px_#f3aa01] hover:scale-105 transition-all duration-300 transform relative overflow-hidden">
                         <span className="relative z-10">BARCHA KOMANDALARNI KO'RISH</span>
