@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState,  useRef } from "react"
 import { Trophy, Medal, Star, Crown, Target, Zap } from "lucide-react"
 
 interface Prize {
