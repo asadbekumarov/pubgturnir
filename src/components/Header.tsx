@@ -106,7 +106,7 @@ const Header = () => {
                 style={{ top: `${headerHeight}px` }}
             >
                 <div className="flex flex-col items-center justify-start pt-8 sm:pt-12 space-y-4 sm:space-y-6 px-4 sm:px-6 pb-8">
-                    {navigationLinks.map((link, index) => (
+                    {navigationLinks.map((link) => (
                         <a
                             key={link.name}
                             href={link.href}
