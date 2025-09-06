@@ -12,7 +12,6 @@ import {
     MapPin,
     Users,
     GamepadIcon,
-    // Heart,
 } from "lucide-react"
 
 const Footer = () => {
@@ -29,15 +28,6 @@ const Footer = () => {
     ]
 
     const quickLinks = ["Turnirlar", "Natijalar", "Jadval", "Qoidalar", "FAQ"]
-
-    // const tournamentTypes = [
-    //     "World Championship",
-    //     "Regional Cups",
-    //     "National Leagues",
-    //     "Online Qualifiers",
-    //     "Custom Matches",
-    //     "Scrimmages",
-    // ]
 
 
     // Scroll qilganda animatsiya
@@ -71,9 +61,6 @@ const Footer = () => {
                         }}
                     ></div>
                 ))}
-                {/* Glowing horizontal lines */}
-                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent top-1/4 animate-pulse"></div> */}
-                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/4 animate-pulse delay-700"></div> */}
             </div>
 
             {/* Main Footer Content */}
@@ -154,28 +141,6 @@ const Footer = () => {
                             ))}
                         </ul>
                     </div>
-
-                    {/* Tournament Categories */}
-                    {/* <div
-                        className={`transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-                    >
-                        <h4 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center">
-                            <Trophy className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3" style={{ color: "#f3aa01" }} />
-                            Turnir Turlari
-                        </h4>
-                        <ul className="space-y-2 sm:space-y-3">
-                            {tournamentTypes.map((tournament, index) => (
-                                <li key={index} className="group">
-                                    <a href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-all duration-200 flex items-center">
-                                        <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mr-2 sm:mr-3 bg-transparent group-hover:bg-[#f3aa01] transition-all duration-300"></span>
-                                        {tournament}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div> */}
-
-                    {/* Support & Contact */}
                     <div
                         className={`transition-all duration-1000 delay-400 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
                     >
@@ -220,64 +185,11 @@ const Footer = () => {
                                 </div>
                             </div>
                         </div>
-
-                        {/* Newsletter */}
-                        {/* <div className="bg-gray-900/70 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-5 border border-gray-700/50 w-full max-w-sm">
-                            <h5 className="text-white font-bold mb-2 text-sm sm:text-base">Yangiliklar</h5>
-                            <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4">Eng so'nggi turnir yangiliklarini oling</p>
-                            <div className="flex flex-col xs:flex-row">
-                                <input
-                                    type="email"
-                                    placeholder="Email manzilingiz"
-                                    className="flex-1 bg-black text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg xs:rounded-l-lg xs:rounded-r-none text-xs sm:text-sm border border-gray-600 focus:outline-none focus:border-[#f3aa01] transition-colors mb-2 xs:mb-0"
-                                />
-                                <button
-                                    className="px-4 sm:px-5 py-2 sm:py-3 rounded-lg xs:rounded-r-lg xs:rounded-l-none text-black font-bold text-xs sm:text-sm hover:shadow-lg hover:scale-105 transition-all duration-300"
-                                    style={{ backgroundColor: "#f3aa01" }}
-                                >
-                                    Obuna
-                                </button>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </div>
 
-            {/* Stats Bar */}
-            {/* <div className="bg-black/60 border-t border-gray-800/60">
-                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
-                        {[
-                            {
-                                value: "128+",
-                                label: "Faol Komandalar",
-                            },
-                            {
-                                value: "50+",
-                                label: "Turnirlar",
-                            },
-                            {
-                                value: "$500K+",
-                                label: "Mukofot Fondi",
-                            },
-                            {
-                                value: "10K+",
-                                label: "O'yinchilar",
-                            },
-                        ].map((stat, index) => (
-                            <div
-                                key={index}
-                                className={`transition-all duration-1000 delay-${(index + 5) * 100} ${isVisible ? "opacity-100" : "opacity-0"}`}
-                            >
-                                <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white mb-1 drop-shadow-lg">{stat.value}</div>
-                                <div className="text-gray-400 text-xs sm:text-sm">{stat.label}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div> */}
-
-            {/* Bottom Bar */}
+            
             <div>
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-5">
                     <div className="flex flex-col sm:flex-col md:flex-row justify-between items-center space-y-3 sm:space-y-4 md:space-y-0 text-xs sm:text-sm">
