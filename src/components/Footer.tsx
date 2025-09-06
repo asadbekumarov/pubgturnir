@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useRef } from "react"
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Users, GamepadIcon } from "lucide-react"
 
 const Footer = () => {

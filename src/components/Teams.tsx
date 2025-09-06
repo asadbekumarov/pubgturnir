@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { Users, Star, Trophy, Zap, Shield, Target } from "lucide-react"
 
 
