@@ -1,98 +1,25 @@
 "use client"
 
-import { useState,  useRef } from "react"
-import { Trophy, Medal, Star, Crown, Target, Zap } from "lucide-react"
-
-interface Prize {
-    rank: string
-    title: string
-    prize: string
-    description: string
-    icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>
-    bgColor: string
-    glow: string
-}
-
-interface Achievement {
-    title: string
-    description: string
-    icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>
-    count: string
-    label: string
-    color: string
-}
+import { useState, useRef } from "react"
+import { Prize, Achievement } from "../../types"
+import { prizes, achievements } from "../../data"
+import { achievementTabs } from "../../constants"
+import { getAnimationDelay, generateRandomPosition, generateRandomDelay, generateRandomDuration } from "../../utils"
 
 const Achievements = () => {
     const [activeTab, setActiveTab] = useState("prizes")
     const sectionRef = useRef(null)
 
-    const prizes = [
-        {
-            rank: "1",
-            title: "BIRINCHI O'RIN",
-            prize: "$25,000",
-            description: "Oltin medal va eternal trophy",
-            icon: Crown,
-            bgColor: "#f3aa01",
-            glow: "#f3aa01",
-        },
-        {
-            rank: "2",
-            title: "IKKINCHI O'RIN",
-            prize: "$15,000",
-            description: "Kumush medal va premium rewards",
-            icon: Trophy,
-            bgColor: "#c0c0c0",
-            glow: "#c0c0c0",
-        },
-        {
-            rank: "3",
-            title: "UCHINCHI O'RIN",
-            prize: "$10,000",
-            description: "Bronza medal va special items",
-            icon: Medal,
-            bgColor: "#cd7f32",
-            glow: "#cd7f32",
-        },
-    ]
-
-    const achievements = [
-        {
-            title: "HEADSHOT MASTER",
-            description: "100+ headshot kills",
-            icon: Target,
-            count: "2,547",
-            label: "Foydalanuvchilar oldi",
-            color: "#f3aa01",
-        },
-        {
-            title: "SURVIVAL KING",
-            description: "Top 10 da 50 marta",
-            icon: Star,
-            count: "1,892",
-            label: "Foydalanuvchilar oldi",
-            color: "#00d4ff",
-        },
-        {
-            title: "KILL STREAK",
-            description: "10+ kills bir o'yinda",
-            icon: Zap,
-            count: "758",
-            label: "Foydalanuvchilar oldi",
-            color: "#ff4081",
-        },
-    ]
-
     // Umumiy kartani qaytaruvchi funksiya
     const renderCard = (item: Prize | Achievement, index: number, type: string) => {
         const Icon = item.icon
-        const delay = (index + 1) * 300
+        const delay = getAnimationDelay(index, 300)
 
         return (
             <div
                 key={index}
                 className={`relative bg-gray-900/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 text-center border border-gray-700/50 flex flex-col h-full min-h-[320px] sm:min-h-[380px] md:min-h-[420px]`}
-                style={{ animationDelay: `${delay}ms` }}
+                style={{ animationDelay: delay }}
             >
                 {/* 3D hover light */}
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-transparent via-transparent to-[#ffffff10] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
@@ -169,21 +96,18 @@ const Achievements = () => {
                         key={i}
                         className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
-                            animationDuration: `${2 + Math.random() * 3}s`,
+                            ...generateRandomPosition(),
+                            animationDelay: generateRandomDelay(),
+                            animationDuration: generateRandomDuration(),
                         }}
                     ></div>
                 ))}
-
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Header */}
                 <div
                     className={`text-center mb-16 transition-all duration-1000 `}
-
                 >
                     <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-white leading-tight">
                         YUTUQ{" "}
@@ -200,29 +124,27 @@ const Achievements = () => {
                     <p className="text-xs xs:text-sm sm:text-base md:text-lg text-gray-400 max-w-xl sm:max-w-2xl mx-auto mt-3 sm:mt-5 leading-relaxed px-2 sm:px-4">
                         Eng yaxshi o'yinchilar uchun maxsus mukofotlar, eternal glory va global tan olinish.
                     </p>
-
                 </div>
 
                 {/* Tabs */}
                 <div className="flex justify-center mb-12 sm:mb-16">
                     <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-1 sm:p-2 px-1 sm:px-3 flex space-x-1 sm:space-x-2 border border-gray-700">
-                        {["prizes", "achievements"].map((tab) => (
+                        {achievementTabs.map((tab) => (
                             <button
-                                key={tab}
-                                onClick={() => setActiveTab(tab)}
+                                key={tab.key}
+                                onClick={() => setActiveTab(tab.key)}
                                 className={`px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full font-bold capitalize text-xs sm:text-sm md:text-base 
                     transition transform duration-300
-                    ${activeTab === tab
+                    ${activeTab === tab.key
                                         ? "bg-[#f3aa01] text-black scale-105 shadow-lg"
                                         : "text-white hover:text-[#f3aa01] hover:scale-105 hover:shadow-md"
                                     }`}
                             >
-                                {tab === "prizes" ? "MUKOFOTLAR" : "YUTUQLAR"}
+                                {tab.label}
                             </button>
                         ))}
                     </div>
                 </div>
-
 
                 {/* Cards Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6 md:gap-8 lg:gap-10">

@@ -2,117 +2,13 @@
 
 import { useState, useRef } from "react"
 import { Users, Star, Trophy, Zap, Shield, Target } from "lucide-react"
-
+import { topTeams, newTeams, localTeams } from "../../data"
+import { teamTabs } from "../../constants"
+import { getAnimationDelay, generateRandomPosition, generateRandomDelay, generateRandomDuration } from "../../utils"
 
 const Teams = () => {
     const [activeCategory, setActiveCategory] = useState("top")
     const sectionRef = useRef(null)
-
-
-    const topTeams = [
-        {
-            id: 1,
-            name: "THUNDER SQUAD",
-            country: "UZB",
-            rank: 1,
-            points: 2547,
-            wins: 43,
-            members: ["WARRIOR_UZ", "STORM_KING", "THUNDER_GOD", "SNIPER_PRO"],
-            logo: "⚡",
-            bgColor: "#f3aa01",
-            status: "CHAMPION",
-        },
-        {
-            id: 2,
-            name: "FIRE EAGLES",
-            country: "KOR",
-            rank: 2,
-            points: 2341,
-            wins: 38,
-            members: ["EAGLE_EYE", "FIRE_STORM", "WING_MASTER", "SKY_HUNTER"],
-            logo: "🔥",
-            bgColor: "#ff4444",
-            status: "PRO",
-        },
-        {
-            id: 3,
-            name: "SHADOW WOLVES",
-            country: "RUS",
-            rank: 3,
-            points: 2198,
-            wins: 35,
-            members: ["SHADOW_X", "WOLF_ALPHA", "DARK_BLADE", "NIGHT_OPS"],
-            logo: "🐺",
-            bgColor: "#8b5cf6",
-            status: "PRO",
-        },
-        {
-            id: 4,
-            name: "CYBER DRAGONS",
-            country: "CHN",
-            rank: 4,
-            points: 2045,
-            wins: 31,
-            members: ["CYBER_001", "DRAGON_FLY", "TECH_MASTER", "CODE_NINJA"],
-            logo: "🐲",
-            bgColor: "#10b981",
-            status: "RISING",
-        },
-    ]
-
-    const newTeams = [
-        {
-            id: 5,
-            name: "PHOENIX RISING",
-            country: "TUR",
-            rank: 12,
-            points: 1654,
-            wins: 18,
-            members: ["PHOENIX_01", "FIRE_BIRD", "ASH_WALKER", "FLAME_SOUL"],
-            logo: "🔥",
-            bgColor: "#f59e0b",
-            status: "ROOKIE",
-        },
-        {
-            id: 6,
-            name: "ICE BREAKERS",
-            country: "NOR",
-            rank: 15,
-            points: 1432,
-            wins: 14,
-            members: ["ICE_COLD", "FROST_BITE", "SNOW_WOLF", "ARCTIC_FOX"],
-            logo: "❄️",
-            bgColor: "#3b82f6",
-            status: "ROOKIE",
-        },
-    ]
-
-    const localTeams = [
-        {
-            id: 7,
-            name: "TASHKENT TIGERS",
-            country: "UZB",
-            rank: 8,
-            points: 1876,
-            wins: 24,
-            members: ["TIGER_UZ", "TASH_HERO", "SILK_ROAD", "REGISTAN"],
-            logo: "🐅",
-            bgColor: "#f3aa01",
-            status: "LOCAL",
-        },
-        {
-            id: 8,
-            name: "SAMARKAND LIONS",
-            country: "UZB",
-            rank: 11,
-            points: 1698,
-            wins: 19,
-            members: ["LION_SMK", "GOLDEN_DOME", "BLUE_CITY", "ANCIENT_WAR"],
-            logo: "🦁",
-            bgColor: "#f3aa01",
-            status: "LOCAL",
-        },
-    ]
 
     const getTeamsByCategory = () => {
         switch (activeCategory) {
@@ -156,10 +52,9 @@ const Teams = () => {
                         key={i}
                         className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
-                            animationDuration: `${2 + Math.random() * 3}s`,
+                            ...generateRandomPosition(),
+                            animationDelay: generateRandomDelay(),
+                            animationDuration: generateRandomDuration(),
                         }}
                     ></div>
                 ))}
@@ -191,11 +86,7 @@ const Teams = () => {
                 {/* Tabs */}
                 <div className="flex justify-center mb-16 px-4">
                     <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-1 px-2 flex flex-wrap justify-center space-x-1 shadow-xl border border-gray-700">
-                        {[
-                            { key: "top", label: "TOP KOMANDALAR", icon: Trophy },
-                            { key: "new", label: "YANGI", icon: Zap },
-                            { key: "local", label: "MAHALLIY", icon: Target },
-                        ].map(({ key, label, icon: Icon }) => (
+                        {teamTabs.map(({ key, label, icon: Icon }) => (
                             <button
                                 key={key}
                                 onClick={() => setActiveCategory(key)}
@@ -214,13 +105,13 @@ const Teams = () => {
                 {/* Teams Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
                     {getTeamsByCategory().map((team, index) => {
-                        const delay = (index + 1) * 200
+                        const delay = getAnimationDelay(index, 200)
                         return (
                             <div
                                 key={team.id}
                                 className={`relative bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-700/50 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl group`}
                                 style={{
-                                    animationDelay: `${delay}ms`,
+                                    animationDelay: delay,
                                     boxShadow: `0 0 20px ${team.bgColor}10`,
                                 }}
                                 onMouseEnter={(e) => {

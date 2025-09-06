@@ -1,6 +1,6 @@
-import HeroBG from "../assets/img/HeroBG.avif"
-const Hero = () => {
+import HeroBG from "../../assets/img/HeroBG.avif"
 
+const Hero = () => {
     return (
         <section className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
             {/* Background with overlay */}
@@ -10,7 +10,6 @@ const Hero = () => {
                     backgroundImage: `linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)), url(${HeroBG})`,
                 }}
             ></div>
-
 
             {/* Main Content */}
             <div className="relative z-10 text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,7 +33,6 @@ const Hero = () => {
                     <span className="text-[#f3aa01] font-semibold">champion</span> bo'ling
                 </p>
 
-
                 <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
                     <button className="w-full xs:w-auto px-4 sm:px-6 md:px-8 py-2 sm:py-4 text-sm sm:text-base font-bold rounded-full bg-[#f3aa01] text-black 
         transition transform hover:scale-105 hover:shadow-lg duration-300">
@@ -45,7 +43,6 @@ const Hero = () => {
                         BATAFSIL
                     </button>
                 </div>
-
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 pt-6 sm:pt-8 md:pt-10">
                     {[

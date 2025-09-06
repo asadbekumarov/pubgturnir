@@ -1,123 +1,12 @@
-
 import { useState, useRef } from 'react';
 import { Calendar, Clock, Users, DollarSign, MapPin, Play, Trophy, Star } from 'lucide-react';
+import { upcomingTournaments, liveTournaments, completedTournaments } from '../../data';
+import { tournamentTabs } from '../../constants';
+import { getStatusBadge, getAnimationDelay, generateRandomPosition, generateRandomDelay, generateRandomDuration } from '../../utils';
 
-interface Tournament {
-    id: number
-    title: string
-    date: string
-    time: string
-    location: string
-    prizePool: string
-    teams: number
-    participants: number
-    status: string
-    image: string
-    type: string
-    featured: boolean
-    viewers?: string
-    winner?: string
-}
-
-const Tournament = () => {
+const TournamentSection = () => {
     const [activeTab, setActiveTab] = useState('upcoming');
     const sectionRef = useRef(null);
-
-    const upcomingTournaments: Tournament[] = [
-        {
-            id: 1,
-            title: 'PUBG WORLD CHAMPIONSHIP 2024',
-            date: '15 Dekabr 2024',
-            time: '18:00',
-            location: 'Tashkent, O\'zbekiston',
-            prizePool: '$100,000',
-            teams: 128,
-            participants: 512,
-            status: 'REGISTRATION_OPEN',
-            image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            type: 'MAJOR',
-            featured: true
-        },
-        {
-            id: 2,
-            title: 'ASIAN CUP QUALIFIER',
-            date: '28 Dekabr 2024',
-            time: '20:00',
-            location: 'Online',
-            prizePool: '$25,000',
-            teams: 64,
-            participants: 256,
-            status: 'REGISTRATION_OPEN',
-            image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            type: 'QUALIFIER',
-            featured: false
-        },
-        {
-            id: 3,
-            title: 'UZBEKISTAN NATIONAL CUP',
-            date: '5 Yanvar 2025',
-            time: '19:00',
-            location: 'Samarkand, O\'zbekiston',
-            prizePool: '$15,000',
-            teams: 32,
-            participants: 128,
-            status: 'COMING_SOON',
-            image: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            type: 'NATIONAL',
-            featured: false
-        }
-    ];
-
-    const liveTournaments: Tournament[] = [
-        {
-            id: 4,
-            title: 'WINTER SHOWDOWN',
-            date: 'JONLI',
-            time: 'Match 3/5',
-            location: 'Erangel',
-            prizePool: '$50,000',
-            teams: 16,
-            participants: 64,
-            status: 'LIVE',
-            image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            type: 'LIVE',
-            featured: true,
-            viewers: '45.2K'
-        }
-    ];
-
-    const completedTournaments: Tournament[] = [
-        {
-            id: 5,
-            title: 'AUTUMN CHAMPIONSHIP',
-            date: '15 Noyabr 2024',
-            time: 'Tugallangan',
-            location: 'Dubai, UAE',
-            prizePool: '$75,000',
-            teams: 64,
-            participants: 256,
-            status: 'COMPLETED',
-            image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            type: 'MAJOR',
-            featured: false,
-            winner: 'THUNDER SQUAD'
-        },
-        {
-            id: 6,
-            title: 'CENTRAL ASIA CUP',
-            date: '3 Noyabr 2024',
-            time: 'Tugallangan',
-            location: 'Tashkent, O\'zbekiston',
-            prizePool: '$30,000',
-            teams: 32,
-            participants: 128,
-            status: 'COMPLETED',
-            image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            type: 'REGIONAL',
-            featured: false,
-            winner: 'TASHKENT TIGERS'
-        }
-    ];
 
     const getTournamentsByTab = () => {
         switch (activeTab) {
@@ -126,16 +15,6 @@ const Tournament = () => {
             case 'completed': return completedTournaments;
             default: return upcomingTournaments;
         }
-    };
-
-    const getStatusBadge = (status: string) => {
-        const badges: Record<string, { text: string; color: string }> = {
-            'REGISTRATION_OPEN': { text: 'RO\'YXAT OCHIQ', color: '#10b981' },
-            'COMING_SOON': { text: 'TEZDA', color: '#f59e0b' },
-            'LIVE': { text: 'JONLI', color: '#ef4444' },
-            'COMPLETED': { text: 'TUGALLANGAN', color: '#6b7280' }
-        };
-        return badges[status] || badges['COMING_SOON'];
     };
 
     const getTypeIcon = (type: string) => {
@@ -157,10 +36,9 @@ const Tournament = () => {
                         key={i}
                         className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
-                            animationDuration: `${2 + Math.random() * 3}s`,
+                            ...generateRandomPosition(),
+                            animationDelay: generateRandomDelay(),
+                            animationDuration: generateRandomDuration(),
                         }}
                     ></div>
                 ))}
@@ -185,17 +63,12 @@ const Tournament = () => {
                     <p className="text-sm sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-xl sm:max-w-2xl mx-auto mt-3 sm:mt-4 leading-relaxed px-2 sm:px-4">
                         Eng zo'r turnirlar va professional musobaqalarda ishtirok eting.
                     </p>
-
                 </div>
 
                 {/* Tabs */}
                 <div className="flex justify-center mb-6 sm:mb-10 md:mb-12">
                     <div className="flex justify-center bg-gray-900/60 backdrop-blur-md rounded-full p-1 sm:p-2 flex-wrap gap-1 sm:gap-2 border border-gray-700 max-w-3xl">
-                        {[
-                            { key: 'upcoming', label: 'KELAYOTGAN', icon: Calendar, shortLabel: 'KELADI' },
-                            { key: 'live', label: 'JONLI', icon: Play, shortLabel: 'JONLI' },
-                            { key: 'completed', label: 'TUGALLANGAN', icon: Trophy, shortLabel: 'TUGAL' },
-                        ].map(({ key, label, icon: Icon, shortLabel }) => (
+                        {tournamentTabs.map(({ key, label, icon: Icon, shortLabel }) => (
                             <button
                                 key={key}
                                 onClick={() => setActiveTab(key)}
@@ -212,21 +85,19 @@ const Tournament = () => {
                     </div>
                 </div>
 
-
                 {/* Tournaments Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-4 md:gap-6 lg:gap-8 xl:gap-10 pt-5">
                     {getTournamentsByTab().map((tournament, index) => {
-                        const delay = (index + 1) * 200;
+                        const delay = getAnimationDelay(index, 200);
                         const statusBadge = getStatusBadge(tournament.status);
                         return (
                             <div
                                 key={tournament.id}
                                 className={`relative bg-gray-900/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-700/50  ${tournament.featured ? 'sm:col-span-2 lg:col-span-1 xl:col-span-1 ring-1 ring-yellow-500/30' : ''}`}
                                 style={{
-                                    animationDelay: `${delay}ms`,
+                                    animationDelay: delay,
                                 }}
                             >
-
                                 {/* Image */}
                                 <div className="relative h-48 sm:h-56 overflow-hidden">
                                     <img
@@ -330,28 +201,19 @@ const Tournament = () => {
         transform transition-transform duration-300 hover:scale-105">
                                             {tournament.status === 'LIVE'
                                                 ? 'Jonli Ko\'rish'
-                                                : tournament.status === 'UPCOMING'
+                                                : tournament.status === 'REGISTRATION_OPEN'
                                                     ? 'Qo\'shilish'
                                                     : 'Natijalar'}
                                         </button>
                                     </div>
-
                                 </div>
-
-
                             </div>
                         );
                     })}
-                </div>
-
-                {/* CTA Button */}
-                <div
-                    className={`text-center mt-16 sm:mt-20 md:mt-24 `}
-                >
                 </div>
             </div>
         </section>
     );
 };
 
-export default Tournament;
+export default TournamentSection;

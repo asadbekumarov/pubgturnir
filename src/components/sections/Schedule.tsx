@@ -1,84 +1,11 @@
 import React, { useState } from 'react';
 import { MapPin, Trophy, ChevronRight } from 'lucide-react';
-
-interface Match {
-    id: number;
-    time: string;
-    date: string;
-    teams: {
-        name: string;
-        logo: string;
-        score?: number;
-    }[];
-    status: 'upcoming' | 'live' | 'completed';
-    tournament: string;
-    map: string;
-    prize: string;
-}
+import { matches } from '../../data';
+import { dayOptions } from '../../constants';
+import { getAnimationDelay } from '../../utils';
 
 const Schedule: React.FC = () => {
     const [selectedDay, setSelectedDay] = useState<string>('today');
-
-    const days = [
-        { id: 'today', label: 'Bugun', date: '15 Yanvar' },
-        { id: 'tomorrow', label: 'Ertaga', date: '16 Yanvar' },
-        { id: 'week', label: 'Bu Hafta', date: '17-21 Yanvar' },
-    ];
-
-    const matches: Match[] = [
-        {
-            id: 1,
-            time: '18:00',
-            date: '15 Yanvar',
-            teams: [
-                { name: 'Team Alpha', logo: '/api/placeholder/40/40', score: 12 },
-                { name: 'Team Beta', logo: '/api/placeholder/40/40', score: 8 }
-            ],
-            status: 'completed',
-            tournament: 'PUBG Mobile Championship',
-            map: 'Erangel',
-            prize: '$50,000'
-        },
-        {
-            id: 2,
-            time: '20:30',
-            date: '15 Yanvar',
-            teams: [
-                { name: 'Team Gamma', logo: '/api/placeholder/40/40' },
-                { name: 'Team Delta', logo: '/api/placeholder/40/40' }
-            ],
-            status: 'live',
-            tournament: 'PUBG Mobile Championship',
-            map: 'Sanhok',
-            prize: '$50,000'
-        },
-        {
-            id: 3,
-            time: '22:00',
-            date: '15 Yanvar',
-            teams: [
-                { name: 'Team Echo', logo: '/api/placeholder/40/40' },
-                { name: 'Team Foxtrot', logo: '/api/placeholder/40/40' }
-            ],
-            status: 'upcoming',
-            tournament: 'PUBG Mobile Championship',
-            map: 'Miramar',
-            prize: '$50,000'
-        },
-        {
-            id: 4,
-            time: '19:00',
-            date: '16 Yanvar',
-            teams: [
-                { name: 'Team Golf', logo: '/api/placeholder/40/40' },
-                { name: 'Team Hotel', logo: '/api/placeholder/40/40' }
-            ],
-            status: 'upcoming',
-            tournament: 'PUBG Mobile Championship',
-            map: 'Vikendi',
-            prize: '$50,000'
-        }
-    ];
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -128,7 +55,7 @@ const Schedule: React.FC = () => {
                 {/* Day Selector */}
                 <div className="flex justify-center mb-8">
                     <div className="bg-gray-800 rounded-xl p-2 flex space-x-2">
-                        {days.map((day) => (
+                        {dayOptions.map((day) => (
                             <button
                                 key={day.id}
                                 onClick={() => setSelectedDay(day.id)}
@@ -150,7 +77,7 @@ const Schedule: React.FC = () => {
                             key={match.id}
                             className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-[#f3aa01]/50 transition-all duration-300 group"
                             style={{
-                                animationDelay: `${index * 100}ms`,
+                                animationDelay: getAnimationDelay(index, 100),
                             }}
                         >
                             <div className="flex items-center justify-between">

@@ -1,24 +1,12 @@
 "use client"
 
 import { useRef } from "react"
-import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Users, GamepadIcon } from "lucide-react"
+
+import { Mail, Phone, MapPin, Users, GamepadIcon } from "lucide-react"
+import { socialLinks, quickLinks } from "../../constants"
 
 const Footer = () => {
     const footerRef = useRef<HTMLElement | null>(null)
-
-    const socialLinks = [
-        { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/", color: "#1877f2" },
-        { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/", color: "#e4405f" },
-        { name: "YouTube", icon: Youtube, href: "https://www.youtube.com/", color: "#ff0000" },
-    ]
-
-    const quickLinks = [
-        { label: "Turnirlar", href: "#" },
-        { label: "Natijalar", href: "#" },
-        { label: "Jadval", href: "#" },
-        { label: "Qoidalar", href: "#" },
-        { label: "FAQ", href: "#" },
-    ]
 
     return (
         <footer ref={footerRef} className="relative overflow-hidden bg-gradient-to-b from-gray-950 to-black px-4">
