@@ -151,7 +151,6 @@ const Tournament = () => {
             ref={sectionRef}
             className="py-16 sm:py-20 md:py-28 mx-auto px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-black via-gray-950 to-black"
         >
-            {/* Animated Stars Background */}
             <div className="absolute inset-0 z-0 overflow-hidden mx-6">
                 {[...Array(20)].map((_, i) => (
                     <div
