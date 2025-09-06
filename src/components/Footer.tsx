@@ -17,7 +17,7 @@ import {
 const Footer = () => {
     const [isVisible, setIsVisible] = useState(false)
     const footerRef = useRef(null)
-    const currentYear = new Date().getFullYear()
+    // const currentYear = new Date().getFullYear()
 
     const socialLinks = [
         { name: "Facebook", icon: Facebook, href: "#", color: "#1877f2" },
