@@ -181,12 +181,9 @@ const Tournament = () => {
                         }}
                     ></div>
                 ))}
-                {/* Glowing horizontal lines */}
-                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent top-1/3 animate-pulse"></div> */}
-                {/* <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/3 animate-pulse delay-700"></div> */}
             </div>
 
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
+            <div className="max-w-7xl mx-auto px-6 sm:px-4 lg:px-8 relative z-10">
                 {/* Section Header */}
                 <div
                     className={`text-center mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -209,57 +206,56 @@ const Tournament = () => {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-center mb-16 px-4">
-                    <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-2 px-3 flex space-x-2 shadow-xl border border-gray-700">
+                <div className="flex justify-center mb-12 sm:mb-16 px-2 sm:px-4">
+                    <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-1 sm:p-2 px-1 sm:px-3 flex flex-wrap sm:flex-nowrap gap-1 sm:gap-2 shadow-xl border border-gray-700 w-full max-w-4xl">
                         {[
-                            { key: 'upcoming', label: 'KELAYOTGAN', icon: Calendar },
-                            { key: 'live', label: 'JONLI', icon: Play },
-                            { key: 'completed', label: 'TUGALLANGAN', icon: Trophy },
-                        ].map(({ key, label, icon: Icon }) => (
+                            { key: 'upcoming', label: 'KELAYOTGAN', icon: Calendar, shortLabel: 'KELADI' },
+                            { key: 'live', label: 'JONLI', icon: Play, shortLabel: 'JONLI' },
+                            { key: 'completed', label: 'TUGALLANGAN', icon: Trophy, shortLabel: 'TUGAL' },
+                        ].map(({ key, label, icon: Icon, shortLabel }) => (
                             <button
                                 key={key}
                                 onClick={() => setActiveTab(key)}
-                                className={`px-6 sm:px-8 py-3 rounded-full font-bold transition-all duration-500 flex items-center space-x-2 text-sm sm:text-base ${activeTab === key
-                                    ? "bg-[#f3aa01] text-black shadow-[0_0_30px_#f3aa01] scale-105"
-                                    : "text-white hover:text-[#f3aa01] hover:scale-105"
+                                className={`flex-1 sm:flex-none px-3 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center space-x-1 sm:space-x-2 text-xs sm:text-sm md:text-base ${activeTab === key
+                                    ? "bg-[#f3aa01] text-black shadow-lg"
+                                    : "text-white hover:text-[#f3aa01] hover:bg-gray-800/50"
                                     }`}
                             >
-                                <Icon className="h-4 w-4" />
-                                <span>{label}</span>
+                                <Icon className="h-3 w-3 sm:h-4 sm:w-4" />
+                                <span className="hidden xs:inline sm:inline">{label}</span>
+                                <span className="xs:hidden sm:hidden">{shortLabel}</span>
                             </button>
                         ))}
                     </div>
                 </div>
 
                 {/* Tournaments Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 xl:gap-10">
                     {getTournamentsByTab().map((tournament, index) => {
-                        const delay = (index + 1) * 300;
+                        const delay = (index + 1) * 200;
                         const statusBadge = getStatusBadge(tournament.status);
                         return (
                             <div
                                 key={tournament.id}
-                                className={`relative bg-gray-900/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-gray-700/50 transform transition-all duration-700 hover:scale-105 hover:shadow-2xl group ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                                    } ${tournament.featured ? 'lg:col-span-2 xl:col-span-1' : ''}`}
+                                className={`relative bg-gray-900/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-700/50 shadow-lg ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                                    } ${tournament.featured ? 'sm:col-span-2 lg:col-span-1 xl:col-span-1 ring-1 ring-yellow-500/30' : ''}`}
                                 style={{
                                     animationDelay: `${delay}ms`,
                                 }}
                             >
-                                {/* 3D Light Overlay */}
-                                <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-transparent via-transparent to-white/10 opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"></div>
 
                                 {/* Image */}
-                                <div className="relative h-56 overflow-hidden">
+                                <div className="relative h-48 sm:h-56 overflow-hidden">
                                     <img
                                         src={tournament.image}
                                         alt={tournament.title}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        className="w-full h-full object-cover"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
 
                                     {/* Status Badge */}
                                     <div
-                                        className="absolute top-4 left-4 px-4 py-1.5 rounded-full text-white font-bold text-sm flex items-center space-x-2"
+                                        className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-white font-bold text-sm flex items-center space-x-2 shadow-lg"
                                         style={{ backgroundColor: statusBadge.color }}
                                     >
                                         {tournament.status === 'LIVE' && (
@@ -270,7 +266,7 @@ const Tournament = () => {
 
                                     {/* Type Badge */}
                                     <div
-                                        className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-black font-bold text-sm flex items-center space-x-2"
+                                        className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-black font-bold text-sm flex items-center space-x-2 shadow-lg"
                                         style={{ backgroundColor: '#f3aa01' }}
                                     >
                                         {getTypeIcon(tournament.type)}
@@ -279,66 +275,78 @@ const Tournament = () => {
 
                                     {/* Viewers */}
                                     {tournament.viewers && (
-                                        <div className="absolute bottom-4 right-4 bg-black bg-opacity-60 px-3 py-1.5 rounded-lg text-white text-sm flex items-center space-x-1">
-                                            <Play className="h-4 w-4" />
-                                            <span>{tournament.viewers}</span>
+                                        <div className="absolute bottom-4 right-4 bg-black/80 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white text-sm flex items-center space-x-2 border border-gray-600/50">
+                                            <Play className="h-4 w-4 text-red-400" />
+                                            <span className="font-semibold">{tournament.viewers}</span>
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Content */}
-                                <div className="p-8">
-                                    <h3 className="text-2xl font-bold h-16 text-white mb-4 group-hover:text-yellow-300 transition-colors duration-200">
-                                        {tournament.title}
-                                    </h3>
+                                <div className="p-6 space-y-6">
+                                    {/* Title */}
+                                    <div>
+                                        <h3 className="text-xl font-bold text-white leading-tight">
+                                            {tournament.title}
+                                        </h3>
+                                    </div>
 
                                     {/* Details */}
-                                    <div className="space-y-2 mb-6 text-gray-400">
-                                        <div className="flex items-center text-sm">
-                                            <Calendar className="h-4 w-4 mr-3" style={{ color: '#f3aa01' }} />
-                                            <span>{tournament.date}</span>
-                                            <Clock className="h-4 w-4 ml-5 mr-3" style={{ color: '#f3aa01' }} />
-                                            <span>{tournament.time}</span>
+                                    <div className="space-y-4">
+                                        <div className="flex items-center justify-between text-sm text-gray-300">
+                                            <div className="flex items-center space-x-2">
+                                                <Calendar className="h-4 w-4 text-yellow-500" />
+                                                <span>{tournament.date}</span>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <Clock className="h-4 w-4 text-yellow-500" />
+                                                <span>{tournament.time}</span>
+                                            </div>
                                         </div>
-                                        <div className="flex items-center text-sm">
-                                            <MapPin className="h-4 w-4 mr-3" style={{ color: '#f3aa01' }} />
+                                        <div className="flex items-center text-sm text-gray-300">
+                                            <MapPin className="h-4 w-4 mr-2 text-yellow-500" />
                                             <span>{tournament.location}</span>
                                         </div>
                                     </div>
 
                                     {/* Stats */}
-                                    <div className="grid grid-cols-3 gap-4 mb-6">
-                                        <div className="bg-gray-800/60 rounded-xl p-3 text-center">
-                                            <DollarSign className="h-5 w-5 mx-auto mb-1" style={{ color: '#f3aa01' }} />
-                                            <div className="text-sm font-bold text-white">{tournament.prizePool}</div>
+                                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="bg-gray-800/70 rounded-xl p-4 text-center border border-gray-700/50">
+                                            <DollarSign className="h-6 w-6 mx-auto mb-3 text-yellow-500" />
+                                            <div className="text-sm font-bold text-white mb-1">{tournament.prizePool}</div>
                                             <div className="text-xs text-gray-400">Mukofot</div>
                                         </div>
-                                        <div className="bg-gray-800/60 rounded-xl p-3 text-center">
-                                            <Users className="h-5 w-5 mx-auto mb-1" style={{ color: '#f3aa01' }} />
-                                            <div className="text-sm font-bold text-white">{tournament.teams}</div>
+                                        <div className="bg-gray-800/70 rounded-xl p-4 text-center border border-gray-700/50">
+                                            <Users className="h-6 w-6 mx-auto mb-3 text-yellow-500" />
+                                            <div className="text-sm font-bold text-white mb-1">{tournament.teams}</div>
                                             <div className="text-xs text-gray-400">Komanda</div>
                                         </div>
-                                        <div className="bg-gray-800/60 rounded-xl p-3 text-center">
-                                            <Star className="h-5 w-5 mx-auto mb-1" style={{ color: '#f3aa01' }} />
-                                            <div className="text-sm font-bold text-white">{tournament.participants}</div>
+                                        <div className="bg-gray-800/70 rounded-xl p-4 text-center border border-gray-700/50">
+                                            <Star className="h-6 w-6 mx-auto mb-3 text-yellow-500" />
+                                            <div className="text-sm font-bold text-white mb-1">{tournament.participants}</div>
                                             <div className="text-xs text-gray-400">Ishtirokchi</div>
                                         </div>
                                     </div>
 
                                     {/* Winner (for completed) */}
                                     {tournament.winner && (
-                                        <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/10 to-transparent rounded-xl border border-yellow-500/30">
-                                            <div className="flex items-center space-x-2">
-                                                <Trophy className="h-5 w-5" style={{ color: '#f3aa01' }} />
-                                                <span className="text-base font-bold text-yellow-300">G'olib: {tournament.winner}</span>
+                                        <div className="p-4 bg-gradient-to-r from-yellow-500/10 to-transparent rounded-xl border border-yellow-500/30">
+                                            <div className="flex items-center space-x-3">
+                                                <Trophy className="h-6 w-6 text-yellow-500" />
+                                                <div>
+                                                    <div className="text-sm text-gray-400">G'olib</div>
+                                                    <div className="text-base font-bold text-yellow-300">{tournament.winner}</div>
+                                                </div>
                                             </div>
                                         </div>
                                     )}
 
                                     {/* Action Button */}
-                                    <button className="w-full bg-gradient-to-r from-[#f3aa01] to-[#ff6b35] hover:from-[#ff6b35] hover:to-[#f3aa01] text-black font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                                        {tournament.status === 'LIVE' ? 'Jonli Ko\'rish' : tournament.status === 'UPCOMING' ? 'Qo\'shilish' : 'Natijalar'}
-                                    </button>
+                                    <div className="pt-2">
+                                        <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold py-3 px-6 rounded-xl text-base">
+                                            {tournament.status === 'LIVE' ? 'Jonli Ko\'rish' : tournament.status === 'UPCOMING' ? 'Qo\'shilish' : 'Natijalar'}
+                                        </button>
+                                    </div>
                                 </div>
 
 
