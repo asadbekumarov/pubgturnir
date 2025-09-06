@@ -92,7 +92,7 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-
+{/* <div></div> */}
                 {/* Mobile Menu - Improved mobile menu with better animations */}
                 <div
                     className={`lg:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0 overflow-hidden"
