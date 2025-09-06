@@ -29,7 +29,6 @@ const Footer = () => {
 
     const quickLinks = ["Turnirlar", "Natijalar", "Jadval", "Qoidalar", "FAQ"]
 
-
     // Scroll qilganda animatsiya
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -65,7 +64,7 @@ const Footer = () => {
 
             {/* Main Footer Content */}
             <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-12 sm:py-16 md:py-20">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
                     {/* Brand Section */}
                     <div
                         className={`transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
@@ -141,6 +140,8 @@ const Footer = () => {
                             ))}
                         </ul>
                     </div>
+
+                    {/* Support & Contact */}
                     <div
                         className={`transition-all duration-1000 delay-400 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
                     >
@@ -188,33 +189,6 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-
-            
-            <div>
-                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-5">
-                    <div className="flex flex-col sm:flex-col md:flex-row justify-between items-center space-y-3 sm:space-y-4 md:space-y-0 text-xs sm:text-sm">
-                        <div className="flex flex-col xs:flex-row items-center space-y-1 xs:space-y-0 xs:space-x-4 text-gray-400 text-center xs:text-left">
-                            <span>© {currentYear} PUBG Tournament Platform.</span>
-                            <span className="hidden xs:inline">•</span>
-                            <span>Barcha huquqlar himoyalangan.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Animated Glow Dots */}
-            <div
-                className="absolute top-10 left-10 w-1.5 h-1.5 rounded-full animate-ping"
-                style={{ backgroundColor: "#f3aa01" }}
-            ></div>
-            <div
-                className="absolute top-16 right-16 w-1 h-1 rounded-full animate-pulse"
-                style={{ backgroundColor: "#f3aa01" }}
-            ></div>
-            <div
-                className="absolute bottom-16 left-1/4 w-1.5 h-1.5 rounded-full animate-ping"
-                style={{ backgroundColor: "#f3aa01" }}
-            ></div>
         </footer>
     )
 }
