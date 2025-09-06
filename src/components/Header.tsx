@@ -47,9 +47,9 @@ const Header = () => {
             {/* HEADER */}
             <header
                 id="main-header"
-                className={`sticky top-0 left-0 w-full z-50 
-                    ${!isMobileMenuOpen ? "border-b-2 border-[#f3aa01]" : ""} 
-                    ${isScrolled ? "bg-black/80 backdrop-blur-md" : "bg-black/95"}`}
+                className={`sticky top-0 left-0 w-full z-50 border-b-2 
+                     ${isScrolled ? "bg-black/90 backdrop-blur-md" : "bg-black/95"} 
+                     ${isMobileMenuOpen ? "border-transparent" : "border-[#f3aa01]"}`}
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4 sm:py-3 md:py-3">
@@ -101,7 +101,7 @@ const Header = () => {
 
             {/* MOBILE MENU */}
             <div
-                className={` fixed left-0 right-0 z-40 md:hidden bg-black/95 backdrop-blur-sm transition-all duration-300 ease-in-out
+                className={` fixed top-0 left-0 right-0 z-40 md:hidden bg-black/95 backdrop-blur-sm transition-all duration-300 ease-in-out
                     ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"}`}
                 style={{ top: `${headerHeight}px` }}
             >
