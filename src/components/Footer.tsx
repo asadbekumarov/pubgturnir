@@ -12,7 +12,7 @@ import {
     MapPin,
     Users,
     GamepadIcon,
-    Heart,
+    // Heart,
 } from "lucide-react"
 
 const Footer = () => {
@@ -30,14 +30,14 @@ const Footer = () => {
 
     const quickLinks = ["Turnirlar", "Natijalar", "Jadval", "Qoidalar", "FAQ"]
 
-    const tournamentTypes = [
-        "World Championship",
-        "Regional Cups",
-        "National Leagues",
-        "Online Qualifiers",
-        "Custom Matches",
-        "Scrimmages",
-    ]
+    // const tournamentTypes = [
+    //     "World Championship",
+    //     "Regional Cups",
+    //     "National Leagues",
+    //     "Online Qualifiers",
+    //     "Custom Matches",
+    //     "Scrimmages",
+    // ]
 
 
     // Scroll qilganda animatsiya
