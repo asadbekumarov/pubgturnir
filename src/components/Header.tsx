@@ -52,7 +52,7 @@ const Header = () => {
                     ${isScrolled ? "bg-black/80 backdrop-blur-md" : "bg-black/95"}`}
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-2 sm:py-3 md:py-3">
+                    <div className="flex justify-between items-center py-4 sm:py-3 md:py-3">
                         {/* Logo */}
                         <a href="#" className="flex items-center group">
                             <div className="p-3 rounded-lg sm:rounded-xl bg-[#f3aa01]">
@@ -101,7 +101,7 @@ const Header = () => {
 
             {/* MOBILE MENU */}
             <div
-                className={`fixed left-0 right-0 z-40 md:hidden bg-black/95 backdrop-blur-sm transition-all duration-300 ease-in-out
+                className={` fixed left-0 right-0 z-40 md:hidden bg-black/95 backdrop-blur-sm transition-all duration-300 ease-in-out
                     ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"}`}
                 style={{ top: `${headerHeight}px` }}
             >
@@ -127,7 +127,6 @@ const Header = () => {
                             <span>Kirish</span>
                         </button>
 
-                        {/* Border bottom menu */}
                     </div>
                 </div>
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#f3aa01]"></div>
