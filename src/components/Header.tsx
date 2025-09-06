@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { Menu, X, User } from "lucide-react"
 
@@ -9,7 +8,6 @@ const Header = () => {
 
     const navigationLinks = [
         { name: "Natijalar", href: "#results" },
-        // { name: "Komandalar", href: "#teams" },
         { name: "Turnirlar", href: "#tournaments" },
         { name: "Jadval", href: "#table" },
     ]
@@ -56,7 +54,6 @@ const Header = () => {
                             </a>
                         </div>
 
-                        {/* Desktop Navigation - Better responsive hiding */}
                         <nav className="hidden lg:flex space-x-6 xl:space-x-8">
                             {navigationLinks.map((link) => (
                                 <a
@@ -70,7 +67,6 @@ const Header = () => {
                             ))}
                         </nav>
 
-                        {/* Desktop Login Button - Better responsive visibility */}
                         <div className="hidden lg:flex items-center">
                             <button className="bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-2 px-4 xl:px-6 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2">
                                 <User className="h-4 w-4" />
@@ -78,7 +74,6 @@ const Header = () => {
                             </button>
                         </div>
 
-                        {/* Mobile menu button - Improved mobile button */}
                         <div className="lg:hidden">
                             <button
                                 type="button"
@@ -92,13 +87,11 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Mobile Menu - Improved mobile menu with better animations */}
                 <div
-                    className={`lg:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+                    className={`lg:hidden fixed inset-0 top-[49px] z-40 transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
                         }`}
                 >
-                    <div className="px-4 pt-2 pb-4 space-y-1 bg-black/90 backdrop-blur-sm">
+                    <div className="px-4 pt-2 pb-4 text-center space-y-1 bg-black/95 backdrop-blur-sm h-96">
                         {navigationLinks.map((link, index) => (
                             <a
                                 key={link.name}
@@ -124,11 +117,8 @@ const Header = () => {
                     </div>
                 </div>
 
-                {/* Decorative gradient line */}
-                {/* <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#f3aa01] via-orange-500 to-red-500"></div> */}
             </header>
 
-            {/* <div className="h-[62px] md:h-[80px]"></div> */}
         </>
     )
 }
