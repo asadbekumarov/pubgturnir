@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react'
-import { Eye, EyeOff, Mail, Lock, LogIn } from 'lucide-react'
+import { Eye, EyeOff, LogIn } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLogin } from '../../hooks/useAuth'
 
