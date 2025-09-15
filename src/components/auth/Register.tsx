@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Eye, EyeOff, Lock, User, UserPlus, MapPin, Gamepad2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 
 type RegisterPayload = {
-    username: string
+    email: string
     password: string
     pubgId: string
     region: string
@@ -40,20 +40,7 @@ const Register: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-    // 📌 Regions API chaqirish (ixtiyoriy - agar API'dan ham olmoqchi bo'lsangiz)
-    const { data: regions = [], isLoading: isRegionsLoading } = useQuery({
-        queryKey: ['regions'],
-        queryFn: async () => {
-            const res = await axios.post(`${baseURL}/api/v1/auth/register`, {
-                headers: {
-                    "ngrok-skip-browser-warning": "69420",
-                },
-            })
-            console.log("Regions response:", res.data);
-
-            return res.data.data || res.data
-        },
-    })
+    // Regions are static for now; remove unused regions fetching
 
     // 📌 Register mutation
     const registerMutation = useMutation({
