@@ -1,15 +1,22 @@
 "use client"
 
 import { useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import { Menu, X, User } from "lucide-react"
 import { useScroll, useElementSize, useMobileMenu } from "../../hooks"
 import { navigationLinks } from "../../constants"
 
 const Header = () => {
     const headerRef = useRef<HTMLElement>(null)
+    const navigate = useNavigate()
     const isScrolled = useScroll()
     const { height: headerHeight } = useElementSize(headerRef)
     const { isOpen: isMobileMenuOpen, toggle: toggleMobileMenu, close: closeMobileMenu } = useMobileMenu()
+
+    const handleAuthNavigate = () => {
+        const hasExistingUser = !!localStorage.getItem("username") || !!localStorage.getItem("email")
+        navigate(hasExistingUser ? "/login" : "/register")
+    }
 
     return (
         <>
@@ -49,7 +56,7 @@ const Header = () => {
 
                         {/* Desktop Kirish button */}
                         <div className="hidden md:flex items-center">
-                            <button className="bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-1.5 px-3 sm:px-4 lg:px-6 rounded-full flex items-center space-x-1 sm:space-x-2">
+                            <button onClick={handleAuthNavigate} className="bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-1.5 px-3 sm:px-4 lg:px-6 rounded-full flex items-center space-x-1 sm:space-x-2">
                                 <User className="h-4 w-4" />
                                 <span className="hidden lg:inline">Kirish</span>
                             </button>
@@ -90,8 +97,8 @@ const Header = () => {
                     {/* Kirish button */}
                     <div className="w-full flex justify-center relative mt-4">
                         <button
+                            onClick={() => { closeMobileMenu(); handleAuthNavigate() }}
                             className="bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-2 px-6 rounded-full flex items-center justify-center space-x-2 text-sm sm:text-base"
-                            onClick={closeMobileMenu}
                         >
                             <User className="h-5 w-5" />
                             <span>Kirish</span>

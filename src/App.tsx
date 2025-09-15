@@ -21,6 +21,8 @@ function App() {
         <Tournament />
       </section>
 
+      {/* Auth section removed in favor of dedicated routes */}
+
       {/* Jadval section */}
       {/* <section id="schedule">
         <Schedule />

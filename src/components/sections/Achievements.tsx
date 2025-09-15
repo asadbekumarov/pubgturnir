@@ -18,7 +18,7 @@ const Achievements = () => {
         return (
             <div
                 key={index}
-                className={`relative bg-gray-900/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 text-center border border-gray-700/50 flex flex-col h-full min-h-[320px] sm:min-h-[380px] md:min-h-[420px]`}
+                className={`relative bg-black/70 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 text-center border border-[#f3aa01]/20 hover:border-[#f3aa01]/40 transition-colors duration-300 flex flex-col h-full min-h-[320px] sm:min-h-[380px] md:min-h-[420px]`}
                 style={{ animationDelay: delay }}
             >
                 {/* 3D hover light */}
@@ -37,9 +37,11 @@ const Achievements = () => {
                 {/* Icon */}
                 <div className="mb-4 sm:mb-6 flex justify-center">
                     <div
-                        className="p-3 sm:p-4 md:p-5 rounded-full"
+                        className="p-3 sm:p-4 md:p-5 rounded-full ring-1 ring-inset"
                         style={{
                             backgroundColor: type === "prize" ? `${(item as Prize).bgColor}20` : `${(item as Achievement).color}20`,
+                            boxShadow: `0 0 20px ${(type === "prize" ? (item as Prize).bgColor : (item as Achievement).color)}20`,
+                            borderColor: '#f3aa01',
                         }}
                     >
                         <Icon
@@ -128,7 +130,7 @@ const Achievements = () => {
 
                 {/* Tabs */}
                 <div className="flex justify-center mb-12 sm:mb-16">
-                    <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-1 sm:p-2 px-1 sm:px-3 flex space-x-1 sm:space-x-2 border border-gray-700">
+                    <div className="bg-gray-900/60 backdrop-blur-md rounded-full p-1 sm:p-2 px-1 sm:px-3 flex space-x-1 sm:space-x-2 border border-[#f3aa01]/20">
                         {achievementTabs.map((tab) => (
                             <button
                                 key={tab.key}
@@ -136,8 +138,8 @@ const Achievements = () => {
                                 className={`px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full font-bold capitalize text-xs sm:text-sm md:text-base 
                     transition transform duration-300
                     ${activeTab === tab.key
-                                        ? "bg-[#f3aa01] text-black scale-105 shadow-lg"
-                                        : "text-white hover:text-[#f3aa01] hover:scale-105 hover:shadow-md"
+                                        ? "bg-[#f3aa01] text-black scale-105 shadow-[0_0_20px_#f3aa01]"
+                                        : "text-white hover:text-[#f3aa01] hover:bg-gray-800/50 hover:scale-105"
                                     }`}
                             >
                                 {tab.label}

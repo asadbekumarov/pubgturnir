@@ -67,13 +67,13 @@ const TournamentSection = () => {
 
                 {/* Tabs */}
                 <div className="flex justify-center mb-6 sm:mb-10 md:mb-12">
-                    <div className="flex justify-center bg-gray-900/60 backdrop-blur-md rounded-full p-1 sm:p-2 flex-wrap gap-1 sm:gap-2 border border-gray-700 max-w-3xl">
+                    <div className="flex justify-center bg-gray-900/60 backdrop-blur-md rounded-full p-1 sm:p-2 flex-wrap gap-1 sm:gap-2 border border-[#f3aa01]/20 max-w-3xl">
                         {tournamentTabs.map(({ key, label, icon: Icon, shortLabel }) => (
                             <button
                                 key={key}
                                 onClick={() => setActiveTab(key)}
                                 className={`flex-1 sm:flex-none px-2 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 rounded-full font-semibold flex items-center justify-center space-x-1 sm:space-x-2 text-sm sm:text-sm md:text-base transition-all duration-300 transform ${activeTab === key
-                                    ? "bg-[#f3aa01] text-black scale-105"
+                                    ? "bg-[#f3aa01] text-black scale-105 shadow-[0_0_20px_#f3aa01]"
                                     : "text-white hover:text-[#f3aa01] hover:bg-gray-800/50 hover:scale-105"
                                     }`}
                             >
@@ -93,7 +93,7 @@ const TournamentSection = () => {
                         return (
                             <div
                                 key={tournament.id}
-                                className={`relative bg-gray-900/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-700/50  ${tournament.featured ? 'sm:col-span-2 lg:col-span-1 xl:col-span-1 ring-1 ring-yellow-500/30' : ''}`}
+                                className={`relative bg-black/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl overflow-hidden border border-[#f3aa01]/20 hover:border-[#f3aa01]/40 transition-colors duration-300  ${tournament.featured ? 'sm:col-span-2 lg:col-span-1 xl:col-span-1 ring-1 ring-yellow-500/30' : ''}`}
                                 style={{
                                     animationDelay: delay,
                                 }}
@@ -165,17 +165,17 @@ const TournamentSection = () => {
 
                                     {/* Stats */}
                                     <div className="grid grid-cols-3 gap-4">
-                                        <div className="bg-gray-800/70 rounded-xl p-4 text-center border border-gray-700/50">
+                                        <div className="bg-gray-900/70 rounded-xl p-4 text-center border border-[#f3aa01]/20">
                                             <DollarSign className="h-6 w-6 mx-auto mb-3 text-yellow-500" />
                                             <div className="text-sm font-bold text-white mb-1">{tournament.prizePool}</div>
                                             <div className="text-xs text-gray-400">Mukofot</div>
                                         </div>
-                                        <div className="bg-gray-800/70 rounded-xl p-4 text-center border border-gray-700/50">
+                                        <div className="bg-gray-900/70 rounded-xl p-4 text-center border border-[#f3aa01]/20">
                                             <Users className="h-6 w-6 mx-auto mb-3 text-yellow-500" />
                                             <div className="text-sm font-bold text-white mb-1">{tournament.teams}</div>
                                             <div className="text-xs text-gray-400">Komanda</div>
                                         </div>
-                                        <div className="bg-gray-800/70 rounded-xl p-4 text-center border border-gray-700/50">
+                                        <div className="bg-gray-900/70 rounded-xl p-4 text-center border border-[#f3aa01]/20">
                                             <Star className="h-6 w-6 mx-auto mb-3 text-yellow-500" />
                                             <div className="text-sm font-bold text-white mb-1">{tournament.participants}</div>
                                             <div className="text-xs text-gray-400">Ishtirokchi</div>
@@ -197,8 +197,7 @@ const TournamentSection = () => {
 
                                     {/* Action Button */}
                                     <div className="pt-2">
-                                        <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold py-1.5 px-4 rounded-xl text-sm
-        transform transition-transform duration-300 hover:scale-105">
+                                        <button className="w-full bg-[#f3aa01] hover:bg-[#da9902] text-black font-bold py-1.5 px-4 rounded-xl text-sm transform transition-transform duration-300 hover:scale-105 shadow-[0_0_10px_#f3aa01]/40">
                                             {tournament.status === 'LIVE'
                                                 ? 'Jonli Ko\'rish'
                                                 : tournament.status === 'REGISTRATION_OPEN'
