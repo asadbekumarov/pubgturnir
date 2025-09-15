@@ -36,15 +36,27 @@ const router = createBrowserRouter([
   { path: '/register', element: <Register /> },
 ])
 
-// React Query client
-const queryClient = new QueryClient()
+// React Query client with sensible production defaults
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
+      staleTime: 1000 * 30,
+      gcTime: 1000 * 60 * 5,
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+})
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      {/* Optional: debug qilish uchun */}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {import.meta.env.DEV ? <ReactQueryDevtools initialIsOpen={false} /> : null}
     </QueryClientProvider>
   </StrictMode>,
 )
