@@ -14,9 +14,14 @@ export type RegisterPayload = {
 
 export type AuthResponse = {
   token?: string;
+  data?: {
+    token?: string;
+  };
   user?: {
     id: string;
     email: string;
+    pubgId: string;
+    region: string;
   };
   message?: string;
 };

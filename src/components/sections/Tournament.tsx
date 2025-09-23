@@ -4,7 +4,7 @@ import { upcomingTournaments, liveTournaments, completedTournaments } from '../.
 import { tournamentTabs } from '../../constants';
 import { getStatusBadge, getAnimationDelay, generateRandomPosition, generateRandomDelay, generateRandomDuration } from '../../utils';
 
-const TournamentSection = () => {
+const Tournament = () => {
     const [activeTab, setActiveTab] = useState('upcoming');
     const sectionRef = useRef(null);
 
@@ -215,4 +215,4 @@ const TournamentSection = () => {
     );
 };
 
-export default TournamentSection;
+export default Tournament;

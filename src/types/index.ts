@@ -1,3 +1,5 @@
+import React from "react";
+
 // Tournament related types
 export interface Tournament {
   id: number;

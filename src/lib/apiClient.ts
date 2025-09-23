@@ -3,6 +3,11 @@ import axios from "axios";
 // Base URL comes from env, fallback to empty string to allow relative paths in dev
 const baseURL = import.meta.env.VITE_API_URL || "";
 
+// Log the API URL for debugging (remove in production)
+if (import.meta.env.DEV) {
+  console.log("API Base URL:", baseURL || "Using relative paths");
+}
+
 export const apiClient = axios.create({
   baseURL,
   headers: {

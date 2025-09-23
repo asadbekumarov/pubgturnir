@@ -3,7 +3,7 @@
 import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { Menu, X, User } from "lucide-react"
-import { useScroll, useElementSize, useMobileMenu } from "../../hooks"
+import { useScroll, useElementSize, useMobileMenu, useAuth } from "../../hooks"
 import { navigationLinks } from "../../constants"
 
 const Header = () => {
@@ -12,10 +12,14 @@ const Header = () => {
     const isScrolled = useScroll()
     const { height: headerHeight } = useElementSize(headerRef)
     const { isOpen: isMobileMenuOpen, toggle: toggleMobileMenu, close: closeMobileMenu } = useMobileMenu()
+    const { user } = useAuth()
 
     const handleAuthNavigate = () => {
-        const hasExistingUser = !!localStorage.getItem("username") || !!localStorage.getItem("email")
-        navigate(hasExistingUser ? "/login" : "/register")
+        if (user) {
+            navigate("/dashboard/profile")
+        } else {
+            navigate("/login")
+        }
     }
 
     return (
@@ -31,7 +35,7 @@ const Header = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4 sm:py-3 md:py-3">
                         {/* Logo */}
-                        <a href="#" className="flex items-center group">
+                        <a href="/" className="flex items-center group">
                             <div className="p-3 rounded-lg sm:rounded-xl bg-[#f3aa01]">
                                 <span className="text-base sm:text-lg md:text-lg lg:text-xl font-bold text-black">PUBG</span>
                             </div>
@@ -54,11 +58,14 @@ const Header = () => {
                             ))}
                         </nav>
 
-                        {/* Desktop Kirish button */}
+                        {/* Desktop Kirish/Dashboard button */}
                         <div className="hidden md:flex items-center">
-                            <button onClick={handleAuthNavigate} className="bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-1.5 px-3 sm:px-4 lg:px-6 rounded-full flex items-center space-x-1 sm:space-x-2">
+                            <button
+                                onClick={handleAuthNavigate}
+                                className="bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-1.5 px-3 sm:px-4 lg:px-6 rounded-full flex items-center space-x-1 sm:space-x-2"
+                            >
                                 <User className="h-4 w-4" />
-                                <span className="hidden lg:inline">Kirish</span>
+                                <span className="hidden lg:inline">{user ? "Dashboard" : "Kirish"}</span>
                             </button>
                         </div>
 
@@ -78,7 +85,7 @@ const Header = () => {
 
             {/* MOBILE MENU */}
             <div
-                className={` fixed top-0 left-0 right-0 z-40 md:hidden bg-black/95 backdrop-blur-sm transition-all duration-300 ease-in-out
+                className={`fixed top-0 left-0 right-0 z-40 md:hidden bg-black/95 backdrop-blur-sm transition-all duration-300 ease-in-out
                     ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"}`}
                 style={{ top: `${headerHeight}px` }}
             >
@@ -94,14 +101,14 @@ const Header = () => {
                         </a>
                     ))}
 
-                    {/* Kirish button */}
+                    {/* Kirish/Dashboard button */}
                     <div className="w-full flex justify-center relative mt-4">
                         <button
                             onClick={() => { closeMobileMenu(); handleAuthNavigate() }}
                             className="bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-2 px-6 rounded-full flex items-center justify-center space-x-2 text-sm sm:text-base"
                         >
                             <User className="h-5 w-5" />
-                            <span>Kirish</span>
+                            <span>{user ? "Dashboard" : "Kirish"}</span>
                         </button>
                     </div>
                 </div>

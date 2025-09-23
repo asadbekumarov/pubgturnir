@@ -1,23 +1,19 @@
 
-import React, { useState } from 'react'
-import { Eye, EyeOff, LogIn } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useLogin } from '../../hooks/useAuth'
+import React, { useState } from "react"
+import { Eye, EyeOff, LogIn } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../../hooks"
+import apiClient from "../../lib/apiClient"
 
 const Login: React.FC = () => {
-    const [formData, setFormData] = useState({ email: '', password: '' })
+    const [formData, setFormData] = useState({ email: "", password: "" })
     const [errors, setErrors] = useState<{ [key: string]: string }>({})
     const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [serverError, setServerError] = useState<string | null>(null)
     const navigate = useNavigate()
 
-    const loginMutation = useLogin(
-        () => {
-            navigate("/")
-        },
-        (error: any) => {
-            console.error(error?.response?.data?.message || "Login xatosi ❌")
-        }
-    )
+    const { login } = useAuth() // AuthContext’dan login chaqiramiz
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -43,10 +39,37 @@ const Login: React.FC = () => {
         return Object.keys(newErrors).length === 0
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!validate()) return
-        loginMutation.mutate(formData)
+
+        setLoading(true)
+        setServerError(null)
+
+        try {
+            console.log("Attempting login with:", formData.email)
+            const res = await apiClient.post("/web/v1/auth/login", formData)
+            console.log("Login API response:", res.data)
+            const token = res.data?.data?.token || res.data?.token
+            const userData = res.data?.data?.user || res.data?.user
+
+            if (token) {
+                console.log("Token received, calling login function")
+                console.log("User data from response:", userData)
+                await login(token, userData) // AuthContext orqali userni olish va saqlash
+                navigate("/")
+            } else {
+                console.error("No token in response:", res.data)
+                setServerError("Token olinmadi ❌")
+            }
+        } catch (error: unknown) {
+            const errorMessage = error && typeof error === 'object' && 'response' in error
+                ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
+                : "Login xatosi ❌"
+            setServerError(errorMessage || "Login xatosi ❌")
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -60,7 +83,6 @@ const Login: React.FC = () => {
 
                 <div className="bg-black/70 backdrop-blur-md rounded-2xl shadow-xl border border-[#f3aa01]/20 p-6">
                     <form onSubmit={handleSubmit} className="space-y-4">
-
                         {/* Email */}
                         <div>
                             <label className="text-sm font-medium text-white block mb-1">Email</label>
@@ -80,7 +102,7 @@ const Login: React.FC = () => {
                             <label className="text-sm font-medium text-white block mb-1">Parol</label>
                             <div className="relative">
                                 <input
-                                    type={showPassword ? 'text' : 'password'}
+                                    type={showPassword ? "text" : "password"}
                                     name="password"
                                     value={formData.password}
                                     onChange={handleInputChange}
@@ -98,14 +120,17 @@ const Login: React.FC = () => {
                             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                         </div>
 
+                        {/* Server Error */}
+                        {serverError && <p className="text-red-500 text-sm">{serverError}</p>}
+
                         {/* Submit */}
                         <button
                             type="submit"
-                            disabled={loginMutation.isPending}
+                            disabled={loading}
                             className="w-full bg-[#f3aa01] hover:bg-[#da9902] text-black font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
                         >
                             <LogIn className="h-5 w-5" />
-                            {loginMutation.isPending ? "Kirilmoqda..." : "Kirish"}
+                            {loading ? "Kirilmoqda..." : "Kirish"}
                         </button>
                     </form>
 
@@ -124,3 +149,4 @@ const Login: React.FC = () => {
 }
 
 export default Login
+

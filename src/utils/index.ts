@@ -65,3 +65,6 @@ export const sortByRank = <T extends { rank: number }>(items: T[]): T[] => {
 export const sortByPoints = <T extends { points: number }>(items: T[]): T[] => {
   return [...items].sort((a, b) => b.points - a.points);
 };
+
+// Auth storage utilities
+export { authStorage } from "./authStorage";
