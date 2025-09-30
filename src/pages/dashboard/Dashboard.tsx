@@ -1,8 +1,75 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
-import { User, CreditCard, Shield, Edit3, Save, Crown, Settings, TrendingUp, Activity, Camera } from "lucide-react"
+import { useState, useEffect } from "react"
+import { useQuery } from "@tanstack/react-query";
+import apiClient from "../../lib/apiClient";
+
+import {
+    User,
+    CreditCard,
+    Shield,
+    Edit3,
+    Save,
+    Crown,
+    Settings,
+    TrendingUp,
+    Activity,
+    Camera,
+    CheckCircle,
+    XCircle,
+    Clock,
+    Eye,
+} from "lucide-react"
+
+// --- TYPES ---
+type Prize = {
+    id: string
+    place: number
+    prize: string
+}
+
+type Region = {
+    id: string
+    name: string
+    currentParticipants: number
+    maxParticipants: number
+}
+
+type Tournament = {
+    id: string
+    name: string
+    description: string
+    startTime: string
+    endTime?: string
+    participationFee?: number
+    regions?: Region[]
+    regionalPrizes?: Prize[]
+    nationalPrizes?: Prize[]
+}
+
+type Application = {
+    id: string
+    tournament: Tournament
+    status: "pending" | "accepted" | "rejected"
+    appliedAt: string
+    reviewedAt?: string
+    rejectionReason?: string | null
+}
+
+type ApiResponse = {
+    success: boolean
+    data?: {
+        items: Application[]
+        total_count: number
+        has_more: boolean
+        page: number
+        items_per_page: number
+        total_pages: number
+    }
+}
+
+const API_URL = import.meta.env.VITE_API_URL
 
 const Dashboard: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -13,6 +80,18 @@ const Dashboard: React.FC = () => {
     })
 
     const [isEditing, setIsEditing] = useState(false)
+    const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null)
+
+    const { data, isLoading: loadingApps } = useQuery({
+        queryKey: ["applications"],
+        queryFn: async () => {
+            const res = await apiClient.get(`${API_URL}/web/v1/application`);
+            if (!res.data.success || !res.data.data?.items) throw new Error("Arizalar yuklanmadi");
+            return res.data.data.items;
+        },
+    });
+
+    const applications = data || [];
 
     const profile = {
         username: "asadbek_dev",
@@ -29,10 +108,7 @@ const Dashboard: React.FC = () => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }))
+        setFormData((prev) => ({ ...prev, [name]: value }))
     }
 
     const handleUpdateProfile = (e: React.FormEvent) => {
@@ -41,9 +117,36 @@ const Dashboard: React.FC = () => {
         alert("O'zgarishlar saqlandi ✅")
     }
 
+    const formatDate = (dateString?: string) => {
+        if (!dateString) return "Noma'lum"
+        return new Date(dateString).toLocaleString("uz-UZ", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        })
+    }
+
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case "accepted": return "text-green-400"
+            case "rejected": return "text-red-400"
+            default: return "text-yellow-400"
+        }
+    }
+
+    const getStatusIcon = (status: string) => {
+        switch (status) {
+            case "accepted": return <CheckCircle className="h-4 w-4 text-green-400" />
+            case "rejected": return <XCircle className="h-4 w-4 text-red-400" />
+            default: return <Clock className="h-4 w-4 text-yellow-400" />
+        }
+    }
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 p-4 lg:p-6">
-            {/* Profile Header - Responsive */}
+        <div className="min-h-screen p-4 lg:p-6" style={{ backgroundColor: '#0e131f' }}>
+
+            {/* Profile Header */}
             <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-6 py-6 lg:py-10 bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 mb-8 shadow-2xl">
                 <div className="relative">
                     <div className="w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-3xl flex items-center justify-center text-2xl lg:text-3xl font-bold text-black shadow-lg">
@@ -69,9 +172,9 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Quick Stats - Responsive Grid */}
+            {/* Quick Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+                {/* ... (sizning mavjud stat kartinlaringiz) ... */}
                 <div className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 backdrop-blur-sm border border-yellow-500/20 rounded-2xl p-4 lg:p-6 hover:scale-105 transition-all duration-300">
                     <div className="flex items-center justify-between">
                         <div>
@@ -125,7 +228,7 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-            {/* Account Information - Responsive */}
+            {/* Account Info */}
             <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 mb-8 shadow-2xl">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 lg:mb-8 space-y-4 sm:space-y-0">
                     <h2 className="text-xl lg:text-2xl font-bold text-white flex items-center gap-3">
@@ -141,6 +244,7 @@ const Dashboard: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-6">
+                    {/* ... (sizning mavjud account info kartinlaringiz) ... */}
                     <div className="bg-black/50 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 backdrop-blur-sm">
                         <div className="flex items-center gap-3 mb-3">
                             <User className="h-4 w-4 lg:h-5 lg:w-5 text-yellow-500" />
@@ -185,7 +289,7 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-            {/* Personal Information - Responsive */}
+            {/* Personal Info */}
             <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 mb-8 shadow-2xl">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 lg:mb-8 space-y-4 sm:space-y-0">
                     <h2 className="text-xl lg:text-2xl font-bold text-white flex items-center gap-3">
@@ -205,7 +309,6 @@ const Dashboard: React.FC = () => {
 
                 <div className="space-y-6 lg:space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                        {/* ... existing form fields with responsive classes ... */}
                         <div className="space-y-3">
                             <label className="text-sm font-semibold text-gray-300 flex items-center gap-2">
                                 <User className="h-4 w-4" />
@@ -218,8 +321,8 @@ const Dashboard: React.FC = () => {
                                 onChange={handleInputChange}
                                 disabled={!isEditing}
                                 className={`w-full px-4 lg:px-6 py-3 lg:py-4 rounded-2xl border transition-all duration-300 font-medium text-sm lg:text-base ${isEditing
-                                        ? "bg-black/50 text-white border-gray-700 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20"
-                                        : "bg-gray-800/50 text-gray-300 border-gray-800 cursor-not-allowed"
+                                    ? "bg-black/50 text-white border-gray-700 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20"
+                                    : "bg-gray-800/50 text-gray-300 border-gray-800 cursor-not-allowed"
                                     } outline-none backdrop-blur-sm`}
                             />
                         </div>
@@ -236,8 +339,8 @@ const Dashboard: React.FC = () => {
                                 onChange={handleInputChange}
                                 disabled={!isEditing}
                                 className={`w-full px-4 lg:px-6 py-3 lg:py-4 rounded-2xl border transition-all duration-300 font-medium text-sm lg:text-base ${isEditing
-                                        ? "bg-black/50 text-white border-gray-700 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20"
-                                        : "bg-gray-800/50 text-gray-300 border-gray-800 cursor-not-allowed"
+                                    ? "bg-black/50 text-white border-gray-700 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20"
+                                    : "bg-gray-800/50 text-gray-300 border-gray-800 cursor-not-allowed"
                                     } outline-none backdrop-blur-sm`}
                             />
                         </div>
@@ -254,8 +357,8 @@ const Dashboard: React.FC = () => {
                                 onChange={handleInputChange}
                                 disabled={!isEditing}
                                 className={`w-full px-4 lg:px-6 py-3 lg:py-4 rounded-2xl border transition-all duration-300 font-medium text-sm lg:text-base ${isEditing
-                                        ? "bg-black/50 text-white border-gray-700 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20"
-                                        : "bg-gray-800/50 text-gray-300 border-gray-800 cursor-not-allowed"
+                                    ? "bg-black/50 text-white border-gray-700 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20"
+                                    : "bg-gray-800/50 text-gray-300 border-gray-800 cursor-not-allowed"
                                     } outline-none backdrop-blur-sm`}
                             />
                         </div>
@@ -272,8 +375,8 @@ const Dashboard: React.FC = () => {
                                 onChange={handleInputChange}
                                 disabled={!isEditing}
                                 className={`w-full px-4 lg:px-6 py-3 lg:py-4 rounded-2xl border transition-all duration-300 font-medium text-sm lg:text-base ${isEditing
-                                        ? "bg-black/50 text-white border-gray-700 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20"
-                                        : "bg-gray-800/50 text-gray-300 border-gray-800 cursor-not-allowed"
+                                    ? "bg-black/50 text-white border-gray-700 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20"
+                                    : "bg-gray-800/50 text-gray-300 border-gray-800 cursor-not-allowed"
                                     } outline-none backdrop-blur-sm`}
                             />
                         </div>
@@ -293,8 +396,8 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-            {/* Tariff Management - Responsive */}
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 shadow-2xl">
+            {/* Tariff Management */}
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 mb-8 shadow-2xl">
                 <h2 className="text-xl lg:text-2xl font-bold text-white mb-6 lg:mb-8 flex items-center gap-3">
                     <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
                         <Settings className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
@@ -331,6 +434,82 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            {/* === YANGI BO'LIM: MENING ARIZALARIM === */}
+            {/* <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 shadow-2xl">
+                <h2 className="text-xl lg:text-2xl font-bold text-white mb-6 lg:mb-8 flex items-center gap-3">
+                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
+                        <Activity className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
+                    </div>
+                    Mening arizalarim
+                </h2>
+
+                {loadingApps ? (
+                    <p className="text-gray-400">Yuklanmoqda...</p>
+                ) : applications.length === 0 ? (
+                    <p className="text-gray-400">Sizda hali ariza yo‘q</p>
+                ) : (
+                    <div className="space-y-4">
+                        {applications.map((app) => (
+                            <div
+                                key={app.id}
+                                className="bg-black/40 border border-gray-800/50 rounded-2xl p-4 lg:p-6 hover:border-green-500/30 transition-all duration-300"
+                            >
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                    <div>
+                                        <h3 className="text-lg lg:text-xl font-bold text-white">
+                                            {app.tournament.name}
+                                        </h3>
+                                        <p className="text-gray-400 text-sm">{app.tournament.description}</p>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Ariza vaqti: {formatDate(app.appliedAt)}
+                                        </p>
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
+                                        <span className={`flex items-center gap-1 text-sm font-medium ${getStatusColor(app.status)}`}>
+                                            {getStatusIcon(app.status)}
+                                            {app.status === "pending" && "Ko‘rib chiqilmoqda"}
+                                            {app.status === "accepted" && "Qabul qilindi"}
+                                            {app.status === "rejected" && "Rad etildi"}
+                                        </span>
+                                        <button
+                                            onClick={() => setSelectedTournament(app.tournament)}
+                                            className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 text-black px-3 py-2 rounded-xl text-sm font-semibold hover:scale-105 transition-all duration-300"
+                                        >
+                                            <Eye className="h-4 w-4" />
+                                            Ko‘rish
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div> */}
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 shadow-2xl"> <h2 className="text-xl lg:text-2xl font-bold text-white mb-6 lg:mb-8 flex items-center gap-3"> <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg"> <Activity className="h-5 w-5 lg:h-6 lg:w-6 text-white" /> </div> Mening arizalarim </h2> {loadingApps ? (<p className="text-gray-400">⏳ Yuklanmoqda...</p>) : applications.length === 0 ? (<p className="text-gray-400">❌ Hozircha arizangiz yo‘q</p>) : (<div className="space-y-4"> {applications.map((app) => (<div key={app.id} className="bg-black/40 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 backdrop-blur-sm" > <div className="flex items-center justify-between mb-3"> <h3 className="text-lg font-bold text-white">{app.tournament.name}</h3> <div className="flex items-center gap-2"> {getStatusIcon(app.status)} <span className={`font-semibold ${getStatusColor(app.status)}`}> {app.status === "pending" ? "Kutilmoqda" : app.status === "accepted" ? "Qabul qilindi" : "Rad etildi"} </span> </div> </div> <p className="text-gray-400 text-sm">{app.tournament.description}</p> <div className="mt-3 text-xs text-gray-500"> <p>Ariza topshirilgan: {formatDate(app.appliedAt)}</p> {app.reviewedAt && <p>Ko‘rib chiqilgan: {formatDate(app.reviewedAt)}</p>} {app.rejectionReason && (<p className="text-red-400">Rad etish sababi: {app.rejectionReason}</p>)} </div> </div>))} </div>)} </div>
+            {/* Modal: Tournament Detail */}
+            {selectedTournament && (
+                <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+                    <div className="bg-gray-900 rounded-3xl p-6 lg:p-8 max-w-2xl w-full relative">
+                        <button
+                            onClick={() => setSelectedTournament(null)}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-white"
+                        >
+                            ✕
+                        </button>
+                        <h3 className="text-2xl font-bold text-white mb-4">{selectedTournament.name}</h3>
+                        <p className="text-gray-300 mb-4">{selectedTournament.description}</p>
+                        <p className="text-sm text-gray-400">Boshlanish: {formatDate(selectedTournament.startTime)}</p>
+                        {selectedTournament.endTime && (
+                            <p className="text-sm text-gray-400">Tugash: {formatDate(selectedTournament.endTime)}</p>
+                        )}
+                        {selectedTournament.participationFee && (
+                            <p className="text-sm text-gray-400">Ishtirok to‘lovi: {selectedTournament.participationFee} so‘m</p>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

@@ -1,43 +1,55 @@
-import React, { useState } from 'react';
-import { MapPin, Trophy, ChevronRight } from 'lucide-react';
-import { matches } from '../../data';
-import { dayOptions } from '../../constants';
-import { getAnimationDelay } from '../../utils';
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { MapPin, Trophy, ChevronRight } from "lucide-react";
+import apiClient from "../../lib/apiClient";
+import { dayOptions } from "../../constants";
+import { getAnimationDelay } from "../../utils";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+type Match = {
+    id: string;
+    date: string;
+    status: string;
+    teams: string[];
+};
 
 const Schedule: React.FC = () => {
-    const [selectedDay, setSelectedDay] = useState<string>('today');
+    const [selectedDay, setSelectedDay] = useState<string>("today");
+
+    const { data: matches, isLoading, error } = useQuery<Match[]>({
+        queryKey: ["matches", selectedDay],
+        queryFn: async () => {
+            const res = await apiClient.get(
+                `${API_URL}/web/v1/match?day=${selectedDay}`
+            );
+            return res.data.data.items;
+        },
+    });
 
     const getStatusColor = (status: string) => {
         switch (status) {
-            case 'live':
-                return 'text-red-500 bg-red-500/20';
-            case 'completed':
-                return 'text-green-500 bg-green-500/20';
-            case 'upcoming':
-                return 'text-blue-500 bg-blue-500/20';
+            case "live":
+                return "text-green-500";
+            case "completed":
+                return "text-gray-400";
             default:
-                return 'text-gray-500 bg-gray-500/20';
+                return "text-yellow-500";
         }
     };
 
     const getStatusText = (status: string) => {
         switch (status) {
-            case 'live':
-                return 'JONLI';
-            case 'completed':
-                return 'YAKUNLANGAN';
-            case 'upcoming':
-                return 'KUTILMOQDA';
+            case "live":
+                return "Jonli";
+            case "completed":
+                return "Yakunlandi";
             default:
-                return 'NOMA\'LUM';
+                return "Kutilmoqda";
         }
     };
 
-    const filteredMatches = matches.filter(match => {
-        if (selectedDay === 'today') return match.date === '15 Yanvar';
-        if (selectedDay === 'tomorrow') return match.date === '16 Yanvar';
-        return true;
-    });
+    const filteredMatches = matches || [];
 
     return (
         <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
@@ -60,8 +72,8 @@ const Schedule: React.FC = () => {
                                 key={day.id}
                                 onClick={() => setSelectedDay(day.id)}
                                 className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${selectedDay === day.id
-                                    ? 'bg-[#f3aa01] text-black'
-                                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                                        ? "bg-[#f3aa01] text-black"
+                                        : "text-gray-400 hover:text-white hover:bg-gray-700"
                                     }`}
                             >
                                 {day.label}
@@ -84,10 +96,16 @@ const Schedule: React.FC = () => {
                                 {/* Time and Status */}
                                 <div className="flex items-center space-x-4">
                                     <div className="text-center">
-                                        <div className="text-2xl font-bold text-white">{match.time}</div>
+                                        <div className="text-2xl font-bold text-white">
+                                            {match.time}
+                                        </div>
                                         <div className="text-sm text-gray-400">{match.date}</div>
                                     </div>
-                                    <div className={`px-3 py-1 rounded-full text-xs font-bold ${getStatusColor(match.status)}`}>
+                                    <div
+                                        className={`px-3 py-1 rounded-full text-xs font-bold ${getStatusColor(
+                                            match.status
+                                        )}`}
+                                    >
                                         {getStatusText(match.status)}
                                     </div>
                                 </div>
@@ -102,11 +120,15 @@ const Schedule: React.FC = () => {
                                                     alt={team.name}
                                                     className="w-12 h-12 rounded-full border-2 border-gray-600"
                                                 />
-                                                <div className="text-sm font-semibold text-white mt-2">{team.name}</div>
+                                                <div className="text-sm font-semibold text-white mt-2">
+                                                    {team.name}
+                                                </div>
                                             </div>
                                             {teamIndex === 0 && (
                                                 <div className="text-2xl font-bold text-white">
-                                                    {match.status === 'completed' ? `${team.score} - ${match.teams[1].score}` : 'VS'}
+                                                    {match.status === "completed"
+                                                        ? `${team.score} - ${match.teams[1].score}`
+                                                        : "VS"}
                                                 </div>
                                             )}
                                         </div>
@@ -115,7 +137,9 @@ const Schedule: React.FC = () => {
 
                                 {/* Tournament Info */}
                                 <div className="text-right">
-                                    <div className="text-lg font-semibold text-white mb-1">{match.tournament}</div>
+                                    <div className="text-lg font-semibold text-white mb-1">
+                                        {match.tournament}
+                                    </div>
                                     <div className="flex items-center space-x-4 text-sm text-gray-400">
                                         <div className="flex items-center space-x-1">
                                             <MapPin className="h-4 w-4" />
@@ -130,7 +154,11 @@ const Schedule: React.FC = () => {
 
                                 {/* Action Button */}
                                 <button className="bg-[#f3aa01] hover:bg-[#ff6b35] text-black font-bold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
-                                    <span>{match.status === 'live' ? 'Jonli Ko\'rish' : 'Batafsil'}</span>
+                                    <span>
+                                        {match.status === "live"
+                                            ? "Jonli Ko'rsish"
+                                            : "Batafsil"}
+                                    </span>
                                     <ChevronRight className="h-4 w-4" />
                                 </button>
                             </div>

@@ -1,27 +1,35 @@
 "use client"
 
-import { useState, useRef } from "react"
+import React, { useState, useRef } from "react"
+import { useQuery } from "@tanstack/react-query"
+import apiClient from "../../lib/apiClient"
 import { Users, Star, Trophy, Zap, Shield, Target } from "lucide-react"
 import { topTeams, newTeams, localTeams } from "../../data"
 import { teamTabs } from "../../constants"
 import { getAnimationDelay, generateRandomPosition, generateRandomDelay, generateRandomDuration } from "../../utils"
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+type Team = {
+    id: string;
+    name: string;
+    category: string;
+    status: string;
+};
+
 const Teams = () => {
     const [activeCategory, setActiveCategory] = useState("top")
     const sectionRef = useRef(null)
 
-    const getTeamsByCategory = () => {
-        switch (activeCategory) {
-            case "top":
-                return topTeams
-            case "new":
-                return newTeams
-            case "local":
-                return localTeams
-            default:
-                return topTeams
+    const { data: teams, isLoading, error } = useQuery<Team[]>({
+        queryKey: ["teams", activeCategory],
+        queryFn: async () => {
+            const res = await apiClient.get(`${API_URL}/web/v1/team?category=${activeCategory}`);
+            return res.data.data.items;
         }
-    }
+    });
+
+    const getTeamsByCategory = () => teams || [];
 
     const getStatusIcon = (status: string) => {
         switch (status) {

@@ -12,12 +12,15 @@ import Register from "./components/auth/Register"
 import Profile from "./pages/dashboard/Profile"
 import DashboardPage from "./pages/dashboard/Dashboard"
 import DashboardLayout from "./components/layout/DashboardLayout"
+import TournamentListPage from './components/sections/Tournament';
+import TournamentDetail from "./pages/tournamentID/tournamentID";
+import Participation from "./pages/participation/Participation"
 
 function App() {
   const location = useLocation()
 
   // qaysi sahifalarda header/footer ko‘rinmasin
-  const hiddenLayoutRoutes = ["/dashboard"]
+  const hiddenLayoutRoutes = ["/dashboard", "/login", "/register"]
   const shouldHideLayout = hiddenLayoutRoutes.some((path) =>
     location.pathname.startsWith(path)
   )
@@ -27,7 +30,6 @@ function App() {
       {!shouldHideLayout && <Header />}
 
       <Routes>
-        {/* Home Page */}
         <Route
           path="/"
           element={
@@ -39,17 +41,21 @@ function App() {
               <section id="tournaments">
                 <Tournament />
               </section>
+              <section>
+                <Participation />
+              </section>
             </>
           }
         />
 
-        {/* Auth Pages */}
+        {/* ✅ Yangi route */}
+        <Route path="/tournaments" element={<TournamentListPage />} />
+        <Route path="/tournaments/:id" element={<TournamentDetail />} />
+        <Route path="/participation" element={<Participation />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Dashboard with Sidebar */}
         <Route path="/dashboard" element={<DashboardLayout />}>
-          {/* default redirect */}
           <Route index element={<Navigate to="/dashboard/profile" replace />} />
           <Route path="profile" element={<Profile />} />
           <Route path="stats" element={<DashboardPage />} />

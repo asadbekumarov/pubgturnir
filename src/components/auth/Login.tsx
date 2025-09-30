@@ -1,19 +1,33 @@
-
 import React, { useState } from "react"
 import { Eye, EyeOff, LogIn } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "../../hooks"
 import apiClient from "../../lib/apiClient"
+import { useMutation } from "@tanstack/react-query"
+
+const API_URL = import.meta.env.VITE_API_URL
+import { useAuth } from './../../hooks/useAuthContext';
 
 const Login: React.FC = () => {
     const [formData, setFormData] = useState({ email: "", password: "" })
     const [errors, setErrors] = useState<{ [key: string]: string }>({})
     const [showPassword, setShowPassword] = useState(false)
-    const [loading, setLoading] = useState(false)
     const [serverError, setServerError] = useState<string | null>(null)
     const navigate = useNavigate()
+    const { login } = useAuth()
 
-    const { login } = useAuth() // AuthContext’dan login chaqiramiz
+    const mutation = useMutation({
+        mutationFn: async (data: typeof formData) => {
+            const res = await apiClient.post(`${API_URL}/web/v1/auth/login`, data)
+            return res.data
+        },
+        onSuccess: (data) => {
+            login(data.token)
+            navigate("/dashboard/profile")
+        },
+        onError: (error: any) => {
+            setServerError(error?.message || "Xatolik yuz berdi")
+        }
+    })
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -43,33 +57,7 @@ const Login: React.FC = () => {
         e.preventDefault()
         if (!validate()) return
 
-        setLoading(true)
-        setServerError(null)
-
-        try {
-            console.log("Attempting login with:", formData.email)
-            const res = await apiClient.post("/web/v1/auth/login", formData)
-            console.log("Login API response:", res.data)
-            const token = res.data?.data?.token || res.data?.token
-            const userData = res.data?.data?.user || res.data?.user
-
-            if (token) {
-                console.log("Token received, calling login function")
-                console.log("User data from response:", userData)
-                await login(token, userData) // AuthContext orqali userni olish va saqlash
-                navigate("/")
-            } else {
-                console.error("No token in response:", res.data)
-                setServerError("Token olinmadi ❌")
-            }
-        } catch (error: unknown) {
-            const errorMessage = error && typeof error === 'object' && 'response' in error
-                ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
-                : "Login xatosi ❌"
-            setServerError(errorMessage || "Login xatosi ❌")
-        } finally {
-            setLoading(false)
-        }
+        mutation.mutate(formData)
     }
 
     return (
@@ -126,11 +114,11 @@ const Login: React.FC = () => {
                         {/* Submit */}
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={mutation.isLoading}
                             className="w-full bg-[#f3aa01] hover:bg-[#da9902] text-black font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
                         >
                             <LogIn className="h-5 w-5" />
-                            {loading ? "Kirilmoqda..." : "Kirish"}
+                            {mutation.isLoading ? "Kirilmoqda..." : "Kirish"}
                         </button>
                     </form>
 

@@ -1,26 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Globe, Settings, MessageCircle, LogOut } from "lucide-react";
+import { Globe, Home } from "lucide-react";
 import { CgMenuRightAlt } from "react-icons/cg";
-// import siteLogo from "@/assets/siteLogo.png";
+import { useState } from "react";
 
 const Header = () => {
     const navigate = useNavigate();
-
-    const getUserInitials = () => {
-        return "CP"; // Hardcoded initials
-    };
+    const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
 
     return (
-        <header className="sticky top-0 z-10 bg-dark-custom border-b-2 border-dark-border-custom">
+        <header className="sticky top-0 z-50 bg-dark-custom border-b border-[#374151] border-dark-border-custom">
             <div className="h-[64px] py-[12px] px-4 flex items-center justify-between gap-2">
                 {/* Logo */}
                 <Link to="/" aria-current="page" className="inline-flex md:hidden">
                     <div className="flex items-center relative">
-                        {/* <img
-                            alt="CloudPlay Logo"
-                            className="w-[38px] h-[32px] mr-2"
-                            src={siteLogo}
-                        /> */}
                         <h2 className="text-[18px] font-bold text-white">
                             Cloud
                             <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
@@ -55,57 +47,62 @@ const Header = () => {
                 {/* Right Section */}
                 <div className="flex items-center gap-2">
                     <ul className="flex items-center gap-2">
-                        {/* Language */}
+                        {/* Home Button */}
                         <li>
-                            <button className="flex items-center gap-2 text-white text-sm px-3 py-2 rounded-lg bg-dark-2-custom">
-                                <Globe className="h-4 w-4" />
-                                Language
+                            <button
+                                onClick={() => navigate("/")}
+                                className="flex items-center gap-2 text-white text-sm px-3 py-2 rounded-lg bg-dark-2-custom hover:bg-dark-2-custom/80 transition-colors"
+                            >
+                                <Home className="h-4 w-4" />
+                                Home
                             </button>
                         </li>
 
-                        {/* Profile */}
-                        <li>
-                            <div className="relative">
-                                <button className="flex items-center gap-2 text-white text-sm px-3 py-2 rounded-lg bg-dark-2-custom">
-                                    <div className="h-8 w-8 bg-primary-custom rounded-full flex items-center justify-center">
-                                        <span className="text-white text-sm font-medium">
-                                            {getUserInitials()}
-                                        </span>
-                                    </div>
-                                    user@cloudplay.com
-                                </button>
-                                <div className="absolute right-0 mt-2 w-48 bg-dark-2-custom border border-dark-border-custom rounded-lg shadow-lg">
-                                    <Link to="/dashboard/settings">
-                                        <div className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-700 text-white">
-                                            <Settings className="h-4 w-4" />
-                                            Settings
-                                        </div>
-                                    </Link>
+                        {/* Language Dropdown */}
+                        <li className="relative">
+                            <button
+                                onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+                                className="flex items-center gap-2 text-white text-sm px-3 py-2 rounded-lg bg-dark-2-custom hover:bg-dark-2-custom/80 transition-colors"
+                            >
+                                <Globe className="h-4 w-4" />
+                                Language
+                            </button>
+
+                            {isLanguageMenuOpen && (
+                                <>
                                     <div
-                                        className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-700 text-white"
-                                        onClick={() =>
-                                            window.open("https://t.me/cloudplay_support2", "_blank")
-                                        }
-                                    >
-                                        <MessageCircle className="h-4 w-4" />
-                                        Telegram Support
+                                        className="fixed inset-0 z-10"
+                                        onClick={() => setIsLanguageMenuOpen(false)}
+                                    />
+                                    <div className="absolute right-0 mt-2 w-32 bg-dark-2-custom border border-dark-border-custom rounded-lg shadow-lg z-20">
+                                        <button
+                                            className="w-full text-left px-3 py-2 hover:bg-gray-700 text-white text-sm"
+                                            onClick={() => setIsLanguageMenuOpen(false)}
+                                        >
+                                            English
+                                        </button>
+                                        <button
+                                            className="w-full text-left px-3 py-2 hover:bg-gray-700 text-white text-sm"
+                                            onClick={() => setIsLanguageMenuOpen(false)}
+                                        >
+                                            O'zbek
+                                        </button>
+                                        <button
+                                            className="w-full text-left px-3 py-2 hover:bg-gray-700 text-white text-sm"
+                                            onClick={() => setIsLanguageMenuOpen(false)}
+                                        >
+                                            Русский
+                                        </button>
                                     </div>
-                                    <div
-                                        className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-700 text-red-400"
-                                        onClick={() => navigate("/")}
-                                    >
-                                        <LogOut className="h-4 w-4" />
-                                        Sign out
-                                    </div>
-                                </div>
-                            </div>
+                                </>
+                            )}
                         </li>
 
                         {/* Mobile Menu Button */}
                         <li className="md:hidden">
                             <button
                                 type="button"
-                                className="text-white transition"
+                                className="text-white transition hover:text-gray-300"
                                 aria-label="Toggle navigation menu"
                             >
                                 <CgMenuRightAlt className="text-3xl" aria-hidden="true" />

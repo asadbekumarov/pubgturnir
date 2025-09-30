@@ -1,32 +1,48 @@
-import React, { useState } from "react"
-import { Eye, EyeOff } from "lucide-react"
-import { Link } from "react-router-dom"
-import { useAuth } from "../../hooks"
-import apiClient from "../../lib/apiClient"
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks";
+import apiClient from "../../lib/apiClient";
+import { useMutation } from "@tanstack/react-query";
 
 const REGIONS = [
     "Toshkent", "Samarqand", "Fargʻona", "Andijon", "Namangan",
     "Buxoro", "Xorazm", "Navoiy", "Qashqadaryo", "Surxondaryo",
     "Jizzax", "Sirdaryo", "Qoraqalpogʻiston"
-]
+];
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Register: React.FC = () => {
-    const { login } = useAuth()
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
         pubgId: '',
         region: '',
-    })
-    const [errors, setErrors] = useState<{ [key: string]: string }>({})
-    const [showPassword, setShowPassword] = useState(false)
-    const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
-    const [loading, setLoading] = useState(false)
+    });
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [showPassword, setShowPassword] = useState(false);
+    const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+    const mutation = useMutation({
+        mutationFn: async (data: typeof formData) => {
+            const res = await apiClient.post(`${API_URL}/web/v1/auth/register`, data);
+            return res.data;
+        },
+        onSuccess: (data) => {
+            setMessage({ type: "success", text: "Ro'yxatdan o'tdingiz!" });
+            login(data.token);
+        },
+        onError: (error: any) => {
+            setMessage({ type: "error", text: error?.message || "Xatolik yuz berdi" });
+        }
+    });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
-    }
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
 
     const validate = () => {
         const newErrors: { [key: string]: string } = {}
@@ -41,38 +57,11 @@ const Register: React.FC = () => {
         return Object.keys(newErrors).length === 0
     }
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
         if (!validate()) return
-
-        setLoading(true)
-        setMessage(null)
-
-        try {
-            console.log("Attempting registration with:", formData.email)
-            const res = await apiClient.post("/web/v1/auth/register", formData)
-            console.log("Register API response:", res.data)
-            const token = res.data?.data?.token || res.data?.token
-            const userData = res.data?.data?.user || res.data?.user
-
-            if (token) {
-                console.log("Token received, calling login function")
-                console.log("User data from response:", userData)
-                await login(token, userData) // token + user ma'lumotlarini saqlaydi
-                setMessage({ type: 'success', text: "Muvaffaqiyatli ro'yxatdan o'tdingiz ✅" })
-            } else {
-                console.error("No token in response:", res.data)
-                setMessage({ type: 'error', text: "Token olinmadi ❌" })
-            }
-        } catch (error: unknown) {
-            const errorMessage = error && typeof error === 'object' && 'response' in error
-                ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
-                : "Xatolik yuz berdi ❌"
-            setMessage({ type: 'error', text: errorMessage || "Xatolik yuz berdi ❌" })
-        } finally {
-            setLoading(false)
-        }
-    }
+        mutation.mutate(formData);
+    };
 
     return (
         <div className="w-full min-h-screen bg-gradient-to-br from-black via-gray-950 to-black flex items-center justify-center p-3 sm:p-4 lg:p-6">
@@ -167,10 +156,10 @@ const Register: React.FC = () => {
                         {/* Submit */}
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={mutation.isLoading}
                             className="w-full bg-[#f3aa01] hover:bg-[#da9902] text-black font-bold py-2.5 rounded-lg transition-colors"
                         >
-                            {loading ? "Ro'yxatdan o'tmoqda..." : "Ro'yxatdan o'tish"}
+                            {mutation.isLoading ? "Ro'yxatdan o'tmoqda..." : "Ro'yxatdan o'tish"}
                         </button>
                     </form>
 
