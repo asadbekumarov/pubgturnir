@@ -78,7 +78,6 @@ import Footer from "./components/layout/Footer";
 import Hero from "./components/sections/Hero";
 import Achievements from "./components/sections/Achievements";
 import Tournament from "./components/sections/Tournament";
-import Participation from "./pages/participation/Participation";
 
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
@@ -116,9 +115,7 @@ function App() {
               <section id="tournaments">
                 <Tournament />
               </section>
-              <section>
-                <Participation />
-              </section>
+     
             </>
           }
         />

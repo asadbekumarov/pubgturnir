@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "../../lib/apiClient";
 
@@ -19,10 +19,8 @@ import {
     CheckCircle,
     XCircle,
     Clock,
-    Eye,
 } from "lucide-react"
 
-// --- TYPES ---
 type Prize = {
     id: string
     place: number
@@ -435,58 +433,6 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-            {/* === YANGI BO'LIM: MENING ARIZALARIM === */}
-            {/* <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 shadow-2xl">
-                <h2 className="text-xl lg:text-2xl font-bold text-white mb-6 lg:mb-8 flex items-center gap-3">
-                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
-                        <Activity className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
-                    </div>
-                    Mening arizalarim
-                </h2>
-
-                {loadingApps ? (
-                    <p className="text-gray-400">Yuklanmoqda...</p>
-                ) : applications.length === 0 ? (
-                    <p className="text-gray-400">Sizda hali ariza yo‘q</p>
-                ) : (
-                    <div className="space-y-4">
-                        {applications.map((app) => (
-                            <div
-                                key={app.id}
-                                className="bg-black/40 border border-gray-800/50 rounded-2xl p-4 lg:p-6 hover:border-green-500/30 transition-all duration-300"
-                            >
-                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                                    <div>
-                                        <h3 className="text-lg lg:text-xl font-bold text-white">
-                                            {app.tournament.name}
-                                        </h3>
-                                        <p className="text-gray-400 text-sm">{app.tournament.description}</p>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                            Ariza vaqti: {formatDate(app.appliedAt)}
-                                        </p>
-                                    </div>
-
-                                    <div className="flex items-center gap-3">
-                                        <span className={`flex items-center gap-1 text-sm font-medium ${getStatusColor(app.status)}`}>
-                                            {getStatusIcon(app.status)}
-                                            {app.status === "pending" && "Ko‘rib chiqilmoqda"}
-                                            {app.status === "accepted" && "Qabul qilindi"}
-                                            {app.status === "rejected" && "Rad etildi"}
-                                        </span>
-                                        <button
-                                            onClick={() => setSelectedTournament(app.tournament)}
-                                            className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 text-black px-3 py-2 rounded-xl text-sm font-semibold hover:scale-105 transition-all duration-300"
-                                        >
-                                            <Eye className="h-4 w-4" />
-                                            Ko‘rish
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div> */}
             <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 shadow-2xl"> <h2 className="text-xl lg:text-2xl font-bold text-white mb-6 lg:mb-8 flex items-center gap-3"> <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg"> <Activity className="h-5 w-5 lg:h-6 lg:w-6 text-white" /> </div> Mening arizalarim </h2> {loadingApps ? (<p className="text-gray-400">⏳ Yuklanmoqda...</p>) : applications.length === 0 ? (<p className="text-gray-400">❌ Hozircha arizangiz yo‘q</p>) : (<div className="space-y-4"> {applications.map((app) => (<div key={app.id} className="bg-black/40 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 backdrop-blur-sm" > <div className="flex items-center justify-between mb-3"> <h3 className="text-lg font-bold text-white">{app.tournament.name}</h3> <div className="flex items-center gap-2"> {getStatusIcon(app.status)} <span className={`font-semibold ${getStatusColor(app.status)}`}> {app.status === "pending" ? "Kutilmoqda" : app.status === "accepted" ? "Qabul qilindi" : "Rad etildi"} </span> </div> </div> <p className="text-gray-400 text-sm">{app.tournament.description}</p> <div className="mt-3 text-xs text-gray-500"> <p>Ariza topshirilgan: {formatDate(app.appliedAt)}</p> {app.reviewedAt && <p>Ko‘rib chiqilgan: {formatDate(app.reviewedAt)}</p>} {app.rejectionReason && (<p className="text-red-400">Rad etish sababi: {app.rejectionReason}</p>)} </div> </div>))} </div>)} </div>
             {/* Modal: Tournament Detail */}
             {selectedTournament && (
@@ -514,4 +460,4 @@ const Dashboard: React.FC = () => {
     )
 }
 
-export default Dashboard
+export default Dashboard    
