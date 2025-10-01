@@ -99,7 +99,7 @@ const Profile: React.FC = () => {
         },
     });
 
-    const applications = applicationsData?.items || [];
+    const _applications = applicationsData?.items || [];
 
     const { data: tournamentsData, isLoading: loadingTournaments } = useQuery({
         queryKey: ["tournaments"],
@@ -137,6 +137,9 @@ const Profile: React.FC = () => {
             alert(errorMessage);
         }
     });
+    if (loadingApps) {
+        return <div>Loading applications...</div>
+    }
 
     const profile = {
         username: "asadbek_dev",
