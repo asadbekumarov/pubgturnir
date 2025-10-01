@@ -615,11 +615,8 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import apiClient from "../../lib/apiClient";
 
 import {
-    User,
-    Shield,
-    Crown,
+ 
     Activity,
-    Camera,
     CheckCircle,
     XCircle,
     Clock,
@@ -683,12 +680,7 @@ type RegistrationResponse = {
 const API_URL = import.meta.env.VITE_API_URL
 
 const Dashboard: React.FC = () => {
-    const [formData] = useState({
-        firstName: "Asadbek",
-        lastName: "Umarov",
-        phone: "+998901234567",
-        email: "asadbek@example.com",
-    })
+
 
     // const [isEditing, setIsEditing] = useState(false)
     const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null)
@@ -765,18 +757,6 @@ const Dashboard: React.FC = () => {
         }
     });
 
-    const profile = {
-        username: "asadbek_dev",
-        user_id: 101,
-        balance: 250000,
-        tariff: "Premium",
-        status: "Faol",
-        lastLogin: "2024-09-23",
-        totalTransactions: 48,
-        avatar: "AS",
-        joinDate: "2022-05-15",
-        monthlySpent: 45000,
-    }
 
     const formatDate = (dateString?: string) => {
         if (!dateString) return "Noma'lum"

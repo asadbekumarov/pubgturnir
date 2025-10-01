@@ -738,9 +738,8 @@ import {
     Edit3,
     Save,
     Crown,
-    TrendingUp,
+    
     Activity,
-    Camera,
 } from "lucide-react"
 
 type Tournament = {
