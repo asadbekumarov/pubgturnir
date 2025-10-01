@@ -7,7 +7,6 @@ import {
     MapPin,
     Trophy,
     Award,
-    Users,
     Coins,
 } from "lucide-react";
 
