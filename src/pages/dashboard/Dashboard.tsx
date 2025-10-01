@@ -47,17 +47,17 @@ type Tournament = {
     maxParticipants?: number
 }
 
-type Application = {
-    id: string
-    tournament: string
-    user: string
-    status: "pending" | "accepted" | "rejected"
-    appliedAt: string
-    reviewedAt?: string
-    rejectionReason?: string | null
-    createdAt: string
-    updatedAt: string
-}
+// type Application = {
+//     id: string
+//     tournament: string
+//     user: string
+//     status: "pending" | "accepted" | "rejected"
+//     appliedAt: string
+//     reviewedAt?: string
+//     rejectionReason?: string | null
+//     createdAt: string
+//     updatedAt: string
+// }
 
 type RegistrationResponse = {
     success: boolean
@@ -76,14 +76,14 @@ type RegistrationResponse = {
 const API_URL = import.meta.env.VITE_API_URL
 
 const Dashboard: React.FC = () => {
-    const [formData, setFormData] = useState({
+    const [formData] = useState({
         firstName: "Asadbek",
         lastName: "Umarov",
         phone: "+998901234567",
         email: "asadbek@example.com",
     })
 
-    const [isEditing, setIsEditing] = useState(false)
+    // const [isEditing, setIsEditing] = useState(false)
     const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null)
     const [showRegistrationModal, setShowRegistrationModal] = useState(false)
     const [selectedTournamentForRegistration, setSelectedTournamentForRegistration] = useState<Tournament | null>(null)
@@ -113,16 +113,16 @@ const Dashboard: React.FC = () => {
         (tournament: Tournament) => tournament.status === "upcoming"
     );
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setFormData((prev) => ({ ...prev, [name]: value }))
-    }
+    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { name, value } = e.target
+    //     setFormData((prev) => ({ ...prev, [name]: value }))
+    // }
 
-    const handleUpdateProfile = (e: React.FormEvent) => {
-        e.preventDefault()
-        setIsEditing(false)
-        alert("O'zgarishlar saqlandi ✅")
-    }
+    // const handleUpdateProfile = (e: React.FormEvent) => {
+    //     e.preventDefault()
+    //     setIsEditing(false)
+    //     alert("O'zgarishlar saqlandi ✅")
+    // }
 
     const handleRegisterClick = (tournament: Tournament) => {
         setSelectedTournamentForRegistration(tournament)

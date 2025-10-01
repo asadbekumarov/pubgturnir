@@ -12,15 +12,13 @@ import {
     Edit3,
     Save,
     Crown,
-    Settings,
     TrendingUp,
     Activity,
     Camera,
     CheckCircle,
     XCircle,
     Clock,
-    Plus,
-    Calendar,
+
 } from "lucide-react"
 
 type Prize = {
