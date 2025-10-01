@@ -889,88 +889,65 @@ const Profile: React.FC = () => {
     return (
         <div className="min-h-screen p-4 lg:p-6" style={{ backgroundColor: '#0e131f' }}>
 
-            {/* Profile Header */}
-            <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-6 py-6 lg:py-10 bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 mb-8 shadow-2xl">
-                <div className="relative">
-                    <div className="w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-3xl flex items-center justify-center text-2xl lg:text-3xl font-bold text-black shadow-lg">
-                        {profile.avatar}
-                    </div>
-                    <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300">
-                        <Camera className="h-4 w-4 text-gray-800" />
-                    </button>
-                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-gray-900 animate-pulse"></div>
-                </div>
 
-                <div className="text-center lg:text-left">
-                    <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-                        {formData.firstName} {formData.lastName}
-                    </h1>
-                    <p className="text-gray-400 text-base lg:text-lg mt-1">@{profile.username}</p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-2 sm:space-y-0 sm:space-x-4 mt-3">
-                        <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                            <span className="text-green-400 text-sm font-medium">Online</span>
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 mb-8 shadow-2xl">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 lg:mb-8 space-y-4 sm:space-y-0">
+                    <h2 className="text-xl lg:text-2xl font-bold text-white flex items-center gap-3">
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                            <Shield className="h-5 w-5 lg:h-6 lg:w-6 text-black" />
                         </div>
-                        <div className="text-gray-500 text-sm">Qo'shilgan: {profile.joinDate}</div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
-                <div className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 backdrop-blur-sm border border-yellow-500/20 rounded-2xl p-4 lg:p-6 hover:scale-105 transition-all duration-300">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-400 text-sm font-medium">Balans</p>
-                            <p className="text-xl lg:text-2xl font-bold text-yellow-400">{profile.balance.toLocaleString()}</p>
-                            <p className="text-xs text-gray-500">so'm</p>
-                        </div>
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
-                            <CreditCard className="h-5 w-5 lg:h-6 lg:w-6 text-black" />
-                        </div>
+                        Hisob ma'lumotlari
+                    </h2>
+                    <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                        <span className="text-green-400 text-sm font-medium">Onlayn</span>
                     </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 backdrop-blur-sm border border-green-500/20 rounded-2xl p-4 lg:p-6 hover:scale-105 transition-all duration-300">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-400 text-sm font-medium">Bu oyda sarflangan</p>
-                            <p className="text-xl lg:text-2xl font-bold text-green-400">{profile.monthlySpent.toLocaleString()}</p>
-                            <p className="text-xs text-gray-500">so'm</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-6">
+                    <div className="bg-black/50 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-3">
+                            <User className="h-4 w-4 lg:h-5 lg:w-5 text-yellow-500" />
+                            <label className="text-sm font-medium text-gray-300">Foydalanuvchi</label>
                         </div>
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
-                            <TrendingUp className="h-5 w-5 lg:h-6 lg:w-6 text-black" />
-                        </div>
+                        <div className="text-white font-mono text-base lg:text-lg font-bold break-all">{profile.username}</div>
                     </div>
-                </div>
 
-                <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-4 lg:p-6 hover:scale-105 transition-all duration-300">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-400 text-sm font-medium">Jami tranzaksiyalar</p>
-                            <p className="text-xl lg:text-2xl font-bold text-blue-400">{profile.totalTransactions}</p>
-                            <p className="text-xs text-gray-500">ta</p>
+                    <div className="bg-black/50 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-3">
+                            <Shield className="h-4 w-4 lg:h-5 lg:w-5 text-yellow-500" />
+                            <label className="text-sm font-medium text-gray-300">ID</label>
                         </div>
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                            <Activity className="h-5 w-5 lg:h-6 lg:w-6 text-black" />
-                        </div>
+                        <div className="text-white font-mono text-base lg:text-lg font-bold">#{profile.user_id}</div>
                     </div>
-                </div>
 
-                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-purple-500/20 rounded-2xl p-4 lg:p-6 hover:scale-105 transition-all duration-300">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-400 text-sm font-medium">Tarif</p>
-                            <p className="text-xl lg:text-2xl font-bold text-purple-400">{profile.tariff}</p>
-                            <p className="text-xs text-gray-500">faol</p>
+                    <div className="bg-black/50 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-4 h-4 lg:w-5 lg:h-5 rounded-full bg-green-500 flex items-center justify-center">
+                                <div className="w-2 h-2 rounded-full bg-black"></div>
+                            </div>
+                            <label className="text-sm font-medium text-gray-300">Holat</label>
                         </div>
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                            <Crown className="h-5 w-5 lg:h-6 lg:w-6 text-black" />
+                        <div className="text-green-400 font-bold text-base lg:text-lg">{profile.status}</div>
+                    </div>
+
+                    <div className="bg-black/50 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-3">
+                            <Activity className="h-4 w-4 lg:h-5 lg:w-5 text-blue-500" />
+                            <label className="text-sm font-medium text-gray-300">So'nggi kirish</label>
                         </div>
+                        <div className="text-blue-400 font-semibold text-sm lg:text-base">{profile.lastLogin}</div>
+                    </div>
+
+                    <div className="bg-black/50 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-3">
+                            <Crown className="h-4 w-4 lg:h-5 lg:w-5 text-purple-500" />
+                            <label className="text-sm font-medium text-gray-300">Tarif</label>
+                        </div>
+                        <div className="text-purple-400 font-bold text-base lg:text-lg">{profile.tariff}</div>
                     </div>
                 </div>
             </div>
-
             {/* Personal Info */}
             <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 mb-8 shadow-2xl">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 lg:mb-8 space-y-4 sm:space-y-0">
