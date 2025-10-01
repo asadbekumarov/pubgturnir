@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { MapPin, Trophy, ChevronRight } from "lucide-react";
@@ -7,27 +9,42 @@ import { getAnimationDelay } from "../../utils";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+// ---- TYPES ----
+type TeamInMatch = {
+    name: string;
+    logo: string;
+    score?: number;
+};
+
 type Match = {
     id: string;
     date: string;
-    status: string;
-    teams: string[];
+    time: string;
+    status: "upcoming" | "live" | "completed";
+    teams: TeamInMatch[];
+    tournament?: string;
+    map?: string;
+    prize?: string;
 };
 
 const Schedule: React.FC = () => {
     const [selectedDay, setSelectedDay] = useState<string>("today");
 
-    const { data: matches, isLoading, error } = useQuery<Match[]>({
+    const {
+        data: matches = [],
+        isLoading,
+        error,
+    } = useQuery<Match[]>({
         queryKey: ["matches", selectedDay],
         queryFn: async () => {
             const res = await apiClient.get(
                 `${API_URL}/web/v1/match?day=${selectedDay}`
             );
-            return res.data.data.items;
+            return res.data.data.items as Match[];
         },
     });
 
-    const getStatusColor = (status: string) => {
+    const getStatusColor = (status: Match["status"]) => {
         switch (status) {
             case "live":
                 return "text-green-500";
@@ -38,7 +55,7 @@ const Schedule: React.FC = () => {
         }
     };
 
-    const getStatusText = (status: string) => {
+    const getStatusText = (status: Match["status"]) => {
         switch (status) {
             case "live":
                 return "Jonli";
@@ -49,18 +66,14 @@ const Schedule: React.FC = () => {
         }
     };
 
-    const filteredMatches = matches || [];
-
     return (
         <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
             <div className="max-w-7xl mx-auto px-8">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl font-bold text-white mb-4">
-                        O'yin Jadvali
-                    </h2>
+                    <h2 className="text-4xl font-bold text-white mb-4">O&apos;yin Jadvali</h2>
                     <p className="text-xl text-gray-400">
-                        Eng qiziqarli o'yinlarni kuzatib boring
+                        Eng qiziqarli o&apos;yinlarni kuzatib boring
                     </p>
                 </div>
 
@@ -84,7 +97,15 @@ const Schedule: React.FC = () => {
 
                 {/* Matches */}
                 <div className="space-y-4">
-                    {filteredMatches.map((match, index) => (
+                    {isLoading && (
+                        <p className="text-center text-gray-400">Yuklanmoqda...</p>
+                    )}
+                    {error && (
+                        <p className="text-center text-red-500">
+                            Ma&apos;lumotlarni olishda xatolik yuz berdi.
+                        </p>
+                    )}
+                    {matches.map((match, index) => (
                         <div
                             key={match.id}
                             className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-[#f3aa01]/50 transition-all duration-300 group"
@@ -92,7 +113,7 @@ const Schedule: React.FC = () => {
                                 animationDelay: getAnimationDelay(index, 100),
                             }}
                         >
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between flex-wrap gap-6">
                                 {/* Time and Status */}
                                 <div className="flex items-center space-x-4">
                                     <div className="text-center">
@@ -113,7 +134,10 @@ const Schedule: React.FC = () => {
                                 {/* Teams */}
                                 <div className="flex items-center space-x-6">
                                     {match.teams.map((team, teamIndex) => (
-                                        <div key={teamIndex} className="flex items-center space-x-3">
+                                        <div
+                                            key={teamIndex}
+                                            className="flex items-center space-x-3"
+                                        >
                                             <div className="text-center">
                                                 <img
                                                     src={team.logo}
@@ -127,7 +151,8 @@ const Schedule: React.FC = () => {
                                             {teamIndex === 0 && (
                                                 <div className="text-2xl font-bold text-white">
                                                     {match.status === "completed"
-                                                        ? `${team.score} - ${match.teams[1].score}`
+                                                        ? `${team.score ?? 0} - ${match.teams[1]?.score ?? 0
+                                                        }`
                                                         : "VS"}
                                                 </div>
                                             )}
@@ -137,18 +162,24 @@ const Schedule: React.FC = () => {
 
                                 {/* Tournament Info */}
                                 <div className="text-right">
-                                    <div className="text-lg font-semibold text-white mb-1">
-                                        {match.tournament}
-                                    </div>
+                                    {match.tournament && (
+                                        <div className="text-lg font-semibold text-white mb-1">
+                                            {match.tournament}
+                                        </div>
+                                    )}
                                     <div className="flex items-center space-x-4 text-sm text-gray-400">
-                                        <div className="flex items-center space-x-1">
-                                            <MapPin className="h-4 w-4" />
-                                            <span>{match.map}</span>
-                                        </div>
-                                        <div className="flex items-center space-x-1">
-                                            <Trophy className="h-4 w-4" />
-                                            <span>{match.prize}</span>
-                                        </div>
+                                        {match.map && (
+                                            <div className="flex items-center space-x-1">
+                                                <MapPin className="h-4 w-4" />
+                                                <span>{match.map}</span>
+                                            </div>
+                                        )}
+                                        {match.prize && (
+                                            <div className="flex items-center space-x-1">
+                                                <Trophy className="h-4 w-4" />
+                                                <span>{match.prize}</span>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -169,7 +200,7 @@ const Schedule: React.FC = () => {
                 {/* CTA */}
                 <div className="text-center mt-12">
                     <button className="bg-gradient-to-r from-[#f3aa01] to-[#ff6b35] hover:from-[#ff6b35] hover:to-[#f3aa01] text-black font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                        Barcha O'yinlarni Ko'rish
+                        Barcha O&apos;yinlarni Ko&apos;rish
                     </button>
                 </div>
             </div>

@@ -1,10 +1,10 @@
 "use client"
 
-import React, { useState, useRef } from "react"
+import { useState, useRef } from "react"
 import { useQuery } from "@tanstack/react-query"
 import apiClient from "../../lib/apiClient"
 import { Users, Star, Trophy, Zap, Shield, Target } from "lucide-react"
-import { topTeams, newTeams, localTeams } from "../../data"
+// import { topTeams, newTeams, localTeams } from "../../data"
 import { teamTabs } from "../../constants"
 import { getAnimationDelay, generateRandomPosition, generateRandomDelay, generateRandomDuration } from "../../utils"
 
@@ -14,8 +14,16 @@ type Team = {
     id: string;
     name: string;
     category: string;
-    status: string;
+    status: "CHAMPION" | "PRO" | "RISING" | "ROOKIE" | "LOCAL" | string;
+    country: string;
+    rank: number;
+    points: number;
+    wins: number;
+    members: string[];
+    bgColor: string; // rang kodi (#hex yoki rgba)
+    logo: string; // agar API dan URL kelsa
 };
+
 
 const Teams = () => {
     const [activeCategory, setActiveCategory] = useState("top")

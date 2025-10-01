@@ -8,16 +8,24 @@ import {
   Instagram,
   Youtube,
 } from "lucide-react";
+import type {
+  NavigationLink,
+  SocialLink,
+  QuickLink,
+  StatusBadge,
+  DayOption,
+  TabOption,
+} from "../types"; // adjust import path
 
 // Navigation links
-export const navigationLinks = [
+export const navigationLinks: NavigationLink[] = [
   { name: "Natijalar", href: "#results" },
   { name: "Turnirlar", href: "#tournaments" },
   { name: "Jadval", href: "#table" },
 ];
 
 // Social links
-export const socialLinks = [
+export const socialLinks: SocialLink[] = [
   {
     name: "Facebook",
     icon: Facebook,
@@ -39,7 +47,7 @@ export const socialLinks = [
 ];
 
 // Quick links
-export const quickLinks = [
+export const quickLinks: QuickLink[] = [
   { label: "Turnirlar", href: "#" },
   { label: "Natijalar", href: "#" },
   { label: "Jadval", href: "#" },
@@ -48,7 +56,10 @@ export const quickLinks = [
 ];
 
 // Status badges
-export const statusBadges: Record<string, { text: string; color: string }> = {
+export const statusBadges: Record<
+  "REGISTRATION_OPEN" | "COMING_SOON" | "LIVE" | "COMPLETED",
+  StatusBadge
+> = {
   REGISTRATION_OPEN: { text: "RO'YXAT OCHIQ", color: "#10b981" },
   COMING_SOON: { text: "TEZDA", color: "#f59e0b" },
   LIVE: { text: "JONLI", color: "#ef4444" },
@@ -56,14 +67,14 @@ export const statusBadges: Record<string, { text: string; color: string }> = {
 };
 
 // Day options for schedule
-export const dayOptions = [
+export const dayOptions: DayOption[] = [
   { id: "today", label: "Bugun", date: "15 Yanvar" },
   { id: "tomorrow", label: "Ertaga", date: "16 Yanvar" },
   { id: "week", label: "Bu Hafta", date: "17-21 Yanvar" },
 ];
 
 // Tab options for different sections
-export const tournamentTabs = [
+export const tournamentTabs: TabOption[] = [
   {
     key: "upcoming",
     label: "KELAYOTGAN",
@@ -74,15 +85,15 @@ export const tournamentTabs = [
   { key: "completed", label: "TUGALLANGAN", icon: Trophy, shortLabel: "TUGAL" },
 ];
 
-export const teamTabs = [
+export const teamTabs: TabOption[] = [
   { key: "top", label: "TOP KOMANDALAR", icon: Trophy },
   { key: "new", label: "YANGI", icon: Zap },
   { key: "local", label: "MAHALLIY", icon: Target },
 ];
 
-export const achievementTabs = [
-  { key: "prizes", label: "MUKOFOTLAR" },
-  { key: "achievements", label: "YUTUQLAR" },
+export const achievementTabs: TabOption[] = [
+  { key: "prizes", label: "MUKOFOTLAR", icon: Trophy },
+  { key: "achievements", label: "YUTUQLAR", icon: Zap },
 ];
 
 // Color scheme

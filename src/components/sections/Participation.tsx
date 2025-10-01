@@ -63,7 +63,7 @@ export default function TournamentDetail() {
     if (error || !tournament) {
         return (
             <div className="min-h-screen bg-[#000102] flex items-center justify-center text-red-400">
-                Xatolik: {error.message || "Turnir topilmadi"}
+                Xatolik: {error?.message || "Turnir topilmadi"}
             </div>
         );
     }
