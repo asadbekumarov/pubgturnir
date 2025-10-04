@@ -1,87 +1,108 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { Link, useLocation, Outlet } from "react-router-dom";
+// Assuming Header component is well-optimized
 import Header from "../../pages/dashboard/Header";
+import { Menu, X, LayoutDashboard, User } from "lucide-react"; // Using Lucide icons for a modern look
+
+// Define the structure for sidebar links
+interface NavLink {
+    path: string;
+    label: string;
+    Icon: React.ElementType;
+}
+
+// Sidebar links configuration
+const NAV_LINKS: NavLink[] = [
+    { path: "/dashboard/stats", label: "Dashboard", Icon: LayoutDashboard },
+    { path: "/dashboard/profile", label: "Profile", Icon: User },
+    // Add more links here
+];
 
 const DashboardLayout: React.FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const location = useLocation();
 
-    const linkClasses = (path: string) =>
-        `group flex items-center px-4 py-3 rounded-xl mb-2 transition-all duration-300 ease-in-out ${location.pathname === path
-            ? "bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 font-semibold shadow-lg scale-105"
-            : "text-gray-300 hover:bg-gradient-to-r hover:from-gray-800 hover:to-gray-700 hover:text-white"
-        }`;
+    // Toggle function for better reusability and potential memoization
+    const toggleSidebar = useCallback(() => {
+        setIsSidebarOpen(prev => !prev);
+    }, []);
+
+    // Use useMemo for the dynamic link classes to prevent unnecessary re-renders
+    const linkClasses = useMemo(() => (path: string) => {
+        const isActive = location.pathname === path;
+        // Refined Tailwind classes for a cleaner, more professional look
+        return `
+            flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ease-in-out
+            ${isActive
+                ? "bg-yellow-500/90 text-gray-900 font-semibold shadow-md shadow-yellow-500/30"
+                : "text-gray-300 hover:bg-gray-700/50 hover:text-white"
+            }
+        `.trim();
+    }, [location.pathname]);
+
+    // Use a clearer state for mobile sidebar visibility logic
+    const isMobileSidebarVisible = isSidebarOpen;
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#111827]">
-            {/* Header */}
-            <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900">
+        <div className="flex flex-col min-h-screen bg-gray-900 text-gray-100">
+            {/* Header: Use a slightly darker gray for the header to create contrast */}
+            <header className="fixed top-0 left-0 z-50 border-b w-full bg-[#111827] border-gray-700">
                 <Header />
             </header>
 
-            <div className="flex flex-1 pt-16"> {/* pt-16 = header balandligi */}
+            <div className="flex flex-1 pt-16"> {/* pt-16 = Header height (assuming 4rem/64px) */}
 
-                {/* Mobile menu button */}
+                {/* Mobile menu button: Higher contrast and better icon */}
                 <button
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    className="lg:hidden fixed top-20 left-4 z-40 p-2 rounded-lg bg-gray-800 text-white"
+                    onClick={toggleSidebar}
+                    className="lg:hidden fixed top-4 right-4 z-[60] p-2 text-white hover:bg-gray-600/90 transition-colors shadow-lg"
+                    aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
                 >
-                    <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 6h16M4 12h16M4 18h16"
-                        />
-                    </svg>
+                    {isSidebarOpen ? (
+                        <X className="w-6 h-6" />
+                    ) : (
+                        <Menu className="w-6 h-6" />
+                    )}
                 </button>
 
                 {/* Sidebar */}
                 <aside
                     className={`
-            fixed top-16 left-0 z-30 w-72 h-[calc(100vh-64px)] p-6 border-r border-gray-700 shadow-2xl
-            transform transition-transform duration-300 ease-in-out
-            ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-            lg:static lg:translate-x-0 lg:h-auto
-          `}
-                    style={{ backgroundColor: "#111827" }}
+            fixed top-16 left-0 z-40 w-64 h-[calc(100vh-4rem)] p-4 border-r border-gray-800
+            bg-gray-900 shadow-2xl transition-transform duration-300 ease-in-out
+            ${isMobileSidebarVisible ? "translate-x-0" : "-translate-x-full"}
+            lg:static lg:translate-x-0 lg:w-64 lg:flex-shrink-0 lg:h-auto
+        `}
                 >
-                    <div className="mb-8">
-                        <h2 className="text-xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text text-transparent">
-                            Boshqaruv paneli
-                        </h2>
-                        <div className="h-1 w-12 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full"></div>
-                    </div>
-
-                    <nav className="space-y-1">
-                        <Link to="/dashboard/stats" className={linkClasses("/dashboard/stats")}>
-                            Dashboard
-                        </Link>
-                        <Link to="/dashboard/profile" className={linkClasses("/dashboard/profile")}>
-                            Profile
-                        </Link>
+                    <nav className="space-y-1 mt-4">
+                        {NAV_LINKS.map(link => (
+                            <Link
+                                key={link.path}
+                                to={link.path}
+                                className={linkClasses(link.path)}
+                                onClick={toggleSidebar}
+                            >
+                                <link.Icon className="w-5 h-5" />
+                                <span className="text-sm">{link.label}</span>
+                            </Link>
+                        ))}
                     </nav>
                 </aside>
 
-                {/* Overlay */}
-                {isSidebarOpen && (
+                {/* Overlay: Increased Z-index to be below the mobile button but above content */}
+                {isMobileSidebarVisible && (
                     <div
-                        className="lg:hidden fixed inset-0 z-20 bg-black bg-opacity-50"
-                        onClick={() => setIsSidebarOpen(false)}
+                        className="lg:hidden fixed inset-0 z-30 bg-black/60 backdrop-blur-sm"
+                        onClick={toggleSidebar}
+                        aria-hidden="true"
                     />
                 )}
 
                 {/* Main content */}
-                <main className="flex-1 relative lg:ml-0 p-6">
-                    {/* Background pattern */}
-                    <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] bg-[length:20px_20px] pointer-events-none"></div>
+                <main className="flex-1 relative transition-all duration-300 ease-in-out lg:ml-0 overflow-y-auto">
+                    <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_20%_80%,rgba(168,85,247,0.1)_0,transparent_50%),radial-gradient(circle_at_80%_20%,rgba(251,191,36,0.1)_0,transparent_50%)] pointer-events-none"></div>
 
-                    <div className="pt-6 lg:pt-0">
+                    <div className="mx-auto">
                         <Outlet />
                     </div>
                 </main>

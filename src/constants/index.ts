@@ -19,8 +19,8 @@ import type {
 
 // Navigation links
 export const navigationLinks: NavigationLink[] = [
-  { name: "Natijalar", href: "#results" },
   { name: "Turnirlar", href: "#tournaments" },
+  { name: "Natijalar", href: "#results" },
   { name: "Jadval", href: "#table" },
 ];
 
