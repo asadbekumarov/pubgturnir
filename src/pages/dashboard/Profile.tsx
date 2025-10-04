@@ -12,7 +12,6 @@ import {
     Save,
     Crown,
     Activity,
-    Loader2,
 } from "lucide-react"
 
 type Tournament = {
@@ -57,7 +56,7 @@ type RegistrationResponse = {
     }
 }
 
-type UserData = {
+type _UserData = {
     id: string
     firstName: string
     lastName: string
