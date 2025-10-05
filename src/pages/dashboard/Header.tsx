@@ -38,37 +38,6 @@ const Header = () => {
                                 Home
                             </button>
                         </li>
-
-                        {/* Language Dropdown */}
-                        <li className="relative">
-                            <button
-                                onClick={() => setIsLanguageMenuOpen((prev) => !prev)}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-dark-2-custom hover:bg-dark-2-custom/80 text-white text-sm transition-colors"
-                            >
-                                <Globe className="h-4 w-4" />
-                                Language
-                            </button>
-
-                            {isLanguageMenuOpen && (
-                                <>
-                                    <div
-                                        className="fixed inset-0 z-10"
-                                        onClick={() => setIsLanguageMenuOpen(false)}
-                                    />
-                                    <div className="absolute right-0 mt-2 w-36 rounded-lg border border-dark-border-custom bg-dark-2-custom shadow-lg z-20">
-                                        {["English", "O'zbek", "Русский"].map((lang) => (
-                                            <button
-                                                key={lang}
-                                                onClick={() => setIsLanguageMenuOpen(false)}
-                                                className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors"
-                                            >
-                                                {lang}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </>
-                            )}
-                        </li>
                     </ul>
                 </nav>
             </div>

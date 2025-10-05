@@ -1,84 +1,125 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
+import type React from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import apiClient from "../../lib/apiClient";
-
 import {
     Activity,
     CheckCircle,
     XCircle,
     Clock,
     Calendar,
-    
-} from "lucide-react"
-
-type Prize = {
-    id: string
-    place: number
-    prize: string
-}
+    Trophy,
+    Users,
+    MapPin,
+    DollarSign,
+    Info,
+    Award,
+    Star,
+    Shield,
+} from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+// import { swipercss }; // Removed invalid import
 
 type Region = {
-    id: string
-    name: string
-    currentParticipants: number
-    maxParticipants: number
-}
+    id: string;                         
+    name: string;
+    currentParticipants: number;
+    maxParticipants: number;
+};
+
+type Prize = {
+    id: string;
+    place: number;
+    prize: string;
+};
 
 type Tournament = {
-    id: string
-    name: string
-    description: string
-    startTime: string
-    endTime?: string
-    participationFee?: number
-    status: "upcoming" | "ongoing" | "completed" | "cancelled"
-    regions?: Region[]
-    regionalPrizes?: Prize[]
-    nationalPrizes?: Prize[]
-    currentParticipants?: number
-    maxParticipants?: number
-}
+    id: string;
+    name: string;
+    description: string;
+    type: string;
+    scope: string;
+    startTime: string;
+    status: "upcoming" | "ongoing" | "completed" | "cancelled";
+    maxPlayers?: number;
+    participationFee?: number;
+    regions?: Region[];
+    regionalPrizes: Prize[];
+    nationalPrizes: Prize[];
+    regionalWinners: string[];
+    nationalWinners: string[];
+    createdAt: string;
+};
 
 type Application = {
-    id: string
-    tournament: string
-    user: string
-    status: "pending" | "accepted" | "rejected"
-    appliedAt: string
-    reviewedAt?: string
-    rejectionReason?: string
-    createdAt: string
-    updatedAt: string
-}
+    id: string;
+    tournament: {
+        name: string;
+        type: string;
+        scope: string;
+        startTime: string;
+        status: "upcoming" | "ongoing" | "completed" | "cancelled";
+        id: string;
+    };
+    user: string;
+    status: "pending" | "accepted" | "rejected";
+    appliedAt: string;
+    createdAt: string;
+    updatedAt: string;
+};
 
 type RegistrationResponse = {
-    success: boolean
-    message: string
+    success: boolean;
+    message: string;
     data: {
-        tournament: string
-        user: string
-        status: "pending" | "accepted" | "rejected"
-        appliedAt: string
-        createdAt: string
-        updatedAt: string
-        id: string
-    }
-}
+        tournament: string;
+        user: string;
+        status: "pending" | "accepted" | "rejected";
+        appliedAt: string;
+        createdAt: string;
+        updatedAt: string;
+        id: string;
+    };
+};
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
+
+// LoadingScreen Component
+const LoadingScreen: React.FC = () => {
+    return (
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#0e131f" }}>
+            <div className="text-center">
+                <div className="relative w-24 h-24 mx-auto mb-8">
+                    <div className="absolute inset-0 border-4 border-gray-800 rounded-full"></div>
+                    <div className="absolute inset-0 border-4 border-transparent border-t-yellow-500 border-r-yellow-500 rounded-full animate-spin"></div>
+                    <div className="absolute inset-3 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full animate-pulse flex items-center justify-center">
+                        <Shield className="h-10 w-10 text-black" />
+                    </div>
+                </div>
+                <h2 className="text-2xl font-bold text-white mb-3">Yuklanmoqda...</h2>
+                <p className="text-gray-400 text-sm">Ma'lumotlar yuklanmoqda</p>
+                <div className="flex justify-center gap-2 mt-6">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const Dashboard: React.FC = () => {
+    const [showApplications, setShowApplications] = useState(false);
+    const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+    const [selectedTournamentForRegistration, setSelectedTournamentForRegistration] = useState<Tournament | null>(null);
+    const [tournamentIdInput, setTournamentIdInput] = useState("");
+    const [inputError, setInputError] = useState("");
 
-
-    // const [isEditing, setIsEditing] = useState(false)
-    const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null)
-    const [showRegistrationModal, setShowRegistrationModal] = useState(false)
-    const [selectedTournamentForRegistration, setSelectedTournamentForRegistration] = useState<Tournament | null>(null)
-
-    const { data: applicationsData, isLoading: loadingApps, refetch } = useQuery({
+    // Fetch applications
+    const { data: applicationsData, isLoading: isLoadingApplications, refetch } = useQuery({
         queryKey: ["applications"],
         queryFn: async () => {
             const res = await apiClient.get(`${API_URL}/web/v1/application`);
@@ -89,54 +130,36 @@ const Dashboard: React.FC = () => {
 
     const applications: Application[] = applicationsData?.items || [];
 
-    const { data: tournamentsData, isLoading: loadingTournaments } = useQuery({
+    // Fetch tournaments
+    const { data: tournamentsData, isLoading: isLoadingTournaments } = useQuery({
         queryKey: ["tournaments"],
         queryFn: async () => {
             const res = await apiClient.get(`${API_URL}/web/v1/tournament`);
             if (!res.data.success || !res.data.data?.items) throw new Error("Turnirlar yuklanmadi");
-            return res.data.data.items;
+            return res.data.data.items as Tournament[];
         },
     });
 
-    // Use only API data - remove mock data fallback
-    const upcomingTournaments: Tournament[] = (tournamentsData || []).filter(
-        (tournament: Tournament) => tournament.status === "upcoming"
+    const upcomingTournaments: Tournament[] = (tournamentsData || []).filter((tournament: Tournament) => tournament.status === "upcoming");
+
+    // Filter registered tournaments
+    const registeredTournaments: Tournament[] = (tournamentsData || []).filter((tournament: Tournament) =>
+        applications.some((app: Application) => app.tournament.id === tournament.id)
     );
 
-    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { name, value } = e.target
-    //     setFormData((prev) => ({ ...prev, [name]: value }))
-    // }
-
-    // const handleUpdateProfile = (e: React.FormEvent) => {
-    //     e.preventDefault()
-    //     setIsEditing(false)
-    //     alert("O'zgarishlar saqlandi ✅")
-    // }
-
-    const handleRegisterClick = (tournament: Tournament) => {
-        setSelectedTournamentForRegistration(tournament)
-        setShowRegistrationModal(true)
-    }
-
-    const handleConfirmRegistration = () => {
-        if (selectedTournamentForRegistration) {
-            registerMutation.mutate(selectedTournamentForRegistration.id)
-        }
-    }
-
+    // Register mutation
     const registerMutation = useMutation({
         mutationFn: async (tournamentId: string) => {
-            const response = await apiClient.post(`${API_URL}/web/v1/application`, {
-                tournamentId: tournamentId,
-            });
-            return response.data;
+            const response = await apiClient.post(`${API_URL}/web/v1/application`, { tournamentId });
+            return response.data as RegistrationResponse;
         },
         onSuccess: (data: RegistrationResponse) => {
             if (data.success) {
                 alert("Muvaffaqiyatli ro'yxatdan o'tdingiz! ✅");
                 setShowRegistrationModal(false);
                 setSelectedTournamentForRegistration(null);
+                setTournamentIdInput("");
+                setInputError("");
                 refetch();
             } else {
                 alert(data.message || "Ro'yxatdan o'tishda xatolik yuz berdi");
@@ -145,377 +168,639 @@ const Dashboard: React.FC = () => {
         onError: (error: any) => {
             const errorMessage = error.response?.data?.message || "Ro'yxatdan o'tishda xatolik yuz berdi";
             alert(errorMessage);
-        }
+        },
     });
 
-
     const formatDate = (dateString?: string) => {
-        if (!dateString) return "Noma'lum"
+        if (!dateString) return "Noma'lum";
         return new Date(dateString).toLocaleString("uz-UZ", {
             day: "2-digit",
             month: "long",
             year: "numeric",
             hour: "2-digit",
             minute: "2-digit",
-        })
-    }
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case "accepted": return "text-green-400"
-            case "rejected": return "text-red-400"
-            default: return "text-yellow-400"
-        }
-    }
-
-    const getStatusIcon = (status: string) => {
-        switch (status) {
-            case "accepted": return <CheckCircle className="h-4 w-4 text-green-400" />
-            case "rejected": return <XCircle className="h-4 w-4 text-red-400" />
-            default: return <Clock className="h-4 w-4 text-yellow-400" />
-        }
-    }
-
-    const getTournamentName = (tournamentId: string) => {
-        const tournament = upcomingTournaments.find(t => t.id === tournamentId);
-        return tournament ? tournament.name : `Turnir (ID: ${tournamentId})`;
-    }
-
-    const getTournamentDescription = (tournamentId: string) => {
-        const tournament = upcomingTournaments.find(t => t.id === tournamentId);
-        return tournament ? tournament.description : "";
-    }
+        });
+    };
 
     const isUserRegistered = (tournamentId: string) => {
-        return applications.some((app: Application) => app.tournament === tournamentId);
-    }
+        return applications.some((app: Application) => app.tournament.id === tournamentId);
+    };
 
     const getApplicationStatus = (tournamentId: string) => {
-        const application = applications.find((app: Application) => app.tournament === tournamentId);
+        const application = applications.find((app: Application) => app.tournament.id === tournamentId);
         return application ? application.status : null;
-    }
+    };
 
-    // Fixed function to handle boolean conversion
     const isTournamentFull = (tournament: Tournament): boolean => {
-        return !!(
-            tournament.maxParticipants &&
-            tournament.currentParticipants &&
-            tournament.currentParticipants >= tournament.maxParticipants
-        );
+        if (tournament.scope === "regional" && tournament.regions) {
+            return tournament.regions.every((region) => region.currentParticipants >= region.maxParticipants);
+        }
+        return !!(tournament.maxPlayers && tournament.regionalWinners && tournament.regionalWinners.length >= tournament.maxPlayers);
+    };
+
+    const getTotalParticipants = (tournament: Tournament): number => {
+        if (tournament.scope === "regional" && tournament.regions) {
+            return tournament.regions.reduce((sum, region) => sum + region.currentParticipants, 0);
+        }
+        return tournament.regionalWinners?.length || 0;
+    };
+
+    const getMaxParticipants = (tournament: Tournament): number => {
+        if (tournament.scope === "regional" && tournament.regions) {
+            return tournament.regions.reduce((sum, region) => sum + region.maxParticipants, 0);
+        }
+        return tournament.maxPlayers || 0;
+    };
+
+    const handleRegisterClick = (tournament: Tournament) => {
+        setSelectedTournamentForRegistration(tournament);
+        setTournamentIdInput("");
+        setInputError("");
+        setShowRegistrationModal(true);
+    };
+
+    const handleConfirmRegistration = () => {
+        if (!selectedTournamentForRegistration) return;
+
+        if (tournamentIdInput.trim() !== selectedTournamentForRegistration.id) {
+            setInputError("Noto'g'ri turnir ID kiritildi");
+            return;
+        }
+
+        registerMutation.mutate(selectedTournamentForRegistration.id);
+    };
+
+    // Unified loading state
+    if (isLoadingApplications || isLoadingTournaments) {
+        return <LoadingScreen />;
     }
 
     return (
-        <div className="min-h-screen p-4 lg:p-6" style={{ backgroundColor: '#0e131f' }}>
+        <div className="relative mx-auto overflow-hidden bg-[#111827] min-h-screen w-full">
+            {/* Applications Toggle Button */}
+            <button
+                onClick={() => setShowApplications(!showApplications)}
+                className="fixed top-4 right-4 z-40 text-white px-4 py-2 rounded-2xl hover:text-[#f3aa01] transition-all duration-300 flex items-center gap-2 border border-white/10 sm:px-6 sm:py-3"
+            >
+                <Activity className="h-5 w-5" />
+                Arizalarim ({applications.length})
+            </button>
 
-
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 mb-8 shadow-2xl">
-                <h2 className="text-xl lg:text-2xl font-bold text-white mb-6 lg:mb-8 flex items-center gap-3">
-                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
-                        <Calendar className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
+            {/* Upcoming Tournaments Section */}
+            {upcomingTournaments.length === 0 ? (
+                <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+                    <div className="text-center">
+                        <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4 md:h-20 md:w-20" />
+                        <p className="text-xl md:text-2xl text-gray-300">Hozircha kelgusi turnirlar yo'q</p>
                     </div>
-                    Kelgusi Turnirlar
-                </h2>
+                </div>
+            ) : (
+                <Swiper
+                    modules={[Autoplay]}
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true,
+                    }}
+                    loop={upcomingTournaments.length > 1}
+                    spaceBetween={0}
+                    slidesPerView={1}
+                    className="h-full w-full"
+                >
+                    {upcomingTournaments.map((tournament, index) => {
+                        const isRegistered = isUserRegistered(tournament.id);
+                        const applicationStatus = getApplicationStatus(tournament.id);
+                        const isFull = isTournamentFull(tournament);
+                        const totalParticipants = getTotalParticipants(tournament);
+                        const maxParticipants = getMaxParticipants(tournament);
 
-                {loadingTournaments ? (
-                    <p className="text-gray-400">⏳ Turnirlar yuklanmoqda...</p>
-                ) : upcomingTournaments.length === 0 ? (
-                    <p className="text-gray-400">❌ Hozircha kelgusi turnirlar yo'q</p>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-                        {upcomingTournaments.map((tournament) => {
-                            const isRegistered = isUserRegistered(tournament.id);
-                            const applicationStatus = getApplicationStatus(tournament.id);
-                            const isFull = isTournamentFull(tournament);
+                        return (
+                            <SwiperSlide key={tournament.id}>
+                                <div className="flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 h-full border border-[#1f2937] m-10 rounded-xl">
+                                    <div className="w-full max-w-7xl h-full flex flex-col">
+                                        {/* Header Section */}
+                                        <div className="mb-4 sm:mb-6">
+                                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4">
+                                                <div className="flex items-center gap-4">
+                                                    <div
+                                                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-3xl flex items-center justify-center shadow-2xl"
+                                                        style={{ background: "linear-gradient(to bottom right, #f3aa01, #ff8c00)" }}
+                                                    >
+                                                        <Trophy className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                                                    </div>
+                                                    <div>
+                                                        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
+                                                            {tournament.name}
+                                                        </h1>
+                                                        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                                                            <span className="bg-blue-500/20 text-blue-300 px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-bold border border-blue-500/30">
+                                                                {tournament.type}
+                                                            </span>
+                                                            <span className="bg-purple-500/20 text-purple-300 px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-bold border border-purple-500/30">
+                                                                {tournament.scope === "regional" ? "Viloyatlararo" : "Ochiq"}
+                                                            </span>
+                                                            {isRegistered && applicationStatus === "accepted" && (
+                                                                <span className="flex items-center gap-1 text-green-400 text-xs sm:text-sm font-semibold">
+                                                                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+                                                                    Qabul qilindi
+                                                                </span>
+                                                            )}
+                                                            {isRegistered && applicationStatus === "pending" && (
+                                                                <span className="flex items-center gap-1 text-yellow-400 text-xs sm:text-sm font-semibold">
+                                                                    <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
+                                                                    Kutilmoqda
+                                                                </span>
+                                                            )}
+                                                            {isFull && (
+                                                                <span className="bg-red-500 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-bold">
+                                                                    To'ldi
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="text-white/60 text-sm sm:text-lg mt-2 sm:mt-0">
+                                                    {index + 1} / {upcomingTournaments.length}
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            return (
-                                <div key={tournament.id} className="bg-black/40 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-blue-500/50 transition-all duration-300 backdrop-blur-sm">
-                                    <div className="flex items-center justify-between mb-3">
-                                        <h3 className="text-lg font-bold text-white">{tournament.name}</h3>
-                                        <div className="flex items-center gap-2">
-                                            {isRegistered && applicationStatus === "accepted" && (
-                                                <CheckCircle className="h-5 w-5 text-green-400" />
+                                        {/* Content Grid */}
+                                        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-y-auto pb-4">
+                                            {/* Left Column */}
+                                            <div className="space-y-4">
+                                                {/* Description */}
+                                                <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300">
+                                                    <div className="flex items-center gap-2 mb-3">
+                                                        <Info className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                        <h3 className="text-base sm:text-lg font-bold text-white">Tavsif</h3>
+                                                    </div>
+                                                    <p className="text-gray-200 text-sm sm:text-base leading-relaxed">
+                                                        {tournament.description}
+                                                    </p>
+                                                </div>
+
+                                                {/* Tournament Details */}
+                                                <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300">
+                                                    <h3 className="text-base sm:text-lg font-bold text-white mb-3">Ma'lumotlar</h3>
+                                                    <div className="space-y-3">
+                                                        <div className="flex items-center justify-between">
+                                                            <div className="flex items-center gap-2 text-gray-300">
+                                                                <Calendar className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                                <span>Boshlanish:</span>
+                                                            </div>
+                                                            <span className="text-white font-semibold text-xs sm:text-sm">
+                                                                {formatDate(tournament.startTime)}
+                                                            </span>
+                                                        </div>
+
+                                                        {tournament.participationFee && (
+                                                            <div className="flex items-center justify-between">
+                                                                <div className="flex items-center gap-2 text-gray-300">
+                                                                    <DollarSign className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                                    <span>Ishtirok to'lovi:</span>
+                                                                </div>
+                                                                <span className="font-bold text-base sm:text-lg" style={{ color: "#f3aa01" }}>
+                                                                    {tournament.participationFee.toLocaleString()} so'm
+                                                                </span>
+                                                            </div>
+                                                        )}
+
+                                                        <div>
+                                                            <div className="flex items-center justify-between mb-2">
+                                                                <div className="flex items-center gap-2 text-gray-300">
+                                                                    <Users className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                                    <span>Ishtirokchilar:</span>
+                                                                </div>
+                                                                <span className="text-white font-semibold text-xs sm:text-sm">
+                                                                    {totalParticipants}/{maxParticipants}
+                                                                </span>
+                                                            </div>
+                                                            <div className="w-full bg-white/20 rounded-full h-2">
+                                                                <div
+                                                                    className="h-2 rounded-full transition-all duration-500"
+                                                                    style={{
+                                                                        background: "linear-gradient(to right, #f3aa01, #ff8c00)",
+                                                                        width: `${(totalParticipants / maxParticipants) * 100}%`,
+                                                                    }}
+                                                                ></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Regions */}
+                                                {tournament.regions && tournament.regions.length > 0 && (
+                                                    <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300">
+                                                        <div className="flex items-center gap-2 mb-3">
+                                                            <MapPin className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                            <h3 className="text-base sm:text-lg font-bold text-white">Hududlar</h3>
+                                                        </div>
+                                                        <div className="space-y-2 max-h-40 overflow-y-auto">
+                                                            {tournament.regions.map((region) => (
+                                                                <div
+                                                                    key={region.id}
+                                                                    className="bg-white/5 p-3 rounded-2xl hover:bg-white/10 transition-all duration-300"
+                                                                >
+                                                                    <div className="flex justify-between items-center mb-2">
+                                                                        <span className="text-white font-semibold text-xs sm:text-sm">
+                                                                            {region.name}
+                                                                        </span>
+                                                                        <span className="text-gray-300 text-xs sm:text-sm">
+                                                                            {region.currentParticipants}/{region.maxParticipants}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className="w-full bg-white/20 rounded-full h-2">
+                                                                        <div
+                                                                            className="h-2 rounded-full transition-all duration-500"
+                                                                            style={{
+                                                                                background: "linear-gradient(to right, #f3aa01, #ff8c00)",
+                                                                                width: `${(region.currentParticipants / region.maxParticipants) * 100}%`,
+                                                                            }}
+                                                                        ></div>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Right Column - Prizes */}
+                                            <div className="space-y-4">
+                                                {/* National Prizes */}
+                                                {tournament.nationalPrizes.length > 0 && (
+                                                    <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300">
+                                                        <div className="flex items-center gap-2 mb-3">
+                                                            <Trophy className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                            <h3 className="text-base sm:text-lg font-bold text-white">
+                                                                Milliy Mukofotlar
+                                                            </h3>
+                                                        </div>
+                                                        <div className="space-y-2 max-h-60 overflow-y-auto">
+                                                            {tournament.nationalPrizes.map((prize, index) => (
+                                                                <div
+                                                                    key={prize.id}
+                                                                    className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 p-3 rounded-2xl border border-yellow-500/20"
+                                                                >
+                                                                    <div className="flex items-center justify-between">
+                                                                        <div className="flex items-center gap-3">
+                                                                            <div
+                                                                                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm ${index === 0
+                                                                                    ? "bg-yellow-500 text-black"
+                                                                                    : index === 1
+                                                                                        ? "bg-gray-400 text-black"
+                                                                                        : index === 2
+                                                                                            ? "bg-orange-900 text-orange-200"
+                                                                                            : "bg-gray-700 text-gray-300"
+                                                                                    }`}
+                                                                            >
+                                                                                {prize.place}
+                                                                            </div>
+                                                                            <span className="text-white font-semibold text-xs sm:text-sm">
+                                                                                {prize.prize}
+                                                                            </span>
+                                                                        </div>
+                                                                        {index < 3 && <Star className="h-4 w-4 text-yellow-400" />}
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Regional Prizes */}
+                                                {tournament.regionalPrizes.length > 0 && (
+                                                    <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300">
+                                                        <div className="flex items-center gap-2 mb-3">
+                                                            <Award className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                            <h3 className="text-base sm:text-lg font-bold text-white">
+                                                                Hududiy Mukofotlar
+                                                            </h3>
+                                                        </div>
+                                                        <div className="space-y-2 max-h-60 overflow-y-auto">
+                                                            {tournament.regionalPrizes.map((prize, index) => (
+                                                                <div
+                                                                    key={prize.id}
+                                                                    className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 p-3 rounded-2xl border border-blue-500/20"
+                                                                >
+                                                                    <div className="flex items-center justify-between">
+                                                                        <div className="flex items-center gap-3">
+                                                                            <div
+                                                                                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm ${index === 0
+                                                                                    ? "bg-yellow-500 text-black"
+                                                                                    : index === 1
+                                                                                        ? "bg-gray-400 text-black"
+                                                                                        : "bg-orange-900 text-orange-200"
+                                                                                    }`}
+                                                                            >
+                                                                                {prize.place}
+                                                                            </div>
+                                                                            <span className="text-white font-semibold text-xs sm:text-sm">
+                                                                                {prize.prize}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Action Button */}
+                                        <div className="mt-4 sm:mt-6">
+                                            {isRegistered ? (
+                                                <button
+                                                    disabled
+                                                    className="w-full bg-gray-600 text-gray-300 px-4 py-3 sm:px-6 sm:py-4 rounded-3xl text-base sm:text-lg font-bold cursor-not-allowed"
+                                                >
+                                                    {applicationStatus === "accepted"
+                                                        ? "✓ Qabul qilindi"
+                                                        : applicationStatus === "pending"
+                                                            ? "⏳ Kutilmoqda"
+                                                            : "Ro'yxatdan o'tilgan"}
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={() => handleRegisterClick(tournament)}
+                                                    disabled={isFull || registerMutation.isPending}
+                                                    className={`w-full px-4 py-3 sm:px-6 sm:py-4 rounded-3xl text-base sm:text-lg font-bold transition-all duration-300 ${isFull ? "bg-red-500/50 text-gray-300 cursor-not-allowed" : "text-black hover:shadow-2xl transform"
+                                                        }`}
+                                                    style={
+                                                        !isFull && !registerMutation.isPending
+                                                            ? {
+                                                                background: "linear-gradient(to right, #f3aa01, #ff8c00)",
+                                                                boxShadow: "0 0 30px rgba(243, 170, 1, 0.3)",
+                                                            }
+                                                            : {}
+                                                    }
+                                                >
+                                                    {registerMutation.isPending ? "Yuklanmoqda..." : isFull ? "❌ To'ldi" : "✓ Ro'yxatdan o'tish"}
+                                                </button>
                                             )}
-                                            {isRegistered && applicationStatus === "pending" && (
-                                                <Clock className="h-5 w-5 text-yellow-400" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </SwiperSlide>
+                        );
+                    })}
+                </Swiper>
+            )}
+
+            {/* Registered Tournaments Section */}
+            {registeredTournaments.length > 0 && (
+                <div className="p-4 sm:p-6 md:p-8 lg:p-12 border border-[#1f2937] m-10 rounded-xl">
+                    <div className="max-w-7xl mx-auto">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                            <Trophy className="h-6 w-6" style={{ color: "#f3aa01" }} />
+                            Ro'yxatdan O'tgan Turnirlar
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {registeredTournaments.map((tournament) => {
+                                const application = applications.find((app) => app.tournament.id === tournament.id);
+                                const applicationStatus = application?.status;
+                                const totalParticipants = getTotalParticipants(tournament);
+                                const maxParticipants = getMaxParticipants(tournament);
+
+                                return (
+                                    <div
+                                        key={tournament.id}
+                                        className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300"
+                                    >
+                                        <div className="flex items-center justify-between mb-3">
+                                            <h3 className="text-base sm:text-lg font-bold text-white">{tournament.name}</h3>
+                                            {applicationStatus === "accepted" && (
+                                                <span className="flex items-center gap-1 text-green-400 text-xs sm:text-sm font-semibold">
+                                                    <CheckCircle className="h-4 w-4" />
+                                                    Qabul qilindi
+                                                </span>
                                             )}
-                                            {isFull && (
-                                                <div className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
-                                                    To'ldi
+                                            {applicationStatus === "pending" && (
+                                                <span className="flex items-center gap-1 text-yellow-400 text-xs sm:text-sm font-semibold">
+                                                    <Clock className="h-4 w-4" />
+                                                    Kutilmoqda
+                                                </span>
+                                            )}
+                                            {applicationStatus === "rejected" && (
+                                                <span className="flex items-center gap-1 text-red-400 text-xs sm:text-sm font-semibold">
+                                                    <XCircle className="h-4 w-4" />
+                                                    Rad etildi
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-gray-300 text-xs sm:text-sm mb-3">
+                                            {tournament.type} • {tournament.scope === "regional" ? "Viloyatlararo" : "Ochiq"} •
+                                            Boshlanish: {formatDate(tournament.startTime)}
+                                        </p>
+                                        <div className="space-y-2">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2 text-gray-300">
+                                                    <Users className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                    <span>Ishtirokchilar:</span>
+                                                </div>
+                                                <span className="text-white font-semibold text-xs sm:text-sm">
+                                                    {totalParticipants}/{maxParticipants}
+                                                </span>
+                                            </div>
+                                            <div className="w-full bg-white/20 rounded-full h-2">
+                                                <div
+                                                    className="h-2 rounded-full transition-all duration-500"
+                                                    style={{
+                                                        background: "linear-gradient(to right, #f3aa01, #ff8c00)",
+                                                        width: `${(totalParticipants / maxParticipants) * 100}%`,
+                                                    }}
+                                                ></div>
+                                            </div>
+                                            {tournament.participationFee && (
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2 text-gray-300">
+                                                        <DollarSign className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                        <span>Ishtirok to'lovi:</span>
+                                                    </div>
+                                                    <span className="font-bold text-sm" style={{ color: "#f3aa01" }}>
+                                                        {tournament.participationFee.toLocaleString()} so'm
+                                                    </span>
                                                 </div>
                                             )}
                                         </div>
                                     </div>
-
-                                    <p className="text-gray-400 text-sm mb-4">{tournament.description}</p>
-
-                                    <div className="space-y-3 mb-4">
-                                        <div className="flex justify-between items-center text-xs text-gray-500">
-                                            <span>Boshlanish:</span>
-                                            <span>{formatDate(tournament.startTime)}</span>
-                                        </div>
-
-                                        {tournament.participationFee && (
-                                            <div className="flex justify-between items-center text-xs text-gray-500">
-                                                <span>Ishtirok to'lovi:</span>
-                                                <span className="text-yellow-400 font-bold">{tournament.participationFee.toLocaleString()} so'm</span>
-                                            </div>
-                                        )}
-
-                                        {tournament.currentParticipants !== undefined && tournament.maxParticipants !== undefined && (
-                                            <div className="flex justify-between items-center text-xs text-gray-500">
-                                                <span>Ishtirokchilar:</span>
-                                                <span>{tournament.currentParticipants}/{tournament.maxParticipants}</span>
-                                            </div>
-                                        )}
-
-                                        {tournament.regions && (
-                                            <div className="text-xs text-gray-500">
-                                                <span className="block mb-1">Hududlar:</span>
-                                                <div className="flex flex-wrap gap-1">
-                                                    {tournament.regions.map(region => (
-                                                        <span key={region.id} className="bg-gray-700 px-2 py-1 rounded text-xs">
-                                                            {region.name}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => setSelectedTournament(tournament)}
-                                            className="flex-1 bg-gray-700 text-white px-3 py-2 rounded-xl hover:bg-gray-600 transition-all duration-300 text-sm font-semibold"
-                                        >
-                                            Batafsil
-                                        </button>
-
-                                        {isRegistered ? (
-                                            <button
-                                                disabled
-                                                className="flex-1 bg-gray-600 text-gray-400 px-3 py-2 rounded-xl cursor-not-allowed text-sm font-semibold"
-                                            >
-                                                {applicationStatus === "accepted" ? "Qabul qilindi" :
-                                                    applicationStatus === "pending" ? "Kutilmoqda" : "Ro'yxatdan o'tilgan"}
-                                            </button>
-                                        ) : (
-                                            <button
-                                                onClick={() => handleRegisterClick(tournament)}
-                                                disabled={registerMutation.isPending || isFull}
-                                                className={`flex-1 px-3 py-2 rounded-xl transition-all duration-300 text-sm font-semibold ${isFull
-                                                    ? "bg-red-500/50 text-gray-300 cursor-not-allowed"
-                                                    : "bg-gradient-to-r from-green-500 to-emerald-500 text-black hover:shadow-lg hover:shadow-green-500/20 transform hover:scale-105"
-                                                    }`}
-                                            >
-                                                {registerMutation.isPending ? "Yuklanmoqda..." :
-                                                    isFull ? "To'ldi" : "Ro'yxatdan o'tish"}
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
 
-            {/* Applications Section */}
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-gray-800/50 shadow-2xl">
-                <h2 className="text-xl lg:text-2xl font-bold text-white mb-6 lg:mb-8 flex items-center gap-3">
-                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
-                        <Activity className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
-                    </div>
-                    Mening arizalarim
-                </h2>
-                {loadingApps ? (
-                    <p className="text-gray-400">⏳ Yuklanmoqda...</p>
-                ) : applications.length === 0 ? (
-                    <p className="text-gray-400">❌ Hozircha arizangiz yo'q</p>
-                ) : (
-                    <div className="space-y-4">
-                        {applications.map((app: Application) => (
-                            <div key={app.id} className="bg-black/40 p-4 lg:p-6 rounded-2xl border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 backdrop-blur-sm" >
-                                <div className="flex items-center justify-between mb-3">
-                                    <h3 className="text-lg font-bold text-white">{getTournamentName(app.tournament)}</h3>
-                                    <div className="flex items-center gap-2">
-                                        {getStatusIcon(app.status)}
-                                        <span className={`font-semibold ${getStatusColor(app.status)}`}>
-                                            {app.status === "pending" ? "Kutilmoqda" : app.status === "accepted" ? "Qabul qilindi" : "Rad etildi"}
-                                        </span>
-                                    </div>
-                                </div>
-                                <p className="text-gray-400 text-sm">{getTournamentDescription(app.tournament)}</p>
-                                <div className="mt-3 text-xs text-gray-500">
-                                    <p>Ariza topshirilgan: {formatDate(app.appliedAt)}</p>
-                                    {app.reviewedAt && <p>Ko'rib chiqilgan: {formatDate(app.reviewedAt)}</p>}
-                                    {app.rejectionReason && (
-                                        <p className="text-red-400">Rad etish sababi: {app.rejectionReason}</p>
-                                    )}
-                                </div>
+            {/* Applications Panel */}
+            {showApplications && (
+                <div className="absolute inset-0 backdrop-blur-lg z-50 bg-[#111827]">
+                    <div className="p-4 sm:p-6 md:p-8">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="flex items-center justify-between mb-4 sm:mb-6">
+                                <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-3">
+                                    <Activity className="h-5 w-5 sm:h-6 sm:w-6" style={{ color: "#f3aa01" }} />
+                                    Mening arizalarim
+                                </h2>
+                                <button
+                                    onClick={() => setShowApplications(false)}
+                                    className="text-white text-xl sm:text-2xl hover:text-[#f3aa01] transition-colors duration-300"
+                                >
+                                    ✕
+                                </button>
                             </div>
-                        ))}
+
+                            {isLoadingApplications ? (
+                                <div className="text-center py-12 sm:py-16">
+                                    <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-white mx-auto mb-4"></div>
+                                    <p className="text-base sm:text-lg text-gray-300">Yuklanmoqda...</p>
+                                </div>
+                            ) : applications.length === 0 ? (
+                                <div className="text-center py-12 sm:py-16">
+                                    <XCircle className="h-12 w-12 sm:h-16 sm:w-16 text-gray-500 mx-auto mb-4" />
+                                    <p className="text-lg sm:text-xl text-gray-400">Hozircha arizangiz yo'q</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-3 max-h-[80vh] overflow-y-auto">
+                                    {applications.map((app) => {
+                                        const tournamentData = app.tournament;
+                                        return (
+                                            <div
+                                                key={app.id}
+                                                className="bg-white/5 backdrop-blur-xl p-4 rounded-3xl border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300"
+                                            >
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <h3 className="text-base sm:text-lg font-bold text-white">
+                                                        {tournamentData.name}
+                                                    </h3>
+                                                    <div className="flex items-center gap-2">
+                                                        {app.status === "accepted" && (
+                                                            <>
+                                                                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
+                                                                <span className="text-green-400 font-bold text-xs sm:text-sm">
+                                                                    Qabul qilindi
+                                                                </span>
+                                                            </>
+                                                        )}
+                                                        {app.status === "pending" && (
+                                                            <>
+                                                                <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400" />
+                                                                <span className="text-yellow-400 font-bold text-xs sm:text-sm">
+                                                                    Kutilmoqda
+                                                                </span>
+                                                            </>
+                                                        )}
+                                                        {app.status === "rejected" && (
+                                                            <>
+                                                                <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-red-400" />
+                                                                <span className="text-red-400 font-bold text-xs sm:text-sm">
+                                                                    Rad etildi
+                                                                </span>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <p className="text-gray-300 mb-3 text-xs sm:text-sm">
+                                                    {tournamentData.type} •{" "}
+                                                    {tournamentData.scope === "regional" ? "Viloyatlararo" : "Ochiq"} •
+                                                    Boshlanish: {formatDate(tournamentData.startTime)}
+                                                </p>
+                                                <div className="text-xs text-gray-400 space-y-1">
+                                                    <p>Ariza topshirilgan: {formatDate(app.appliedAt)}</p>
+                                                    <p>Yaratilgan: {formatDate(app.createdAt)}</p>
+                                                    <p>Yangilangan: {formatDate(app.updatedAt)}</p>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
 
-            {/* Registration Confirmation Modal */}
+            {/* Registration Modal */}
             {showRegistrationModal && selectedTournamentForRegistration && (
-                <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-                    <div className="bg-gray-900 rounded-3xl p-6 lg:p-8 max-w-md w-full relative">
-                        <button
-                            onClick={() => {
-                                setShowRegistrationModal(false)
-                                setSelectedTournamentForRegistration(null)
-                            }}
-                            className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
-                        >
-                            ✕
-                        </button>
-
-                        <h3 className="text-2xl font-bold text-white mb-4">Turnirga ro'yxatdan o'tish</h3>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                    <div className="rounded-3xl p-4 sm:p-6 max-w-md w-full border border-white/20 bg-[#111827] shadow-2xl">
+                        <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
+                            Ro'yxatdan o'tish
+                        </h3>
 
                         <div className="space-y-4 mb-6">
-                            <p className="text-gray-300">
-                                <strong>{selectedTournamentForRegistration.name}</strong> turniriga ro'yxatdan o'tmoqchimisiz?
+                            <p className="text-gray-200 text-sm sm:text-base">
+                                <strong className="text-white">{selectedTournamentForRegistration.name}</strong>{" "}
+                                turniriga ro'yxatdan o'tmoqchimisiz?
                             </p>
 
+                            <div>
+                                <label
+                                    htmlFor="tournamentId"
+                                    className="block text-xs sm:text-sm font-medium text-gray-300 mb-2"
+                                >
+                                    Turnir ID kiriting
+                                </label>
+                                <input
+                                    id="tournamentId"
+                                    type="text"
+                                    value={tournamentIdInput}
+                                    onChange={(e) => {
+                                        setTournamentIdInput(e.target.value);
+                                        setInputError("");
+                                    }}
+                                    placeholder="Turnir ID"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 sm:px-4 sm:py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f3aa01] transition-all duration-300"
+                                />
+                                {inputError && (
+                                    <p className="text-red-400 text-xs sm:text-sm mt-2">{inputError}</p>
+                                )}
+                            </div>
+
                             {selectedTournamentForRegistration.participationFee && (
-                                <p className="text-yellow-400 font-bold">
-                                    Ishtirok to'lovi: {selectedTournamentForRegistration.participationFee.toLocaleString()} so'm
+                                <p className="font-bold text-base sm:text-lg text-[#f3aa01]">
+                                    Ishtirok to'lovi:{" "}
+                                    {selectedTournamentForRegistration.participationFee.toLocaleString()} so'm
                                 </p>
                             )}
 
-                            <p className="text-sm text-gray-400">
-                                Boshlanish vaqti: {formatDate(selectedTournamentForRegistration.startTime)}
+                            <p className="text-gray-300 text-xs sm:text-sm">
+                                Boshlanish: {formatDate(selectedTournamentForRegistration.startTime)}
                             </p>
 
-                            {selectedTournamentForRegistration.currentParticipants !== undefined &&
-                                selectedTournamentForRegistration.maxParticipants !== undefined && (
-                                    <p className="text-sm text-gray-400">
-                                        Ishtirokchilar: {selectedTournamentForRegistration.currentParticipants}/
-                                        {selectedTournamentForRegistration.maxParticipants}
-                                    </p>
-                                )}
+                            <p className="text-gray-300 text-xs sm:text-sm">
+                                Ishtirokchilar: {getTotalParticipants(selectedTournamentForRegistration)}/
+                                {getMaxParticipants(selectedTournamentForRegistration)}
+                            </p>
                         </div>
 
                         <div className="flex gap-3">
                             <button
                                 onClick={() => {
-                                    setShowRegistrationModal(false)
-                                    setSelectedTournamentForRegistration(null)
+                                    setShowRegistrationModal(false);
+                                    setSelectedTournamentForRegistration(null);
+                                    setTournamentIdInput("");
+                                    setInputError("");
                                 }}
-                                className="flex-1 bg-gray-700 text-white px-4 py-3 rounded-2xl hover:bg-gray-600 transition-all duration-300 font-semibold"
+                                className="flex-1 bg-gray-700 text-white px-3 py-2 sm:px-4 sm:py-3 rounded-2xl hover:bg-gray-600 transition-all duration-300 font-bold text-sm sm:text-base"
                             >
                                 Bekor qilish
                             </button>
                             <button
                                 onClick={handleConfirmRegistration}
-                                disabled={registerMutation.isPending}
-                                className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-black px-4 py-3 rounded-2xl hover:shadow-lg hover:shadow-green-500/20 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled={registerMutation.isPending || !tournamentIdInput}
+                                className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-black px-3 py-2 sm:px-4 sm:py-3 rounded-2xl hover:shadow-2xl hover:shadow-green-500/30 transition-all duration-300 font-bold text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {registerMutation.isPending ? "Yuklanmoqda..." : "Tasdiqlash"}
                             </button>
                         </div>
                     </div>
                 </div>
-            )}
 
-            {/* Tournament Detail Modal */}
-            {selectedTournament && (
-                <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-                    <div className="bg-gray-900 rounded-3xl p-6 lg:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                        <button
-                            onClick={() => setSelectedTournament(null)}
-                            className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
-                        >
-                            ✕
-                        </button>
-                        <h3 className="text-2xl font-bold text-white mb-4">{selectedTournament.name}</h3>
-                        <p className="text-gray-300 mb-4">{selectedTournament.description}</p>
-
-                        <div className="space-y-3 mb-6">
-                            <p className="text-sm text-gray-400">
-                                <strong>Boshlanish:</strong> {formatDate(selectedTournament.startTime)}
-                            </p>
-                            {selectedTournament.endTime && (
-                                <p className="text-sm text-gray-400">
-                                    <strong>Tugash:</strong> {formatDate(selectedTournament.endTime)}
-                                </p>
-                            )}
-                            {selectedTournament.participationFee && (
-                                <p className="text-sm text-gray-400">
-                                    <strong>Ishtirok to'lovi:</strong> {selectedTournament.participationFee.toLocaleString()} so'm
-                                </p>
-                            )}
-                            {selectedTournament.currentParticipants !== undefined && selectedTournament.maxParticipants !== undefined && (
-                                <p className="text-sm text-gray-400">
-                                    <strong>Ishtirokchilar:</strong> {selectedTournament.currentParticipants}/{selectedTournament.maxParticipants}
-                                </p>
-                            )}
-                        </div>
-
-                        {selectedTournament.regions && selectedTournament.regions.length > 0 && (
-                            <div className="mb-6">
-                                <h4 className="text-lg font-bold text-white mb-3">Hududlar</h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    {selectedTournament.regions.map(region => (
-                                        <div key={region.id} className="bg-gray-800 p-3 rounded-xl">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <span className="text-white font-semibold">{region.name}</span>
-                                                <span className="text-gray-400 text-sm">
-                                                    {region.currentParticipants}/{region.maxParticipants}
-                                                </span>
-                                            </div>
-                                            <div className="w-full bg-gray-700 rounded-full h-2">
-                                                <div
-                                                    className="bg-green-500 h-2 rounded-full"
-                                                    style={{
-                                                        width: `${(region.currentParticipants / region.maxParticipants) * 100}%`
-                                                    }}
-                                                ></div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {selectedTournament.nationalPrizes && selectedTournament.nationalPrizes.length > 0 && (
-                            <div className="mb-6">
-                                <h4 className="text-lg font-bold text-white mb-3">Milliy mukofotlar</h4>
-                                <div className="space-y-2">
-                                    {selectedTournament.nationalPrizes.map(prize => (
-                                        <div key={prize.id} className="flex items-center justify-between bg-gray-800 p-3 rounded-xl">
-                                            <span className="text-white">
-                                                {prize.place}-o'rin
-                                            </span>
-                                            <span className="text-yellow-400 font-semibold">{prize.prize}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {selectedTournament.regionalPrizes && selectedTournament.regionalPrizes.length > 0 && (
-                            <div>
-                                <h4 className="text-lg font-bold text-white mb-3">Hududiy mukofotlar</h4>
-                                <div className="space-y-2">
-                                    {selectedTournament.regionalPrizes.map(prize => (
-                                        <div key={prize.id} className="flex items-center justify-between bg-gray-800 p-3 rounded-xl">
-                                            <span className="text-white">
-                                                {prize.place}-o'rin
-                                            </span>
-                                            <span className="text-yellow-400 font-semibold">{prize.prize}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default Dashboard
+export default Dashboard;

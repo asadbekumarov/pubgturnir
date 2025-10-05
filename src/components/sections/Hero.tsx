@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import HeroBG from "../../assets/img/HeroBG.avif"
 
 const Hero = () => {
@@ -34,14 +35,14 @@ const Hero = () => {
                 </p>
 
                 <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
-                    <a href="/participation" className="w-full xs:w-auto px-4 sm:px-6 md:px-8 py-2 sm:py-4 text-sm sm:text-base font-bold rounded-full bg-[#f3aa01] text-black 
+                    <Link to="/register" className="w-full xs:w-auto px-4 sm:px-6 md:px-8 py-2 sm:py-4 text-sm sm:text-base font-bold rounded-full bg-[#f3aa01] text-black 
         transition transform hover:scale-105 hover:shadow-lg duration-300">
                         QATNASHISH
-                    </a>
-                    <a href="/login" className="w-full xs:w-auto px-4 sm:px-6 md:px-8 py-2 sm:py-3 text-sm sm:text-base font-bold rounded-full border-2 border-[#f3aa01] text-white 
+                    </Link>
+                    <Link to="/register" className="w-full xs:w-auto px-4 sm:px-6 md:px-8 py-2 sm:py-3 text-sm sm:text-base font-bold rounded-full border-2 border-[#f3aa01] text-white 
         hover:bg-[#f3aa01] hover:text-black transition transform hover:scale-105 hover:shadow-lg duration-300">
                         BATAFSIL
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 pt-6 sm:pt-8 md:pt-10">
