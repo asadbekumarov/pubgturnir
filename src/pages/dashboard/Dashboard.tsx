@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import "swiper/css"; // Ensure Swiper CSS is imported
+// import "swiper/css"; // Ensure Swiper CSS is imported
 
 type Region = {
     id: string;
