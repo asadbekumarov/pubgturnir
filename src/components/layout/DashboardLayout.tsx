@@ -68,7 +68,7 @@ const DashboardLayout: React.FC = () => {
                 {/* Sidebar */}
                 <aside
                     className={`
-            fixed top-16 left-0 z-40 w-64 h-[calc(100vh-4rem)] p-4 border border-gray-800
+            fixed top-16 left-0 z-40 w-64 h-[calc(100vh-4rem)] p-4 border-r border-[#374151]
             bg-gray-900 shadow-2xl transition-transform duration-300 ease-in-out
             ${isMobileSidebarVisible ? "translate-x-0" : "-translate-x-full"}
             lg:static lg:translate-x-0 lg:w-64 lg:flex-shrink-0 lg:h-auto
