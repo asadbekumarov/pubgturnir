@@ -31,7 +31,7 @@ const Login: React.FC = () => {
                 
             if (token) {
                 await login(token, user);
-                navigate("/dashboard");
+                navigate("/dashboard/stats");
             } else {
                 setServerError("Token topilmadi");
             }

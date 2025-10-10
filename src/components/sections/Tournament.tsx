@@ -142,12 +142,10 @@ export default function TournamentList() {
         <div className=" bg-[#000102] py-12 px-4 sm:px-6">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-extrabold text-white mb-3">
+                    <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-white leading-tight">
                         Turnirlar
-                    </h1>
-                    <p className="text-gray-500 max-w-2xl mx-auto">
-                        Ishtirok etish uchun mavjud turnirlarni ko'ring va o'z darajangizni sinab ko'ring!
-                    </p>
+                    </h2>
+                        
                 </div>
 
                 {!tournaments?.length ? (

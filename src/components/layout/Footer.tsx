@@ -144,19 +144,14 @@ const Footer = () => {
     const footerRef = useRef<HTMLElement | null>(null)
 
     return (
-        <footer ref={footerRef} className="relative overflow-hidden bg-gradient-to-b from-gray-950 to-black px-4">
+        <footer ref={footerRef} className="relative overflow-hidden bg-[#000102] px-4">
             {/* Animated Stars */}
             <div className="absolute inset-0 z-0 overflow-hidden">
                 {[...Array(15)].map((_, i) => (
                     <div
                         key={i}
                         className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-                        style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
-                            animationDuration: `${2 + Math.random() * 3}s`,
-                        }}
+                  
                     />
                 ))}
             </div>

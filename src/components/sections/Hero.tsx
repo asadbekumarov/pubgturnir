@@ -29,10 +29,7 @@ const Hero = () => {
                     </span>
                 </h1>
 
-                <p className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 mb-4 sm:mb-6 md:mb-8 lg:mb-10 max-w-xl sm:max-w-2xl mx-auto leading-relaxed px-2 sm:px-4">
-                    Eng kuchli komandalar bilan kurash olib boring va{" "}
-                    <span className="text-[#f3aa01] font-semibold">champion</span> bo'ling
-                </p>
+             
 
                 <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
                     <Link to="/register" className="w-full xs:w-auto px-4 sm:px-6 md:px-8 py-2 sm:py-4 text-sm sm:text-base font-bold rounded-full bg-[#f3aa01] text-black 

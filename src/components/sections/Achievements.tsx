@@ -45,7 +45,7 @@ const Achievements = () => {
   return (
     <section
       id="results"
-      className="py-16 sm:py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-black via-gray-950 to-black mx-auto px-4 sm:px-6 lg:px-8"
+      className="py-16 sm:py-20 md:py-28 relative overflow-hidden bg-[#000102] mx-auto px-4 sm:px-6 lg:px-8"
     >
       {/* Animated Stars Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -53,12 +53,7 @@ const Achievements = () => {
           <div
             key={star.id}
             className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-            style={{
-              left: `${star.left}%`,
-              top: `${star.top}%`,
-              animationDelay: `${star.delay}s`,
-              animationDuration: `${star.duration}s`,
-            }}
+        
           />
         ))}
       </div>
@@ -78,9 +73,7 @@ const Achievements = () => {
               VA MUKOFOTLAR
             </span>
           </h2>
-          <p className="text-xs xs:text-sm sm:text-base md:text-lg text-gray-400 max-w-xl sm:max-w-2xl mx-auto mt-3 sm:mt-5 leading-relaxed px-2 sm:px-4">
-            Eng yaxshi o'yinchilar uchun maxsus mukofotlar, eternal glory va global tan olinish.
-          </p>
+        
         </div>
 
         {/* Tab Switcher */}

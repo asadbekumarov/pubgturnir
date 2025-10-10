@@ -16,7 +16,7 @@ const Header = () => {
 
     const handleAuthNavigate = () => {
         if (user) {
-            navigate("/dashboard/profile")
+            navigate("/dashboard/stats")
         } else {
             navigate("/login")
         }
@@ -63,7 +63,7 @@ const Header = () => {
                         <div className="hidden md:flex items-center">
                             <button
                                 onClick={handleAuthNavigate}
-                                className="bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-1.5 px-3 sm:px-4 lg:px-6 rounded-full flex items-center space-x-1 sm:space-x-2"
+                                className="bg-[#f3aa01] text-black font-bold py-1.5 px-3 sm:px-4 lg:px-6 rounded-xl flex items-center space-x-1 sm:space-x-2"
                             >
                                 <User className="h-4 w-4" />
                                 <span className="hidden lg:inline">{user ? "Dashboard" : "Kirish"}</span>
@@ -95,7 +95,7 @@ const Header = () => {
                         <Link
                             key={link.name}
                             to={link.href}
-                            className="text-white hover:text-[#f3aa01] text-lg sm:text-xl md:text-2xl font-semibold w-full text-center"
+                            className="text-white  text-lg sm:text-xl md:text-2xl font-semibold w-full text-center"
                             onClick={closeMobileMenu}
                         >
                             {link.name}
@@ -106,7 +106,7 @@ const Header = () => {
                     <div className="w-full flex justify-center relative mt-4">
                         <button
                             onClick={() => { closeMobileMenu(); handleAuthNavigate() }}
-                            className="bg-gradient-to-r from-[#f3aa01] to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-2 px-6 rounded-full flex items-center justify-center space-x-2 text-sm sm:text-base"
+                            className="bg-[#f3aa01] text-black font-bold py-2 px-6 rounded-full flex items-center justify-center space-x-2 text-sm sm:text-base"
                         >
                             <User className="h-5 w-5" />
                             <span>{user ? "Dashboard" : "Kirish"}</span>

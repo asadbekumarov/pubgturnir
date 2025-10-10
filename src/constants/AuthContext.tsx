@@ -24,7 +24,6 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-// Public routes that don't require authentication
 const PUBLIC_ROUTES = ["/login", "/register", "/forgot-password", "/"]
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -34,7 +33,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [token, setTokenState] = useState<string | null>(null)
     const [isInitialized, setIsInitialized] = useState(false)
 
-    // Initialize token from localStorage on mount
     useEffect(() => {
         const storedToken = localStorage.getItem("token")
         if (storedToken) {
@@ -61,7 +59,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 return userData as User
             } catch (error) {
                 console.error("Token validation failed", error)
-                // Clear invalid token
                 localStorage.removeItem("token")
                 localStorage.removeItem("user")
                 setTokenState(null)
@@ -73,7 +70,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         retry: 1,
     })
 
-    // Route protection - redirect to login if not authenticated
     useEffect(() => {
         if (!isInitialized) return
 

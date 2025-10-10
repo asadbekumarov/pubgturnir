@@ -21,7 +21,7 @@ import type {
 export const navigationLinks: NavigationLink[] = [
   { name: "Turnirlar", href: "#tournaments" },
   { name: "Natijalar", href: "#results" },
-  { name: "Jadval", href: "#table" },
+  // { name: "Jadval", href: "#table" },
 ];
 
 // Social links
@@ -50,9 +50,7 @@ export const socialLinks: SocialLink[] = [
 export const quickLinks: QuickLink[] = [
   { label: "Turnirlar", href: "#" },
   { label: "Natijalar", href: "#" },
-  { label: "Jadval", href: "#" },
-  { label: "Qoidalar", href: "#" },
-  { label: "FAQ", href: "#" },
+
 ];
 
 // Status badges
