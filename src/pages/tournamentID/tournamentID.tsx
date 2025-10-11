@@ -3,7 +3,6 @@
 // import { useState } from "react";
 // import { useParams, Link } from "react-router-dom";
 // import { useQuery, useMutation } from "@tanstack/react-query";
-// // import { motion, AnimatePresence } from "framer-motion";
 // import apiClient from "../../lib/apiClient";
 // import {
 //     Calendar,
@@ -47,8 +46,6 @@
 // };
 
 // const API_URL = import.meta.env.VITE_API_URL;
-// // import { AnimatePresence } from 'framer-motion';
-// // import { motion } from 'framer-motion';
 
 // const getScopeText = (scope: string) => {
 //     switch (scope) {
@@ -89,28 +86,25 @@
 
 // export default function TournamentDetail() {
 //     const { id } = useParams<{ id: string }>();
-
 //     const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 //     const [selectedTournamentForRegistration, setSelectedTournamentForRegistration] =
 //         useState<Tournament | null>(null);
-//     const [tournamentIdInput, setTournamentIdInput] = useState("");
-//     const [inputError, setInputError] = useState("");
 
-//     // 🔹 Ro‘yxatdan o‘tish so‘rovini yuboruvchi mutation
+//     // Ro‘yxatdan o‘tish so‘rovini yuboruvchi mutation
 //     const registerMutation = useMutation({
-//         mutationFn: async () => {
+//         mutationFn: async (tournamentId: string) => {
 //             const res = await apiClient.post(`${API_URL}/web/v1/tournament/register`, {
-//                 tournamentId: tournamentIdInput,
+//                 tournamentId,
 //             });
 //             return res.data;
 //         },
 //         onSuccess: () => {
 //             alert("✅ Ro‘yxatdan o‘tish muvaffaqiyatli yakunlandi!");
 //             setShowRegistrationModal(false);
-//             setTournamentIdInput("");
+//             setSelectedTournamentForRegistration(null);
 //         },
 //         onError: () => {
-//             setInputError("❌ Ro‘yxatdan o‘tishda xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.");
+//             alert("❌ Ro‘yxatdan o‘tishda xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.");
 //         },
 //     });
 
@@ -153,6 +147,16 @@
 //             </div>
 //         );
 //     }
+
+//     const handleRegisterClick = () => {
+//         setSelectedTournamentForRegistration(tournament);
+//         setShowRegistrationModal(true);
+//     };
+
+//     const handleConfirmRegistration = () => {
+//         if (!selectedTournamentForRegistration) return;
+//         registerMutation.mutate(selectedTournamentForRegistration.id);
+//     };
 
 //     return (
 //         <div className="min-h-screen bg-[#000102] py-8 px-4 sm:px-6">
@@ -250,8 +254,7 @@
 //                                                 <div
 //                                                     className="bg-[#f3aa01] h-2 rounded-full"
 //                                                     style={{
-//                                                         width: `${(region.currentParticipants / region.maxParticipants) * 100
-//                                                             }%`,
+//                                                         width: `${(region.currentParticipants / region.maxParticipants) * 100}%`,
 //                                                     }}
 //                                                 ></div>
 //                                             </div>
@@ -264,13 +267,10 @@
 //                         <div className="pt-4 border-t border-gray-800">
 //                             <button
 //                                 disabled={tournament.status === "completed"}
-//                                 onClick={() => {
-//                                     setSelectedTournamentForRegistration(tournament);
-//                                     setShowRegistrationModal(true);
-//                                 }}
+//                                 onClick={handleRegisterClick}
 //                                 className={`w-full py-3 px-4 rounded-lg font-bold transition-colors ${tournament.status === "completed"
-//                                     ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-//                                     : "bg-[#f3aa01] text-[#000102] hover:bg-[#e09a00]"
+//                                         ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+//                                         : "bg-[#f3aa01] text-[#000102] hover:bg-[#e09a00]"
 //                                     }`}
 //                             >
 //                                 {tournament.status === "completed"
@@ -282,87 +282,73 @@
 //                 </div>
 //             </div>
 
-//             {/* 🔹 Modal */}
-//             {/* <AnimatePresence> */}
-//             <div>
-//                 {showRegistrationModal && selectedTournamentForRegistration && (
-//                     <div
-//                         className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
-//                     >
-//                         <div
-//                             // transition={{ type: "spring", stiffness: 150, damping: 20 }}
-//                             className="rounded-3xl p-6 max-w-md w-full border border-white/20 bg-[#111827] shadow-2xl relative"
+//             {/* Modal */}
+//             {showRegistrationModal && selectedTournamentForRegistration && (
+//                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+//                     <div className="rounded-3xl p-6 max-w-md w-full border border-white/20 bg-[#111827] shadow-2xl relative">
+//                         <button
+//                             onClick={() => {
+//                                 setShowRegistrationModal(false);
+//                                 setSelectedTournamentForRegistration(null);
+//                             }}
+//                             className="absolute top-3 right-3 text-gray-400 hover:text-white"
 //                         >
-//                             <button
-//                                 onClick={() => setShowRegistrationModal(false)}
-//                                 className="absolute top-3 right-3 text-gray-400 hover:text-white"
-//                             >
-//                                 <X size={20} />
-//                             </button>
+//                             <X size={20} />
+//                         </button>
 
-//                             <h3 className="text-2xl font-bold text-white mb-4">
-//                                 Ro'yxatdan o'tish
-//                             </h3>
+//                         <h3 className="text-2xl font-bold text-white mb-4">
+//                             Ro'yxatdan o'tish
+//                         </h3>
 
-//                             <p className="text-gray-200 text-sm sm:text-base mb-4">
+//                         <div className="space-y-4 mb-6">
+//                             <p className="text-gray-200 text-sm sm:text-base">
 //                                 <strong className="text-white">
 //                                     {selectedTournamentForRegistration.name}
 //                                 </strong>{" "}
 //                                 turniriga ro'yxatdan o'tmoqchimisiz?
 //                             </p>
 
-//                             <label
-//                                 htmlFor="tournamentId"
-//                                 className="block text-sm font-medium text-gray-300 mb-2"
-//                             >
-//                                 Turnir ID kiriting
-//                             </label>
-//                             <input
-//                                 id="tournamentId"
-//                                 type="text"
-//                                 value={tournamentIdInput}
-//                                 onChange={(e) => {
-//                                     setTournamentIdInput(e.target.value);
-//                                     setInputError("");
-//                                 }}
-//                                 placeholder="Turnir ID"
-//                                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f3aa01] transition-all duration-300"
-//                             />
-//                             {inputError && (
-//                                 <p className="text-red-400 text-sm mt-2">{inputError}</p>
+//                             <p className="text-gray-300 text-sm">
+//                                 Turnir ID: {selectedTournamentForRegistration.id}
+//                             </p>
+
+//                             {selectedTournamentForRegistration.participationFee !== undefined && (
+//                                 <p className="text-[#f3aa01] font-bold text-base">
+//                                     Ishtirok to‘lovi: {selectedTournamentForRegistration.participationFee} Coin
+//                                 </p>
 //                             )}
 
-//                             <div className="flex gap-3 mt-6">
-//                                 <button
-//                                     onClick={() => {
-//                                         setShowRegistrationModal(false);
-//                                         setSelectedTournamentForRegistration(null);
-//                                         setTournamentIdInput("");
-//                                         setInputError("");
-//                                     }}
-//                                     className="flex-1 bg-gray-700 text-white py-3 rounded-2xl hover:bg-gray-600 transition-all font-bold"
-//                                 >
-//                                     Bekor qilish
-//                                 </button>
-//                                 <button
-//                                     onClick={() => registerMutation.mutate()}
-//                                     disabled={registerMutation.isPending || !tournamentIdInput}
-//                                     className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-black py-3 rounded-2xl hover:shadow-2xl hover:shadow-green-500/30 transition-all font-bold disabled:opacity-50 disabled:cursor-not-allowed"
-//                                 >
-//                                     {registerMutation.isPending
-//                                         ? "Yuklanmoqda..."
-//                                         : "Tasdiqlash"}
-//                                 </button>
-//                             </div>
+//                             <p className="text-gray-300 text-sm">
+//                                 Boshlanish vaqti: {formatDate(selectedTournamentForRegistration.startTime)}
+//                             </p>
+//                         </div>
+
+//                         <div className="flex gap-3">
+//                             <button
+//                                 onClick={() => {
+//                                     setShowRegistrationModal(false);
+//                                     setSelectedTournamentForRegistration(null);
+//                                 }}
+//                                 className="flex-1 bg-gray-700 text-white py-3 rounded-2xl hover:bg-gray-600 transition-all font-bold"
+//                             >
+//                                 Bekor qilish
+//                             </button>
+//                             <button
+//                                 onClick={handleConfirmRegistration}
+//                                 disabled={registerMutation.isPending}
+//                                 className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-black py-3 rounded-2xl hover:shadow-2xl hover:shadow-green-500/30 transition-all font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+//                             >
+//                                 {registerMutation.isPending ? "Yuklanmoqda..." : "Tasdiqlash"}
+//                             </button>
 //                         </div>
 //                     </div>
-//                 )}
-//             </div>
+//                 </div>
+//             )}
 //         </div>
 //     );
 // }
 
-// // ✅ Yordamchi komponentlar
+// // Yordamchi komponentlar
 // const InfoRow = ({
 //     label,
 //     value,
@@ -380,7 +366,6 @@
 //         </div>
 //     </div>
 // );
-
 "use client";
 
 import { useState } from "react";
@@ -395,9 +380,11 @@ import {
     Users,
     Coins,
     ChevronLeft,
-    LucideIcon,
+    Info,
     X,
 } from "lucide-react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Region = {
     id: string;
@@ -481,13 +468,24 @@ export default function TournamentDetail() {
             });
             return res.data;
         },
-        onSuccess: () => {
-            alert("✅ Ro‘yxatdan o‘tish muvaffaqiyatli yakunlandi!");
+        onMutate: () => {
+            toast.info("Ro‘yxatdan o‘tish yuborilmoqda...", { autoClose: 1200 });
+        },
+        onSuccess: (data) => {
+            // Agar backend xabar qaytarsa uni chiqarish
+            const message =
+                data?.message || "✅ Ro‘yxatdan o‘tish muvaffaqiyatli yakunlandi!";
+            toast.success(message);
             setShowRegistrationModal(false);
             setSelectedTournamentForRegistration(null);
         },
-        onError: () => {
-            alert("❌ Ro‘yxatdan o‘tishda xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.");
+        onError: (error: any) => {
+            // Har xil error strukturalar uchun umumiy tutish
+            const msg =
+                error?.response?.data?.message ||
+                error?.message ||
+                "❌ Ro‘yxatdan o‘tishda xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.";
+            toast.error(msg);
         },
     });
 
@@ -510,6 +508,7 @@ export default function TournamentDetail() {
                     <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#f3aa01] mb-3"></div>
                     <p>Turnir ma'lumotlari yuklanmoqda...</p>
                 </div>
+                <ToastContainer />
             </div>
         );
     }
@@ -527,6 +526,7 @@ export default function TournamentDetail() {
                         <ChevronLeft size={16} /> Barcha turnirlarga qaytish
                     </Link>
                 </div>
+                <ToastContainer />
             </div>
         );
     }
@@ -652,8 +652,8 @@ export default function TournamentDetail() {
                                 disabled={tournament.status === "completed"}
                                 onClick={handleRegisterClick}
                                 className={`w-full py-3 px-4 rounded-lg font-bold transition-colors ${tournament.status === "completed"
-                                        ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-                                        : "bg-[#f3aa01] text-[#000102] hover:bg-[#e09a00]"
+                                    ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                                    : "bg-[#f3aa01] text-[#000102] hover:bg-[#e09a00]"
                                     }`}
                             >
                                 {tournament.status === "completed"
@@ -718,15 +718,18 @@ export default function TournamentDetail() {
                             </button>
                             <button
                                 onClick={handleConfirmRegistration}
-                                disabled={registerMutation.isPending}
+                                disabled={registerMutation.isLoading}
                                 className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-black py-3 rounded-2xl hover:shadow-2xl hover:shadow-green-500/30 transition-all font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {registerMutation.isPending ? "Yuklanmoqda..." : "Tasdiqlash"}
+                                {registerMutation.isLoading ? "Yuklanmoqda..." : "Tasdiqlash"}
                             </button>
                         </div>
                     </div>
                 </div>
             )}
+
+            {/* Toast container (bitta joyda bo‘lishi yetarli) */}
+            <ToastContainer position="top-right" autoClose={4000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </div>
     );
 }
@@ -739,7 +742,7 @@ const InfoRow = ({
 }: {
     label: string;
     value: string;
-    icon: LucideIcon;
+    icon: any;
 }) => (
     <div className="flex items-start gap-3 hover:bg-gray-800/40 p-2 rounded-lg transition">
         <Icon size={18} className="text-[#f3aa01] mt-0.5 flex-shrink-0" />

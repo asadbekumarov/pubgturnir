@@ -22,6 +22,13 @@ const Header = () => {
         }
     }
 
+    const handleScrollToSection = (sectionId: string) => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return (
         <>
             {/* HEADER */}
@@ -49,15 +56,26 @@ const Header = () => {
                         {/* Desktop menu */}
                         <nav className="hidden md:flex space-x-4 lg:space-x-6 xl:space-x-8">
                             {navigationLinks.map((link) => (
-                                <Link
-                                    key={link.name}
-                                    to={link.href}
-                                    className="text-white hover:text-[#f3aa01] px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium"
-                                >
-                                    {link.name}
-                                </Link>
+                                link.href === "#tournaments" ? (
+                                    <button
+                                        key={link.name}
+                                        onClick={() => handleScrollToSection("tournaments")}
+                                        className="text-white hover:text-[#f3aa01] px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium"
+                                    >
+                                        {link.name}
+                                    </button>
+                                ) : (
+                                    <button
+                                        key={link.name}
+                                        onClick={() => handleScrollToSection("results")}
+                                        className="text-white hover:text-[#f3aa01] px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium"
+                                    >
+                                        {link.name}
+                                    </button>
+                                )
                             ))}
                         </nav>
+
 
                         {/* Desktop Kirish/Dashboard button */}
                         <div className="hidden md:flex items-center">

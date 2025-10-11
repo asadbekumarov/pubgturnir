@@ -116,3 +116,44 @@ body,
     opacity: 0;
   }
 }
+
+/* Scroll dizayn */
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #1d2432;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 10px;
+
+}
+
+/* src/pages/dashboard/index.css */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1d2432;
+}
+
+/* global.css yoki tailwind globals-da */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Har bir bo'limga avtomatik offset berish uchun: */
+.section {
+  scroll-margin-top: 64px;
+  /* header balandligiga moslang */
+}

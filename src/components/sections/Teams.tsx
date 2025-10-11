@@ -68,22 +68,6 @@ const Teams = () => {
             ref={sectionRef}
             className="py-16 sm:py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-black via-gray-950 to-black"
         >
-            {/* Animated Stars Background */}
-            <div className="absolute inset-0 z-0 overflow-hidden">
-                {[...Array(15)].map((_, i) => (
-                    <div
-                        key={i}
-                        className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-                        style={{
-                            ...generateRandomPosition(),
-                            animationDelay: generateRandomDelay(),
-                            animationDuration: generateRandomDuration(),
-                        }}
-                    ></div>
-                ))}
-                <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent top-1/3 animate-pulse"></div>
-                <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#f3aa01]/40 to-transparent bottom-1/3 animate-pulse delay-700"></div>
-            </div>
 
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
                 {/* Header */}
@@ -155,7 +139,6 @@ const Teams = () => {
                                             <h3 className="text-xl font-bold text-white mb-1">{team.name}</h3>
                                             <div className="flex items-center space-x-2">
                                                 <span className="text-gray-400 text-sm">{team.country}</span>
-                                                <span className="w-1 h-1 bg-gray-500 rounded-full"></span>
                                                 <div
                                                     className="flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-bold"
                                                     style={{

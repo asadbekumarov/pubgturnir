@@ -40,19 +40,16 @@ const DashboardLayout: React.FC = () => {
         `.trim();
     }, [location.pathname]);
 
-    // Use a clearer state for mobile sidebar visibility logic
     const isMobileSidebarVisible = isSidebarOpen;
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-900 text-gray-100">
-            {/* Header: Use a slightly darker gray for the header to create contrast */}
-            <header className="fixed top-0 left-0 z-50 border-b w-full bg-[#111827] border-gray-700">
+            <header className="fixed top-0 left-0 z-50 border-b w-full bg-[#111827]  border-gray-700">
                 <Header />
             </header>
 
-            <div className="flex flex-1 pt-16"> {/* pt-16 = Header height (assuming 4rem/64px) */}
+            <div className="flex flex-1 pt-16"> 
 
-                {/* Mobile menu button: Higher contrast and better icon */}
                 <button
                     onClick={toggleSidebar}
                     className="lg:hidden fixed top-4 right-4 z-[60] p-2 text-white hover:bg-gray-600/90 transition-colors shadow-lg"
@@ -68,7 +65,7 @@ const DashboardLayout: React.FC = () => {
                 {/* Sidebar */}
                 <aside
                     className={`
-            fixed top-16 left-0 z-40 w-64 h-[calc(100vh-4rem)] p-4 border-r border-[#374151]
+            fixed top-16 left-0 z-40 w-64 h-[calc(100vh-4rem)] p-4 border-r-2 border-[#374151]
             bg-gray-900 shadow-2xl transition-transform duration-300 ease-in-out
             ${isMobileSidebarVisible ? "translate-x-0" : "-translate-x-full"}
             lg:static lg:translate-x-0 lg:w-64 lg:flex-shrink-0 lg:h-auto

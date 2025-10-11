@@ -139,13 +139,13 @@ export default function TournamentList() {
     }
 
     return (
-        <div className=" bg-[#000102] py-12 px-4 sm:px-6">
+        <div id="tournaments" className=" bg-[#000102] py-12 px-4 sm:px-6">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-12">
                     <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-white leading-tight">
                         Turnirlar
                     </h2>
-                        
+
                 </div>
 
                 {!tournaments?.length ? (

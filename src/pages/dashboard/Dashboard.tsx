@@ -786,6 +786,7 @@ import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import apiClient from "../../lib/apiClient";
+import "../../../src/index.css";
 import {
     Activity,
     CheckCircle,
@@ -935,19 +936,20 @@ const Dashboard: React.FC = () => {
         onSuccess: (data: RegistrationResponse) => {
             if (data.success) {
                 toast.success("✅ Muvaffaqiyatli ro'yxatdan o'tdingiz!", {
-                    duration: 4000,
+                    duration: 5000,
                     position: "top-right",
                     style: {
-                        background: "#10b981",
-                        color: "#fff",
+                        background: "#000102",        // fon rangi
+                        color: "#f3aa01",             // matn rangi
                         borderRadius: "8px",
-                        border: "1px solid #059669",
+                        border: "1px solid #f3aa01",  // chegarasi mos rangda
                         fontSize: "14px",
                     },
                     iconTheme: {
-                        primary: "#fff",
-                        secondary: "#10b981",
+                        primary: "#f3aa01",           // ikonka asosiy rangi
+                        secondary: "#000102",        // ikonkaning fon rangi
                     },
+
                 });
                 setShowRegistrationModal(false);
                 setSelectedTournamentForRegistration(null);
@@ -960,7 +962,7 @@ const Dashboard: React.FC = () => {
                     duration: 5000,
                     position: "top-right",
                     style: {
-                        background: "#ef4444",
+                        background: "#000102",
                         color: "#fff",
                         borderRadius: "8px",
                         border: "1px solid #dc2626",
@@ -1050,7 +1052,7 @@ const Dashboard: React.FC = () => {
     }
 
     return (
-        <div className="relative mx-auto overflow-hidden bg-[#0d111c] min-h-screen w-full">
+        <div className="relative mx-auto overflow-hidden p-6 bg-[#0d111c] min-h-screen w-full">
             {/* Applications Toggle Button */}
             <button
                 onClick={() => setShowApplications(!showApplications)}
@@ -1069,7 +1071,7 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
             ) : (
-                <div className="swiper-container w-full">
+                <div className="swiper-container">
                     <Swiper
                         modules={[Autoplay]}
                         autoplay={{
@@ -1094,20 +1096,20 @@ const Dashboard: React.FC = () => {
 
                             return (
                                 <SwiperSlide key={tournament.id}>
-                                    <div className="flex items-center bg-[#111827] justify-center sm:p-6 md:p-8 lg:p-12 h-full border-2 border-[#373b41] rounded-xl">
-                                        <div className="w-[1550px] h-[720px] flex flex-col">
-                                            {/* Header Section */}
+                                    <div className="flex items-center justify-center bg-[#111827] py-6 px-3 sm:py-10 sm:px-6 md:px-10 lg:px-12 w-full h-full border-2 border-[#373b41] rounded-xl">
+                                        <div className="w-full h-auto lg:h-[720px] flex flex-col">
+                                            {/* HEADER */}
                                             <div className="mb-4 sm:mb-6">
-                                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4">
-                                                    <div className="flex items-center gap-4">
+                                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-4">
+                                                    <div className="flex items-start sm:items-center gap-3 sm:gap-4">
                                                         <div
-                                                            className="w-12 h-12 sm:w-16 sm:h-16 rounded-3xl flex items-center justify-center shadow-2xl"
+                                                            className="w-12 h-12 sm:w-16 sm:h-16 rounded-3xl flex items-center justify-center shadow-2xl shrink-0"
                                                             style={{ background: "linear-gradient(to bottom right, #f3aa01, #ff8c00)" }}
                                                         >
                                                             <Trophy className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                                                         </div>
                                                         <div>
-                                                            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
+                                                            <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 break-words">
                                                                 {tournament.name}
                                                             </h1>
                                                             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
@@ -1137,15 +1139,15 @@ const Dashboard: React.FC = () => {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="text-white/60 text-sm sm:text-lg mt-2 sm:mt-0">
+                                                    <div className="text-white/60 text-xs sm:text-lg mt-2 sm:mt-0">
                                                         {index + 1} / {upcomingTournaments.length}
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            {/* Content Grid */}
-                                            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-y-auto pb-4 m-8">
-                                                {/* Left Column */}
+                                            {/* CONTENT GRID */}
+                                            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-y-auto pb-4 sm:pb-6">
+                                                {/* LEFT */}
                                                 <div className="space-y-4">
                                                     {/* Description */}
                                                     <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300">
@@ -1153,44 +1155,44 @@ const Dashboard: React.FC = () => {
                                                             <Info className="h-5 w-5" style={{ color: "#f3aa01" }} />
                                                             <h3 className="text-base sm:text-lg font-bold text-white">Tavsif</h3>
                                                         </div>
-                                                        <p className="text-gray-200 text-sm sm:text-base leading-relaxed">
+                                                        <p className="text-gray-200 text-start text-sm sm:text-base leading-relaxed break-words">
                                                             {tournament.description}
                                                         </p>
                                                     </div>
 
-                                                    {/* Tournament Details */}
+                                                    {/* Tournament Info */}
                                                     <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300">
-                                                        <h3 className="text-base sm:text-lg font-bold text-white mb-3">Ma'lumotlar</h3>
+                                                        <h3 className="text-base sm:text-lg font-bold flex gap-2 text-white mb-3">
+                                                            <Info className="h-5 w-5 text-yellow-500" /> Ma'lumotlar
+                                                        </h3>
                                                         <div className="space-y-3">
-                                                            <div className="flex items-center justify-between">
+                                                            <div className="flex items-center justify-between text-xs sm:text-sm">
                                                                 <div className="flex items-center gap-2 text-gray-300">
                                                                     <Calendar className="h-5 w-5" style={{ color: "#f3aa01" }} />
                                                                     <span>Boshlanish:</span>
                                                                 </div>
-                                                                <span className="text-white font-semibold text-xs sm:text-sm">
-                                                                    {formatDate(tournament.startTime)}
-                                                                </span>
+                                                                <span className="text-white font-semibold">{formatDate(tournament.startTime)}</span>
                                                             </div>
 
                                                             {tournament.participationFee && (
-                                                                <div className="flex items-center justify-between">
+                                                                <div className="flex items-center justify-between text-xs sm:text-sm">
                                                                     <div className="flex items-center gap-2 text-gray-300">
                                                                         <DollarSign className="h-5 w-5" style={{ color: "#f3aa01" }} />
                                                                         <span>Ishtirok to'lovi:</span>
                                                                     </div>
-                                                                    <span className="font-bold text-base sm:text-lg" style={{ color: "#f3aa01" }}>
+                                                                    <span className="font-bold text-sm sm:text-lg" style={{ color: "#f3aa01" }}>
                                                                         {tournament.participationFee.toLocaleString()} so'm
                                                                     </span>
                                                                 </div>
                                                             )}
 
                                                             <div>
-                                                                <div className="flex items-center justify-between mb-2">
+                                                                <div className="flex items-center justify-between mb-2 text-xs sm:text-sm">
                                                                     <div className="flex items-center gap-2 text-gray-300">
                                                                         <Users className="h-5 w-5" style={{ color: "#f3aa01" }} />
                                                                         <span>Ishtirokchilar:</span>
                                                                     </div>
-                                                                    <span className="text-white font-semibold text-xs sm:text-sm">
+                                                                    <span className="text-white font-semibold">
                                                                         {totalParticipants}/{maxParticipants}
                                                                     </span>
                                                                 </div>
@@ -1214,17 +1216,15 @@ const Dashboard: React.FC = () => {
                                                                 <MapPin className="h-5 w-5" style={{ color: "#f3aa01" }} />
                                                                 <h3 className="text-base sm:text-lg font-bold text-white">Hududlar</h3>
                                                             </div>
-                                                            <div className="space-y-2 max-h-40 overflow-y-auto">
+                                                            <div className="space-y-2 max-h-40 overflow-y-auto custom-scroll">
                                                                 {tournament.regions.map((region) => (
                                                                     <div
                                                                         key={region.id}
                                                                         className="bg-white/5 p-3 rounded-2xl hover:bg-white/10 transition-all duration-300"
                                                                     >
-                                                                        <div className="flex justify-between items-center mb-2">
-                                                                            <span className="text-white font-semibold text-xs sm:text-sm">
-                                                                                {region.name}
-                                                                            </span>
-                                                                            <span className="text-gray-300 text-xs sm:text-sm">
+                                                                        <div className="flex justify-between items-center mb-2 text-xs sm:text-sm">
+                                                                            <span className="text-white font-semibold">{region.name}</span>
+                                                                            <span className="text-gray-300">
                                                                                 {region.currentParticipants}/{region.maxParticipants}
                                                                             </span>
                                                                         </div>
@@ -1244,41 +1244,37 @@ const Dashboard: React.FC = () => {
                                                     )}
                                                 </div>
 
-                                                {/* Right Column - Prizes */}
+                                                {/* RIGHT */}
                                                 <div className="space-y-4">
                                                     {/* National Prizes */}
                                                     {tournament.nationalPrizes.length > 0 && (
                                                         <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300">
                                                             <div className="flex items-center gap-2 mb-3">
                                                                 <Trophy className="h-5 w-5" style={{ color: "#f3aa01" }} />
-                                                                <h3 className="text-base sm:text-lg font-bold text-white">
-                                                                    Milliy Mukofotlar
-                                                                </h3>
+                                                                <h3 className="text-base sm:text-lg font-bold text-white">Milliy Mukofotlar</h3>
                                                             </div>
-                                                            <div className="space-y-2 max-h-60 overflow-y-auto">
+                                                            <div className="space-y-2 max-h-60 overflow-y-auto custom-scroll">
                                                                 {tournament.nationalPrizes.map((prize, index) => (
                                                                     <div
                                                                         key={prize.id}
                                                                         className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 p-3 rounded-2xl border border-yellow-500/20"
                                                                     >
-                                                                        <div className="flex items-center justify-between">
-                                                                            <div className="flex items-center gap-3">
-                                                                                <div
-                                                                                    className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm ${index === 0
-                                                                                        ? "bg-yellow-500 text-black"
-                                                                                        : index === 1
-                                                                                            ? "bg-gray-400 text-black"
-                                                                                            : index === 2
-                                                                                                ? "bg-orange-900 text-orange-200"
-                                                                                                : "bg-gray-700 text-gray-300"
-                                                                                        }`}
-                                                                                >
-                                                                                    {prize.place}
-                                                                                </div>
-                                                                                <span className="text-white font-semibold text-xs sm:text-sm">
-                                                                                    {prize.prize}
-                                                                                </span>
+                                                                        <div className="flex items-center gap-3">
+                                                                            <div
+                                                                                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm ${index === 0
+                                                                                    ? "bg-yellow-500 text-black"
+                                                                                    : index === 1
+                                                                                        ? "bg-gray-400 text-black"
+                                                                                        : index === 2
+                                                                                            ? "bg-orange-900 text-orange-200"
+                                                                                            : "bg-gray-700 text-gray-300"
+                                                                                    }`}
+                                                                            >
+                                                                                {prize.place}
                                                                             </div>
+                                                                            <span className="text-white font-semibold text-xs sm:text-sm">
+                                                                                {prize.prize}
+                                                                            </span>
                                                                         </div>
                                                                     </div>
                                                                 ))}
@@ -1291,32 +1287,28 @@ const Dashboard: React.FC = () => {
                                                         <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300">
                                                             <div className="flex items-center gap-2 mb-3">
                                                                 <Award className="h-5 w-5" style={{ color: "#f3aa01" }} />
-                                                                <h3 className="text-base sm:text-lg font-bold text-white">
-                                                                    Hududiy Mukofotlar
-                                                                </h3>
+                                                                <h3 className="text-base sm:text-lg font-bold text-white">Hududiy Mukofotlar</h3>
                                                             </div>
-                                                            <div className="space-y-2 max-h-60 overflow-y-auto">
+                                                            <div className="space-y-2 max-h-60 overflow-y-auto custom-scroll">
                                                                 {tournament.regionalPrizes.map((prize, index) => (
                                                                     <div
                                                                         key={prize.id}
                                                                         className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 p-3 rounded-2xl border border-blue-500/20"
                                                                     >
-                                                                        <div className="flex items-center justify-between">
-                                                                            <div className="flex items-center gap-3">
-                                                                                <div
-                                                                                    className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm ${index === 0
-                                                                                        ? "bg-yellow-500 text-black"
-                                                                                        : index === 1
-                                                                                            ? "bg-gray-400 text-black"
-                                                                                            : "bg-orange-900 text-orange-200"
-                                                                                        }`}
-                                                                                >
-                                                                                    {prize.place}
-                                                                                </div>
-                                                                                <span className="text-white font-semibold text-xs sm:text-sm">
-                                                                                    {prize.prize}
-                                                                                </span>
+                                                                        <div className="flex items-center gap-3">
+                                                                            <div
+                                                                                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm ${index === 0
+                                                                                    ? "bg-yellow-500 text-black"
+                                                                                    : index === 1
+                                                                                        ? "bg-gray-400 text-black"
+                                                                                        : "bg-orange-900 text-orange-200"
+                                                                                    }`}
+                                                                            >
+                                                                                {prize.place}
                                                                             </div>
+                                                                            <span className="text-white font-semibold text-xs sm:text-sm">
+                                                                                {prize.prize}
+                                                                            </span>
                                                                         </div>
                                                                     </div>
                                                                 ))}
@@ -1326,12 +1318,12 @@ const Dashboard: React.FC = () => {
                                                 </div>
                                             </div>
 
-                                            {/* Action Button */}
+                                            {/* BUTTON */}
                                             <div className="mt-4 sm:mt-6">
                                                 {isRegistered ? (
                                                     <button
                                                         disabled
-                                                        className="w-full bg-gray-600 text-gray-300 px-4 py-3 sm:px-6 sm:py-4 rounded-3xl text-base sm:text-lg font-bold cursor-not-allowed"
+                                                        className="w-full bg-gray-600 text-gray-300 px-4 py-3 sm:px-6 sm:py-4 rounded-3xl text-sm sm:text-lg font-bold cursor-not-allowed"
                                                     >
                                                         {applicationStatus === "accepted"
                                                             ? "✓ Qabul qilindi"
@@ -1343,7 +1335,7 @@ const Dashboard: React.FC = () => {
                                                     <button
                                                         onClick={() => handleRegisterClick(tournament)}
                                                         disabled={isFull || registerMutation.isPending}
-                                                        className={`w-full px-4 py-3 sm:px-6 sm:py-4 rounded-3xl text-base sm:text-lg font-bold transition-all duration-300 ${isFull ? "bg-red-500/50 text-gray-300 cursor-not-allowed" : "text-black hover:shadow-2xl transform"
+                                                        className={`w-full px-4 py-3 sm:px-6 sm:py-4 rounded-3xl text-sm sm:text-lg font-bold transition-all duration-300 ${isFull ? "bg-red-500/50 text-gray-300 cursor-not-allowed" : "text-black hover:shadow-2xl transform"
                                                             }`}
                                                         style={
                                                             !isFull && !registerMutation.isPending
@@ -1365,17 +1357,20 @@ const Dashboard: React.FC = () => {
                         })}
                     </Swiper>
                 </div>
+
             )}
 
             {/* Registered Tournaments Section */}
             {registeredTournaments.length > 0 && (
-                <div className="p-4 sm:p-6 md:p-8 lg:p-12 border-2 border-[#373b41] bg-[#111827] m-8 rounded-xl">
-                    <div className=" mx-auto">
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                            <Trophy className="h-6 w-6" style={{ color: "#f3aa01" }} />
+                <div className="p-4 sm:p-6 md:p-8 lg:p-12 border-2 border-[#373b41] bg-[#111827] mt-3 rounded-xl">
+                    <div className="mx-auto lg:p-2 sm:p-4 md:p-6">
+                        <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-2 sm:gap-3">
+                            <Trophy className="h-5 w-5 sm:h-6 sm:w-6" style={{ color: "#f3aa01" }} />
                             Ro'yxatdan O'tgan Turnirlar
                         </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                        {/* Grid Layout - responsive */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {registeredTournaments.map((tournament) => {
                                 const application = applications.find((app) => app.tournament.id === tournament.id);
                                 const applicationStatus = application?.status;
@@ -1385,10 +1380,14 @@ const Dashboard: React.FC = () => {
                                 return (
                                     <div
                                         key={tournament.id}
-                                        className="bg-white/5 backdrop-blur-xl rounded-3xl p-4 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300"
+                                        className="bg-white/5 backdrop-blur-xl w-full rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 border border-white/10 hover:border-[#f3aa01]/30 transition-all duration-300"
                                     >
-                                        <div className="flex items-center justify-between mb-3">
-                                            <h3 className="text-base sm:text-lg font-bold text-white">{tournament.name}</h3>
+                                        {/* Header */}
+                                        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                            <h3 className="text-sm sm:text-lg font-bold text-white">
+                                                {tournament.name}
+                                            </h3>
+
                                             {applicationStatus === "accepted" && (
                                                 <span className="flex items-center gap-1 text-green-400 text-xs sm:text-sm font-semibold">
                                                     <CheckCircle className="h-4 w-4" />
@@ -1408,14 +1407,18 @@ const Dashboard: React.FC = () => {
                                                 </span>
                                             )}
                                         </div>
+
+                                        {/* Info */}
                                         <p className="text-gray-300 text-xs sm:text-sm mb-3">
                                             {tournament.type} • {tournament.scope === "regional" ? "Viloyatlararo" : "Ochiq"} •
                                             Boshlanish: {formatDate(tournament.startTime)}
                                         </p>
+
+                                        {/* Progress & Info */}
                                         <div className="space-y-2">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2 text-gray-300">
-                                                    <Users className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                    <Users className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: "#f3aa01" }} />
                                                     <span>Ishtirokchilar:</span>
                                                 </div>
                                                 <span className="text-white font-semibold text-xs sm:text-sm">
@@ -1431,13 +1434,14 @@ const Dashboard: React.FC = () => {
                                                     }}
                                                 ></div>
                                             </div>
+
                                             {tournament.participationFee && (
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-2 text-gray-300">
-                                                        <DollarSign className="h-5 w-5" style={{ color: "#f3aa01" }} />
+                                                        <DollarSign className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: "#f3aa01" }} />
                                                         <span>Ishtirok to'lovi:</span>
                                                     </div>
-                                                    <span className="font-bold text-sm" style={{ color: "#f3aa01" }}>
+                                                    <span className="font-bold text-xs sm:text-sm" style={{ color: "#f3aa01" }}>
                                                         {tournament.participationFee.toLocaleString()} so'm
                                                     </span>
                                                 </div>
@@ -1450,6 +1454,7 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
             )}
+
 
             {/* Applications Panel */}
             {showApplications && (

@@ -47,16 +47,6 @@ const Achievements = () => {
       id="results"
       className="py-16 sm:py-20 md:py-28 relative overflow-hidden bg-[#000102] mx-auto px-4 sm:px-6 lg:px-8"
     >
-      {/* Animated Stars Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {stars.map((star) => (
-          <div
-            key={star.id}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-        
-          />
-        ))}
-      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}

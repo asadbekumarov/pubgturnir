@@ -33,11 +33,11 @@ const Hero = () => {
 
                 <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
                     <Link to="/register" className="w-full xs:w-auto px-4 sm:px-6 md:px-8 py-2 sm:py-4 text-sm sm:text-base font-bold rounded-full bg-[#f3aa01] text-black 
-        transition transform hover:scale-105 hover:shadow-lg duration-300">
+        transition transform  duration-300">
                         QATNASHISH
                     </Link>
                     <Link to="/register" className="w-full xs:w-auto px-4 sm:px-6 md:px-8 py-2 sm:py-3 text-sm sm:text-base font-bold rounded-full border-2 border-[#f3aa01] text-white 
-        hover:bg-[#f3aa01] hover:text-black transition transform hover:scale-105 hover:shadow-lg duration-300">
+        hover:bg-[#f3aa01] hover:text-black transition transform  duration-300">
                         BATAFSIL
                     </Link>
                 </div>
@@ -59,11 +59,7 @@ const Hero = () => {
                 </div>
             </div>
 
-            {/* Glowing lines background */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                {/* <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-[#f3aa01] to-transparent top-1/3 animate-pulse opacity-40"></div>
-                <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-[#f3aa01] to-transparent top-2/3 animate-pulse opacity-40 delay-500"></div> */}
-            </div>
+
         </section>
     )
 }
