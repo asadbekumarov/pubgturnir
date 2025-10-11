@@ -472,7 +472,6 @@ export default function TournamentDetail() {
             toast.info("Ro‘yxatdan o‘tish yuborilmoqda...", { autoClose: 1200 });
         },
         onSuccess: (data) => {
-            // Agar backend xabar qaytarsa uni chiqarish
             const message =
                 data?.message || "✅ Ro‘yxatdan o‘tish muvaffaqiyatli yakunlandi!";
             toast.success(message);
@@ -480,7 +479,6 @@ export default function TournamentDetail() {
             setSelectedTournamentForRegistration(null);
         },
         onError: (error: any) => {
-            // Har xil error strukturalar uchun umumiy tutish
             const msg =
                 error?.response?.data?.message ||
                 error?.message ||
@@ -488,6 +486,7 @@ export default function TournamentDetail() {
             toast.error(msg);
         },
     });
+
 
     const { data: tournament, isLoading, isError } = useQuery<Tournament>({
         queryKey: ["tournament", id],
@@ -717,12 +716,14 @@ export default function TournamentDetail() {
                                 Bekor qilish
                             </button>
                             <button
-                                onClick={handleConfirmRegistration}
-                                disabled={registerMutation.isLoading}
+                                onClick={() => registerMutation.mutate(tournament.id)}
+                                disabled={registerMutation.isPending}
                                 className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-black py-3 rounded-2xl hover:shadow-2xl hover:shadow-green-500/30 transition-all font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {registerMutation.isLoading ? "Yuklanmoqda..." : "Tasdiqlash"}
+                                {registerMutation.isPending ? "Yuklanmoqda..." : "Tasdiqlash"}
                             </button>
+
+
                         </div>
                     </div>
                 </div>
